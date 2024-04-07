@@ -8,7 +8,10 @@ import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapboxMap
+import com.maplibre.compose.camera.CameraMotionType
 import com.maplibre.compose.camera.CameraPitch
+import com.maplibre.compose.camera.CameraPosition
+import com.maplibre.compose.camera.CameraTrackingMode
 
 @Composable
 internal fun MapCameraUpdater(
@@ -19,14 +22,24 @@ internal fun MapCameraUpdater(
 
     fun observeIdle(onCameraIdle: (CameraPosition) -> Unit) {
         mapApplier.map.addOnCameraIdleListener {
-            onCameraIdle(CameraPosition(
+            // Safely calculate the new tracking mode.
+            var newTrackingMode = CameraTrackingMode.NONE
+            if (mapApplier.map.locationComponent.isLocationComponentActivated) {
+                newTrackingMode = CameraTrackingMode.fromMapbox(mapApplier.map.locationComponent.cameraMode)
+            }
+
+            // Generate a new camera position here. This helps trigger an update to the MutableState.
+            // See stack overflow link below for more info.
+            onCameraIdle(
+                CameraPosition(
                 target = mapApplier.map.cameraPosition.target,
                 zoom = mapApplier.map.cameraPosition.zoom,
                 tilt = mapApplier.map.cameraPosition.tilt,
                 pitch = CameraPitch.Free,
                 bearing = mapApplier.map.cameraPosition.bearing,
-                trackingMode = CameraTrackingMode.fromMapbox(mapApplier.map.locationComponent.cameraMode),
-            ))
+                trackingMode = newTrackingMode,
+            )
+            )
         }
     }
 

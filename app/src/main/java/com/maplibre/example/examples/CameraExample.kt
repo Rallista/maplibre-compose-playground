@@ -1,4 +1,4 @@
-package com.maplibre.example.camera
+package com.maplibre.example.examples
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
@@ -12,10 +12,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.MapView
 import com.maplibre.compose.camera.CameraState
+import com.maplibre.compose.rememberSaveableMapViewCamera
+import com.maplibre.example.Main
 import com.maplibre.example.support.StaticLocationEngine
 import com.maplibre.example.support.locationPermissions
 import com.maplibre.example.support.rememberLocationPermissionLauncher
@@ -25,10 +28,12 @@ fun CameraExample() {
 
     val canChangeCamera = remember { mutableStateOf(false) }
 
-    val mapViewCamera = remember { mutableStateOf(MapViewCamera.Default) }
+    val mapViewCamera = rememberSaveableMapViewCamera() // Or rememberMapViewCamera()
     val nextCameraState = getNextCamera(mapViewCamera.value.state)
 
-    // TODO: This could use improvement to handle failure cases
+    // TODO: This could use improvement to handle failure cases.
+    //      Not really in the scope of this project, but just to reduce
+    //      challenges using the example project.
     //      (see logs for warnings about LocationEngine)
     val permissionLauncher = rememberLocationPermissionLauncher(
         onAccess = {
@@ -75,10 +80,17 @@ fun CameraExample() {
     }
 }
 
-fun getNextCamera(currentState: CameraState): MapViewCamera {
+private fun getNextCamera(currentState: CameraState): MapViewCamera {
     return when (currentState) {
         is CameraState.Centered -> MapViewCamera.TrackingUserLocation()
         CameraState.TrackingUserLocation -> MapViewCamera.Default
         CameraState.TrackingUserLocationWithBearing -> MapViewCamera.Default
     }
+}
+
+// TODO: Can this work with the async map style?
+@Composable
+@Preview
+fun CameraExamplePreview() {
+    CameraExample()
 }

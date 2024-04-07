@@ -3,8 +3,6 @@ package com.maplibre.compose.camera
 import android.os.Parcelable
 import com.mapbox.mapboxsdk.geometry.LatLng
 import kotlinx.parcelize.Parcelize
-import com.maplibre.compose.ramani.CameraPosition
-import com.maplibre.compose.ramani.CameraTrackingMode
 
 // TODO: Create Defaults so all inits use the same values.
 // TODO: Handle CameraPitch in/out

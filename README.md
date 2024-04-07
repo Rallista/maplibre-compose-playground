@@ -8,7 +8,7 @@ TODO: Sort out release, package installation/management & gradle info.
 
 ## Usage
 
-![Demo Animation](maplibre-compose-demo.gif)
+<img src="maplibre-compose-demo.gif" width="400" alt="Demo Animation"/>
 
 ### Example Scenes
 

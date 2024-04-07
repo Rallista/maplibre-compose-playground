@@ -13,9 +13,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.mapbox.mapboxsdk.location.engine.LocationEngine
+import com.mapbox.mapboxsdk.maps.Style
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.ramani.LocationRequestProperties
 import com.maplibre.compose.ramani.LocationStyling
+import com.maplibre.compose.ramani.MapGestureContext
 import com.maplibre.compose.ramani.MapLibre
 import com.maplibre.compose.ramani.MapLibreComposable
 
@@ -28,6 +30,9 @@ fun MapView(
     locationRequestProperties: LocationRequestProperties = LocationRequestProperties.Default,
     locationStyling: LocationStyling = LocationStyling.Default,
     userLocation: MutableState<Location>? = null,
+    onMapReadyCallback: ((Style) -> Unit)? = null,
+    onTapGestureCallback: ((MapGestureContext) -> Unit)? = null,
+    onLongPressGestureCallback: ((MapGestureContext) -> Unit)? = null,
     content: (@Composable @MapLibreComposable () -> Unit)? = null
 ) {
 
@@ -51,7 +56,10 @@ fun MapView(
         locationEngine = locationEngine,
         locationRequestProperties = locationRequestProperties,
         locationStyling = locationStyling,
-        userLocation = userLocation
+        userLocation = userLocation,
+        onMapReadyCallback = onMapReadyCallback,
+        onTapGestureCallback = onTapGestureCallback,
+        onLongPressGestureCallback = onLongPressGestureCallback
     ) {
         content?.invoke()
     }

@@ -8,15 +8,14 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.maplibre.compose.ramani
+package com.maplibre.compose.camera
 
 import android.os.Parcelable
 import com.mapbox.mapboxsdk.geometry.LatLng
 import kotlinx.parcelize.Parcelize
-import com.maplibre.compose.ramani.CameraMotionType.EASE
-import com.maplibre.compose.ramani.CameraMotionType.FLY
-import com.maplibre.compose.ramani.CameraMotionType.INSTANT
-import com.maplibre.compose.camera.CameraPitch
+import com.maplibre.compose.camera.CameraMotionType.EASE
+import com.maplibre.compose.camera.CameraMotionType.FLY
+import com.maplibre.compose.camera.CameraMotionType.INSTANT
 
 /**
  * @property NONE The camera does not track the user location.

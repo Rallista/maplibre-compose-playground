@@ -1,21 +1,59 @@
 package com.maplibre.compose.ramani
 
 import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.maps.Style
+import com.mapbox.mapboxsdk.maps.MapboxMap
 
-interface CameraPositionCallback {
-    fun onChanged(cameraPosition: CameraPosition)
+enum class MapGestureType {
+    TAP,
+    LONG_PRESS
 }
 
-interface OnMapReadyCallback {
-    fun onMapReady(style: Style)
-}
+data class MapGestureContext(
 
-data class GestureContext (
-    var coordinate: LatLng? = null
+    /**
+     * The type of gesture.
+     */
+    val type: MapGestureType,
+
+    /**
+     * The coordinate of the gesture.
+     */
+    val coordinate: LatLng,
+
+    // TODO: Bundle other relevant gesture context information here.
 )
 
-interface OnGestureCallback {
-    fun onTap(context: GestureContext)
-    fun onLongPress(context: GestureContext)
+/**
+ * Optionally adds gesture callbacks to the map.
+ *
+ * @param onTapGestureCallback The callback for a tap gesture.
+ * @param onLongPressGestureCallback The callback for a long press gesture.
+ */
+internal fun MapboxMap.setupEventCallbacks(
+    onTapGestureCallback: ((MapGestureContext) -> Unit)? = null,
+    onLongPressGestureCallback: ((MapGestureContext) -> Unit)? = null,
+) {
+    onTapGestureCallback?.let {
+        this.addOnMapClickListener { point ->
+            onTapGestureCallback?.invoke(
+                MapGestureContext(
+                    MapGestureType.TAP,
+                    LatLng(point.latitude, point.longitude)
+                )
+            )
+            true
+        }
+    }
+
+    onLongPressGestureCallback?.let {
+        this.addOnMapLongClickListener { point ->
+            onLongPressGestureCallback?.invoke(
+                MapGestureContext(
+                    MapGestureType.LONG_PRESS,
+                    LatLng(point.latitude, point.longitude)
+                )
+            )
+            true
+        }
+    }
 }

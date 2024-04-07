@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.kotlinParcelize)
+    id("maven-publish")
 }
 
 android {
@@ -61,4 +62,48 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("release") {
+            from(components.findByName("release"))
+            groupId = "io.github.rallista"
+            artifactId = "maplibre-compose"
+            version = "0.0.1"
+            pom {
+                name.set("Maplibre Compose Playground")
+                description.set("An experimental project to explore Maplibre in Jetpack Compose")
+                url.set("https://github.com/Rallista/maplibre-compose-playground")
+                licenses {
+                    license {
+                        name.set("Mozilla Public License Version 2.0")
+                        url.set("https://www.mozilla.org/en-US/MPL/2.0/")
+                    }
+                }
+            }
+        }
+    }
+
+//    repositories {
+//        maven {
+//            name = "Sonatype"
+//            setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+//            credentials {
+//                username = System.getenv("OSSRH_USERNAME")?.toString()
+//                password = System.getenv("OSSRH_PASSWORD")?.toString()
+//            }
+//        }
+//    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            setUrl("https://maven.pkg.github.com/Rallista/maplibre-compose-playground")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }

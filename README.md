@@ -8,6 +8,17 @@ TODO: Sort out release, package installation/management & gradle info.
 
 ## Usage
 
+Interact with Maplibre Native from Jetpack Compose using the `MapView`.
+
+```swift
+var mapViewCamera = rememberMapViewCamera()
+
+MapView(
+    styleUrl = "https://demotiles.maplibre.org/style.json",
+    camera = mapViewCamera
+)
+```
+
 <img src="maplibre-compose-demo.gif" width="400" alt="Demo Animation"/>
 
 ### Example Scenes

@@ -267,5 +267,3 @@ private fun MapboxMap.addSources(sources: List<Source>?) {
 private fun MapboxMap.addLayers(layers: List<Layer>?) {
     layers?.let { layers.forEach { style!!.addLayer(it) } }
 }
-
-

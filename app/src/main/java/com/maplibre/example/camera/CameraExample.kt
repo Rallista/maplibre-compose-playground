@@ -1,9 +1,6 @@
 package com.maplibre.example.camera
 
-import android.Manifest
 import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -12,7 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -30,7 +26,6 @@ fun CameraExample() {
     val canChangeCamera = remember { mutableStateOf(false) }
 
     val mapViewCamera = remember { mutableStateOf(MapViewCamera.Default) }
-//    val mapViewCamera = rememberUpdatedState(MapViewCamera.Default)
     val nextCameraState = getNextCamera(mapViewCamera.value.state)
 
     // TODO: This could use improvement to handle failure cases

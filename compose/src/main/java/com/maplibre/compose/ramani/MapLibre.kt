@@ -107,8 +107,8 @@ fun MapLibre(
     val currentContent by rememberUpdatedState(content)
     val currentCameraPosition by rememberUpdatedState(cameraPosition)
 
+    // Update the parent camera when the internal camera position changes.
     LaunchedEffect(currentCameraPosition.value) {
-        Log.d("MutableCamera", "MapLibre.onMove $cameraPosition value is updating to: ${cameraPosition.value.trackingMode}")
         cameraPosition.value = currentCameraPosition.value
     }
 

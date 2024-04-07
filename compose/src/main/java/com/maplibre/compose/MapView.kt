@@ -1,7 +1,6 @@
 package com.maplibre.compose
 
 import android.location.Location
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,7 +13,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.mapbox.mapboxsdk.location.engine.LocationEngine
-import com.maplibre.compose.ramani.CameraPosition
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.ramani.LocationRequestProperties
 import com.maplibre.compose.ramani.LocationStyling
@@ -34,17 +32,15 @@ fun MapView(
 ) {
 
     val cameraState by rememberUpdatedState(camera)
-
     val cameraPosition = remember(cameraState.value) { mutableStateOf(cameraState.value.toCameraPosition()) }
-//    Log.d("MapView", "CameraPosition value is: ${cameraPosition.value.trackingMode}")
 
-    // Update the camera position when the camera changes
+    // Update the camera position when the parent camera changes.
     LaunchedEffect(cameraState.value) {
         cameraPosition.value = camera.value.toCameraPosition()
     }
 
+    // Update the parent camera when the internal camera position changes.
     LaunchedEffect(cameraPosition.value) {
-        Log.d("MapView", "CameraPosition value is updating to: ${cameraPosition.value}")
         camera.value = MapViewCamera.fromCameraPosition(cameraPosition.value)
     }
 

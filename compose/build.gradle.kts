@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.maplibre.compose"
     compileSdk = 34
-    version = "0.0.2"
+    version = "0.0.3"
 
     defaultConfig {
         minSdk = 28
@@ -71,13 +71,17 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 }
 
+// Docs for release https://developer.android.com/build/publish-library
 publishing {
     publications {
-        create<MavenPublication>("release") {
-            from(components.findByName("release"))
+        register<MavenPublication>("release") {
             groupId = "io.github.rallista"
             artifactId = "maplibre-compose"
             version = project.version.toString()
+
+            afterEvaluate {
+                from(components["release"])
+            }
         }
     }
 

@@ -8,6 +8,7 @@ plugins {
 android {
     namespace = "com.maplibre.compose"
     compileSdk = 34
+    version = "0.0.2"
 
     defaultConfig {
         minSdk = 28
@@ -37,6 +38,12 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
+    }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
     }
 }
 
@@ -70,18 +77,7 @@ publishing {
             from(components.findByName("release"))
             groupId = "io.github.rallista"
             artifactId = "maplibre-compose"
-            version = "0.0.1"
-            pom {
-                name.set("Maplibre Compose Playground")
-                description.set("An experimental project to explore Maplibre in Jetpack Compose")
-                url.set("https://github.com/Rallista/maplibre-compose-playground")
-                licenses {
-                    license {
-                        name.set("Mozilla Public License Version 2.0")
-                        url.set("https://www.mozilla.org/en-US/MPL/2.0/")
-                    }
-                }
-            }
+            version = project.version.toString()
         }
     }
 

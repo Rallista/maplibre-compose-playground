@@ -6,7 +6,7 @@ This project is based off of <https://github.com/ramani-maps/ramani-maps> [MPL-2
 
 We're currently using GitHub to release the package. To install you need: 
 
-In your `settings.gradle`.
+In your `settings.gradle`. A personal access token (PAT) is required to access the library through maven, even though the repository is public. 
 
 ```groovy
         maven {

@@ -8,10 +8,10 @@ plugins {
 android {
     namespace = "com.maplibre.compose"
     compileSdk = 34
-    version = "0.0.3"
+    version = "0.0.4"
 
     defaultConfig {
-        minSdk = 28
+        minSdk = 25
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")

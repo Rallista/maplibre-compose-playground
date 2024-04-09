@@ -21,7 +21,7 @@ In your `settings.gradle`. A personal access token (PAT) is required to access t
 In your app `build.gradle`
 
 ```groovy
-implementation 'io.github.rallista:maplibre-compose:0.0.3'
+implementation 'io.github.rallista:maplibre-compose:0.0.4'
 ```
 
 ## Usage

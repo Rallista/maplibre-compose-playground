@@ -30,6 +30,7 @@ enum class CameraTrackingMode : Parcelable {
         fun fromMapbox(cameraMode: Int): CameraTrackingMode {
             return when (cameraMode) {
                 com.mapbox.mapboxsdk.location.modes.CameraMode.TRACKING -> FOLLOW
+                com.mapbox.mapboxsdk.location.modes.CameraMode.TRACKING_GPS -> FOLLOW_WITH_BEARING
                 com.mapbox.mapboxsdk.location.modes.CameraMode.TRACKING_COMPASS -> FOLLOW_WITH_BEARING
                 else -> NONE
             }

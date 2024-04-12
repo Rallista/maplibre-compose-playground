@@ -8,6 +8,7 @@ import com.mapbox.mapboxsdk.location.engine.LocationEngineCallback
 import com.mapbox.mapboxsdk.location.engine.LocationEngineRequest
 import com.mapbox.mapboxsdk.location.engine.LocationEngineResult
 
+// TODO: Port this from what I have in Ferrostar today
 class StaticLocationEngine(
     private val center: Location = Location("StaticLocationEngine").apply {
         latitude = 37.7749

@@ -5,6 +5,7 @@ import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.currentComposer
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+import com.mapbox.mapboxsdk.location.OnLocationCameraTransitionListener
 import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapboxMap
@@ -32,13 +33,14 @@ internal fun MapCameraUpdater(
             // See stack overflow link below for more info.
             onCameraIdle(
                 CameraPosition(
-                target = mapApplier.map.cameraPosition.target,
-                zoom = mapApplier.map.cameraPosition.zoom,
-                tilt = mapApplier.map.cameraPosition.tilt,
-                pitch = CameraPitch.Free,
-                bearing = mapApplier.map.cameraPosition.bearing,
-                trackingMode = newTrackingMode,
-            )
+                    target = mapApplier.map.cameraPosition.target,
+                    zoom = mapApplier.map.cameraPosition.zoom,
+                    tilt = mapApplier.map.cameraPosition.tilt,
+                    // TODO: This should PROBABLY not be hard-coded? I'm also not really sure if pitch constraints are part of position...
+                    pitch = CameraPitch.Free,
+                    bearing = mapApplier.map.cameraPosition.bearing,
+                    trackingMode = newTrackingMode,
+                )
             )
         }
     }
@@ -54,42 +56,61 @@ internal fun MapCameraUpdater(
     }, update = {
         // This function is run any time the cameraPosition changes.
         // It applies an update from the parent to the Map (maintained by the MapApplier)
-        update(cameraPosition.value) {
-            val cameraUpdate = CameraUpdateFactory.newCameraPosition(it.toMapbox())
+        update(cameraPosition.value) { updatedCameraPosition ->
+            val cameraUpdate = CameraUpdateFactory.newCameraPosition(updatedCameraPosition.toMapbox())
 
-            when (it.trackingMode) {
+            // TODO: Unify this logic with compose node stuff below!
+            when (updatedCameraPosition.trackingMode) {
                 CameraTrackingMode.NONE -> {
                     if (map.locationComponent.isLocationComponentActivated) {
                         map.locationComponent.cameraMode = CameraMode.NONE
                     }
 
-                    when (it.motionType) {
+                    when (updatedCameraPosition.motionType) {
                         CameraMotionType.INSTANT -> map.moveCamera(cameraUpdate)
 
                         CameraMotionType.EASE -> map.easeCamera(
                             cameraUpdate,
-                            it.animationDurationMs
+                            updatedCameraPosition.animationDurationMs
                         )
 
                         CameraMotionType.FLY -> map.animateCamera(
                             cameraUpdate,
-                            it.animationDurationMs
+                            updatedCameraPosition.animationDurationMs
                         )
                     }
                 }
                 CameraTrackingMode.FOLLOW -> {
                     assert(map.locationComponent.isLocationComponentActivated)
+
+                    // TODO: Selective updates only if stuff changed
                     map.locationComponent.cameraMode = CameraMode.TRACKING
                     map.locationComponent.renderMode = RenderMode.COMPASS
                 }
                 CameraTrackingMode.FOLLOW_WITH_BEARING -> {
                     assert(map.locationComponent.isLocationComponentActivated)
-                    map.locationComponent.cameraMode = CameraMode.TRACKING_GPS
-                    map.locationComponent.renderMode = RenderMode.COMPASS
+
+                    // TODO: Selective updates only if stuff changed
                 }
             }
         }
     })
+}
+
+private class CameraTransitionListener(val map: MapboxMap, val zoom: Double?, val tilt: Double?) : OnLocationCameraTransitionListener {
+    override fun onLocationCameraTransitionFinished(cameraMode: Int) {
+        zoom?.let { zoom ->
+            map.locationComponent.zoomWhileTracking(zoom)
+        }
+
+        tilt?.let { tilt ->
+            map.locationComponent.tiltWhileTracking(tilt)
+        }
+    }
+
+    override fun onLocationCameraTransitionCanceled(cameraMode: Int) {
+        // Do nothing
+    }
 }
 
 private class MapPropertiesNode(
@@ -111,8 +132,13 @@ private class MapPropertiesNode(
             }
             CameraTrackingMode.FOLLOW_WITH_BEARING -> {
                 assert(map.locationComponent.isLocationComponentActivated)
-                map.locationComponent.cameraMode = CameraMode.TRACKING_GPS
-                map.locationComponent.renderMode = RenderMode.COMPASS
+
+                map.locationComponent.renderMode = RenderMode.GPS
+                if (map.locationComponent.cameraMode != CameraMode.TRACKING_GPS) {
+                    map.locationComponent.setCameraMode(
+                        CameraMode.TRACKING_GPS,
+                        CameraTransitionListener(map, cameraPosition.value.zoom, cameraPosition.value.tilt))
+                }
             }
         }
     }

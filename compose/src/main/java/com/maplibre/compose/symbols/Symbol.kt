@@ -25,6 +25,7 @@ import com.mapbox.mapboxsdk.style.layers.Property.TEXT_JUSTIFY_CENTER
 import com.maplibre.compose.ramani.MapApplier
 import com.maplibre.compose.ramani.MapLibreComposable
 import com.maplibre.compose.ramani.SymbolNode
+import com.maplibre.compose.symbols.builder.SymbolText
 
 @Composable
 @MapLibreComposable
@@ -36,7 +37,7 @@ fun Symbol(
     zIndex: Int = 0,
     imageId: Int? = null,
     imageRotation: Float? = null,
-    text: String? = null
+    text: SymbolText? = null
 ) {
     val context = LocalContext.current
     val mapApplier = currentComposer.applier as MapApplier
@@ -73,11 +74,11 @@ fun Symbol(
 
         text?.let {
             symbolOptions = symbolOptions
-                .withTextField(text)
-                .withTextColor(color)
-                .withTextSize(size)
-                .withTextJustify(TEXT_JUSTIFY_CENTER)
-                .withTextAnchor(TEXT_ANCHOR_CENTER)
+                .withTextField(text.text)
+                .withTextColor(text.color)
+                .withTextSize(text.size)
+                .withTextJustify(text.justify)
+                .withTextAnchor(text.anchor)
         }
 
         val symbol = symbolManager.create(symbolOptions)
@@ -89,7 +90,7 @@ fun Symbol(
         }
 
         set(text) {
-            symbol.textField = text
+            symbol.textField = text?.text
             symbolManager.update(symbol)
         }
 

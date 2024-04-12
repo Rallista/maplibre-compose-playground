@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.mapbox.mapboxsdk.geometry.LatLng
+import com.maplibre.compose.symbols.builder.SymbolText
 
 @Composable
 fun UpdateCenter(coord: LatLng, centerUpdated: (LatLng) -> Unit) {
@@ -33,7 +34,7 @@ fun CircleWithItem(
     zIndex: Int = 0,
     imageId: Int? = null,
     itemSize: Float = 0.0f,
-    text: String? = null,
+    text: SymbolText? = null,
     onCenterChanged: (LatLng) -> Unit = {},
     onDragStopped: () -> Unit = {},
 ) {

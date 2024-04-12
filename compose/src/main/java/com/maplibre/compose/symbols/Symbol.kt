@@ -10,11 +10,13 @@
 
 package com.maplibre.compose.symbols
 
+import android.graphics.drawable.VectorDrawable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.currentComposer
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
@@ -28,22 +30,30 @@ import com.maplibre.compose.ramani.SymbolNode
 @MapLibreComposable
 fun Symbol(
     center: LatLng,
-    size: Float,
-    color: String,
-    isDraggable: Boolean,
+    size: Float = 1f,
+    color: String = "#000000",
+    isDraggable: Boolean = false,
     zIndex: Int = 0,
     imageId: Int? = null,
     imageRotation: Float? = null,
     text: String? = null
 ) {
+    val context = LocalContext.current
     val mapApplier = currentComposer.applier as MapApplier
 
     imageId?.let {
         if (mapApplier.style.getImage("$imageId") == null) {
-            mapApplier.style.addImage(
-                "$imageId",
-                ImageBitmap.imageResource(it).asAndroidBitmap()
-            )
+            val vectorDrawable = context.getDrawable(imageId) as? VectorDrawable
+            if (vectorDrawable == null) {
+                mapApplier.style.addImage(
+                    "$imageId",
+                    ImageBitmap.imageResource(imageId).asAndroidBitmap()
+                )
+            } else {
+                vectorDrawable?.let { drawable ->
+                    mapApplier.style.addImage("$imageId", drawable)
+                }
+            }
         }
     }
 

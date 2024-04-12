@@ -35,7 +35,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.maplibre.example.examples.CallbackExample
 import com.maplibre.example.examples.CameraExample
-import com.maplibre.example.examples.ImageSymbolExample
+import com.maplibre.example.examples.SymbolExample
 
 @Composable
 fun Main() {
@@ -58,8 +58,8 @@ fun Main() {
             composable("callback") {
                 CallbackExample()
             }
-            composable("image-symbol") {
-                ImageSymbolExample()
+            composable("symbol") {
+                SymbolExample()
             }
         }
     }
@@ -74,7 +74,7 @@ fun MainMenu(modifier: Modifier, navController: NavController) {
     ) {
         NavigationLink("Map Callback Example", "callback", navController)
         NavigationLink("Map Camera Control Example", "camera", navController)
-        NavigationLink("Image Symbols Example", "image-symbol", navController)
+        NavigationLink("Symbols Example", "symbol", navController)
     }
 }
 

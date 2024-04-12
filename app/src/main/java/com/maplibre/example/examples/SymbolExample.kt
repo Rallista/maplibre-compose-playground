@@ -6,14 +6,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mapbox.mapboxsdk.style.layers.Property.TEXT_ANCHOR_BOTTOM_RIGHT
+import com.mapbox.mapboxsdk.style.layers.Property.TEXT_JUSTIFY_LEFT
+import com.mapbox.mapboxsdk.style.layers.Property.TEXT_JUSTIFY_RIGHT
 import com.maplibre.compose.MapView
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.rememberSaveableMapViewCamera
+import com.maplibre.compose.symbols.CircleWithItem
 import com.maplibre.compose.symbols.Symbol
+import com.maplibre.compose.symbols.builder.SymbolText
 import com.maplibre.example.R
 
 @Composable
-fun ImageSymbolExample() {
+fun SymbolExample() {
 
     val mapViewCamera = rememberSaveableMapViewCamera(
         initialCamera = MapViewCamera.Centered(
@@ -40,6 +45,23 @@ fun ImageSymbolExample() {
                     center = LatLng(1.253, 104.019),
                     imageId = R.drawable.vector,
                     imageRotation = 40f
+                )
+
+                CircleWithItem(
+                    center = LatLng(1.173, 103.969),
+                    radius = 10f,
+                    text = SymbolText.text("Default"),
+                )
+
+                CircleWithItem(
+                    center = LatLng(1.126, 103.902),
+                    radius = 10f,
+                    text = SymbolText.Builder()
+                        .text("Custom")
+                        .textSize(20f)
+                        .textColor("Red")
+                        .textAnchor(TEXT_ANCHOR_BOTTOM_RIGHT)
+                        .build(),
                 )
             }
         }

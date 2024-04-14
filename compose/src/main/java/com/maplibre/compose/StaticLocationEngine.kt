@@ -1,4 +1,4 @@
-package com.maplibre.example.support
+package com.maplibre.compose
 
 import android.app.PendingIntent
 import android.content.Intent

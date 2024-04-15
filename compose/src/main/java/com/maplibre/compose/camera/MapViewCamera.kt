@@ -92,6 +92,7 @@ data class MapViewCamera(
                 return CameraPosition(
                     target = LatLng(state.latitude, state.longitude),
                     zoom = zoom,
+                    pitch = pitch,
                     bearing = direction,
                     trackingMode = CameraTrackingMode.NONE
                 )
@@ -99,7 +100,7 @@ data class MapViewCamera(
             is CameraState.TrackingUserLocation -> {
                 return CameraPosition(
                     zoom = zoom,
-                    tilt = 0.0,
+                    pitch = pitch,
                     bearing = direction,
                     trackingMode = CameraTrackingMode.FOLLOW
                 )
@@ -107,7 +108,7 @@ data class MapViewCamera(
             is CameraState.TrackingUserLocationWithBearing -> {
                 return CameraPosition(
                     zoom = zoom,
-                    tilt = 0.0,
+                    pitch = pitch,
                     bearing = direction,
                     trackingMode = CameraTrackingMode.FOLLOW_WITH_BEARING
                 )

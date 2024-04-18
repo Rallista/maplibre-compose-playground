@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mapbox.mapboxsdk.plugins.annotation.Symbol
 import com.maplibre.compose.symbols.builder.SymbolText
 
 @Composable
@@ -37,6 +38,8 @@ fun CircleWithItem(
     text: SymbolText? = null,
     onCenterChanged: (LatLng) -> Unit = {},
     onDragStopped: () -> Unit = {},
+    onTap: () -> Unit = { },
+    onLongPress: () -> Unit = { }
 ) {
     val draggableCenterState = remember { mutableStateOf(center) }
 
@@ -58,6 +61,8 @@ fun CircleWithItem(
             draggableCenterState.value = center
             onDragStopped()
         },
+        onTap = onTap,
+        onLongPress = onLongPress
     )
 
     // Display circle

@@ -1,5 +1,8 @@
 package com.maplibre.compose.ramani
 
+import android.graphics.PointF
+import android.util.Log
+import com.mapbox.geojson.Feature
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMap
 
@@ -9,6 +12,11 @@ enum class MapGestureType {
 }
 
 data class MapGestureContext(
+
+    /**
+     * The screen location of the gesture.
+     */
+    val screenLocation: PointF,
 
     /**
      * The type of gesture.
@@ -35,8 +43,17 @@ internal fun MapboxMap.setupEventCallbacks(
 ) {
     onTapGestureCallback?.let {
         this.addOnMapClickListener { point ->
+            val screenLocation = projection.toScreenLocation(point)
+            val features = queryRenderedFeatures(screenLocation)
+
+            if (features.isNotEmpty()) {
+                Log.d("MapLibre", "Ignoring MapView tap gesture because feature exists. Use feature tap gesture instead.")
+                return@addOnMapClickListener false
+            }
+
             onTapGestureCallback?.invoke(
                 MapGestureContext(
+                    screenLocation,
                     MapGestureType.TAP,
                     LatLng(point.latitude, point.longitude)
                 )
@@ -47,8 +64,17 @@ internal fun MapboxMap.setupEventCallbacks(
 
     onLongPressGestureCallback?.let {
         this.addOnMapLongClickListener { point ->
+            val screenLocation = projection.toScreenLocation(point)
+            val features = queryRenderedFeatures(screenLocation)
+
+            if (features.isNotEmpty()) {
+                Log.d("MapLibre", "Ignoring MapView long press gesture because feature exists. Use feature tap gesture instead.")
+                return@addOnMapLongClickListener false
+            }
+
             onLongPressGestureCallback?.invoke(
                 MapGestureContext(
+                    screenLocation,
                     MapGestureType.LONG_PRESS,
                     LatLng(point.latitude, point.longitude)
                 )

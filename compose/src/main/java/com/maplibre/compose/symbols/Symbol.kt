@@ -18,7 +18,9 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
+import com.google.gson.JsonElement
 import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mapbox.mapboxsdk.plugins.annotation.Symbol
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
 import com.mapbox.mapboxsdk.style.layers.Property.TEXT_ANCHOR_CENTER
 import com.mapbox.mapboxsdk.style.layers.Property.TEXT_JUSTIFY_CENTER
@@ -37,7 +39,9 @@ fun Symbol(
     zIndex: Int = 0,
     imageId: Int? = null,
     imageRotation: Float? = null,
-    text: SymbolText? = null
+    text: SymbolText? = null,
+    onTap: () -> Unit = { },
+    onLongPress: () -> Unit = { }
 ) {
     val context = LocalContext.current
     val mapApplier = currentComposer.applier as MapApplier
@@ -82,7 +86,12 @@ fun Symbol(
         }
 
         val symbol = symbolManager.create(symbolOptions)
-        SymbolNode(symbolManager, symbol)
+        SymbolNode(
+            symbolManager,
+            symbol,
+            onTap = { onTap() },
+            onLongPress = { onLongPress() }
+        )
     }, update = {
         set(center) {
             symbol.latLng = center

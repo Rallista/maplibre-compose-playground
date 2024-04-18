@@ -1,5 +1,6 @@
 package com.maplibre.example.examples
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -32,25 +33,46 @@ fun SymbolExample() {
         Box(modifier = Modifier.padding(it)) {
             MapView(
                 styleUrl = "https://demotiles.maplibre.org/style.json",
-                camera = mapViewCamera
+                camera = mapViewCamera,
+                onTapGestureCallback = {
+                    Log.d("SymbolExample", "Tapped at ${it}")
+                }
             ) {
                 Symbol(
                     center = LatLng(1.203, 103.873),
                     size = 2f,
                     imageId = R.drawable.bitmap,
-                    imageRotation = -20f
+                    imageRotation = -20f,
+                    onTap = {
+                        Log.d("SymbolExample", "Tapped red star")
+                    },
+                    onLongPress = {
+                        Log.d("SymbolExample", "Long pressed red star")
+                    }
                 )
 
                 Symbol(
                     center = LatLng(1.253, 104.019),
                     imageId = R.drawable.vector,
-                    imageRotation = 40f
+                    imageRotation = 40f,
+                    onTap = {
+                        Log.d("SymbolExample", "Tapped blue star")
+                    },
+                    onLongPress = {
+                        Log.d("SymbolExample", "Long pressed blue star")
+                    }
                 )
 
                 CircleWithItem(
                     center = LatLng(1.173, 103.969),
                     radius = 10f,
                     text = SymbolText.text("Default"),
+                    onTap = {
+                        Log.d("SymbolExample", "Tapped default circle")
+                    },
+                    onLongPress = {
+                        Log.d("SymbolExample", "Long pressed default circle")
+                    }
                 )
 
                 CircleWithItem(
@@ -62,6 +84,12 @@ fun SymbolExample() {
                         .textColor("Red")
                         .textAnchor(TEXT_ANCHOR_BOTTOM_RIGHT)
                         .build(),
+                    onTap = {
+                        Log.d("SymbolExample", "Tapped custom circle")
+                    },
+                    onLongPress = {
+                        Log.d("SymbolExample", "Long pressed custom circle")
+                    }
                 )
             }
         }

@@ -30,7 +30,12 @@ import com.mapbox.mapboxsdk.plugins.annotation.Fill
 import com.mapbox.mapboxsdk.plugins.annotation.FillManager
 import com.mapbox.mapboxsdk.plugins.annotation.Line
 import com.mapbox.mapboxsdk.plugins.annotation.LineManager
+import com.mapbox.mapboxsdk.plugins.annotation.OnAnnotationClickListener
+import com.mapbox.mapboxsdk.plugins.annotation.OnCircleClickListener
 import com.mapbox.mapboxsdk.plugins.annotation.OnCircleDragListener
+import com.mapbox.mapboxsdk.plugins.annotation.OnCircleLongClickListener
+import com.mapbox.mapboxsdk.plugins.annotation.OnSymbolClickListener
+import com.mapbox.mapboxsdk.plugins.annotation.OnSymbolLongClickListener
 import com.mapbox.mapboxsdk.plugins.annotation.Symbol
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager
 import kotlinx.coroutines.awaitCancellation
@@ -172,6 +177,22 @@ internal class MapApplier(
             zIndexReferenceAnnotationManagerMap[zIndex] = circleManager
         }
 
+        circleManager.addClickListener(OnCircleClickListener { annotation ->
+            decorations.findInputCallback<CircleNode, Circle, Unit>(
+                nodeMatchPredicate = { it.circle.id == annotation?.id && it.circleManager.layerId == circleManager.layerId },
+                nodeInputCallback = { onTap }
+            )?.invoke(annotation!!)
+            true
+        })
+
+        circleManager.addLongClickListener(OnCircleLongClickListener { annotation ->
+            decorations.findInputCallback<CircleNode, Circle, Unit>(
+                nodeMatchPredicate = { it.circle.id == annotation?.id && it.circleManager.layerId == circleManager.layerId },
+                nodeInputCallback = { onLongPress }
+            )?.invoke(annotation!!)
+            true
+        })
+
         circleManager.addDragListener(object : OnCircleDragListener {
             override fun onAnnotationDragStarted(annotation: Circle?) {
                 decorations.findInputCallback<CircleNode, Circle, Unit>(
@@ -237,6 +258,22 @@ internal class MapApplier(
         if (!zIndexReferenceAnnotationManagerMap.containsKey(zIndex)) {
             zIndexReferenceAnnotationManagerMap[zIndex] = symbolManager
         }
+
+        symbolManager.addClickListener(OnSymbolClickListener { annotation ->
+            decorations.findInputCallback<SymbolNode, Symbol, Unit>(
+                nodeMatchPredicate = { it.symbol.id == annotation?.id && it.symbolManager.layerId == symbolManager.layerId },
+                nodeInputCallback = { onTap }
+            )?.invoke(annotation!!)
+            true
+        })
+
+        symbolManager.addLongClickListener(OnSymbolLongClickListener { annotation ->
+            decorations.findInputCallback<SymbolNode, Symbol, Unit>(
+                nodeMatchPredicate = { it.symbol.id == annotation?.id && it.symbolManager.layerId == symbolManager.layerId },
+                nodeInputCallback = { onLongPress }
+            )?.invoke(annotation!!)
+            true
+        })
 
         symbolManagerMap[zIndex] = symbolManager
         return symbolManager
@@ -326,7 +363,9 @@ internal class CircleNode(
     val circleManager: CircleManager,
     val circle: Circle,
     var onCircleDragged: (Circle) -> Unit,
-    var onCircleDragStopped: (Circle) -> Unit
+    var onCircleDragStopped: (Circle) -> Unit,
+    var onTap: (Circle) -> Unit,
+    var onLongPress: (Circle) -> Unit,
 ) : MapNode {
     override fun onRemoved() {
         circleManager.delete(circle)
@@ -340,6 +379,8 @@ internal class CircleNode(
 internal class SymbolNode(
     val symbolManager: SymbolManager,
     val symbol: Symbol,
+    val onTap: (Symbol) -> Unit,
+    val onLongPress: (Symbol) -> Unit,
 ) : MapNode {
     override fun onRemoved() {
         symbolManager.delete(symbol)

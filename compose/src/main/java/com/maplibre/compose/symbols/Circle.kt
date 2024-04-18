@@ -15,6 +15,7 @@ import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.currentComposer
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.plugins.annotation.CircleOptions
+import com.mapbox.mapboxsdk.plugins.annotation.Symbol
 import com.maplibre.compose.ramani.CircleNode
 import com.maplibre.compose.ramani.MapApplier
 import com.maplibre.compose.ramani.MapLibreComposable
@@ -32,6 +33,8 @@ fun Circle(
     zIndex: Int = 0,
     onCenterDragged: (LatLng) -> Unit = {},
     onDragFinished: (LatLng) -> Unit = {},
+    onTap: () -> Unit = { },
+    onLongPress: () -> Unit = { }
 ) {
     val mapApplier = currentComposer.applier as MapApplier
 
@@ -53,6 +56,8 @@ fun Circle(
             circle,
             onCircleDragged = { onCenterDragged(it.latLng) },
             onCircleDragStopped = { onDragFinished(it.latLng) },
+            onTap = { onTap() },
+            onLongPress = { onLongPress() }
         )
     }, update = {
         update(onCenterDragged) {

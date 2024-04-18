@@ -65,7 +65,7 @@ annotation class MapLibreComposable
  * @param content The content of the map.
  */
 @Composable
-fun MapLibre(
+internal fun MapLibre(
     modifier: Modifier,
     styleUrl: String,
     cameraPosition: MutableState<CameraPosition>,

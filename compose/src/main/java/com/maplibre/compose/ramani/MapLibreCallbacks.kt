@@ -44,7 +44,7 @@ internal fun MapboxMap.setupEventCallbacks(
     onTapGestureCallback?.let {
         this.addOnMapClickListener { point ->
             val screenLocation = projection.toScreenLocation(point)
-            val features = getFeaturesAtScreenLocation(screenLocation)
+            val features = queryRenderedFeatures(screenLocation)
 
             if (features.isNotEmpty()) {
                 Log.d("MapLibre", "Ignoring MapView tap gesture because feature exists. Use feature tap gesture instead.")
@@ -65,7 +65,7 @@ internal fun MapboxMap.setupEventCallbacks(
     onLongPressGestureCallback?.let {
         this.addOnMapLongClickListener { point ->
             val screenLocation = projection.toScreenLocation(point)
-            val features = getFeaturesAtScreenLocation(screenLocation)
+            val features = queryRenderedFeatures(screenLocation)
 
             if (features.isNotEmpty()) {
                 Log.d("MapLibre", "Ignoring MapView long press gesture because feature exists. Use feature tap gesture instead.")
@@ -82,14 +82,4 @@ internal fun MapboxMap.setupEventCallbacks(
             true
         }
     }
-}
-
-fun MapboxMap.getFeaturesAtScreenLocation(screenLocation: PointF): List<Feature> {
-    val features = queryRenderedFeatures(screenLocation)
-
-    if (features.isEmpty()) {
-        return emptyList()
-    }
-
-    return features
 }

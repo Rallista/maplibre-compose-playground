@@ -18,8 +18,7 @@ import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.MapView
 import com.maplibre.compose.camera.CameraState
 import com.maplibre.compose.rememberSaveableMapViewCamera
-import com.maplibre.example.Main
-import com.maplibre.example.support.StaticLocationEngine
+import com.maplibre.compose.StaticLocationEngine
 import com.maplibre.example.support.locationPermissions
 import com.maplibre.example.support.rememberLocationPermissionLauncher
 

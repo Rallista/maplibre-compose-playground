@@ -51,7 +51,7 @@ internal fun MapboxMap.setupEventCallbacks(
                 return@addOnMapClickListener false
             }
 
-            onTapGestureCallback?.invoke(
+            onTapGestureCallback.invoke(
                 MapGestureContext(
                     screenLocation,
                     MapGestureType.TAP,
@@ -72,7 +72,7 @@ internal fun MapboxMap.setupEventCallbacks(
                 return@addOnMapLongClickListener false
             }
 
-            onLongPressGestureCallback?.invoke(
+            onLongPressGestureCallback.invoke(
                 MapGestureContext(
                     screenLocation,
                     MapGestureType.LONG_PRESS,

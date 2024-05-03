@@ -55,7 +55,7 @@ fun Symbol(
                     ImageBitmap.imageResource(imageId).asAndroidBitmap()
                 )
             } else {
-                vectorDrawable?.let { drawable ->
+                vectorDrawable.let { drawable ->
                     mapApplier.style.addImage("$imageId", drawable)
                 }
             }

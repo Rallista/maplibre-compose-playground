@@ -168,7 +168,7 @@ internal class MapApplier(
                 if (it.insertPosition == LayerInsertMethod.INSERT_ABOVE) it.referenceLayerId else null
             )
         } ?: run {
-            CircleManager(mapView, map, style)
+            CircleManager(mapView, map, style,"mapbox-location-pulsing-circle-layer", null)
         }
 
         circleManagerMap[zIndex] = circleManager
@@ -250,7 +250,7 @@ internal class MapApplier(
                 null
             )
         } ?: run {
-            SymbolManager(mapView, map, style)
+            SymbolManager(mapView, map, style, "mapbox-location-pulsing-circle-layer", null)
         }
 
         symbolManager.iconAllowOverlap = true
@@ -292,7 +292,7 @@ internal class MapApplier(
                 null
             )
         } ?: run {
-            FillManager(mapView, map, style)
+            FillManager(mapView, map, style, "mapbox-location-pulsing-circle-layer", null)
         }
 
         if (!zIndexReferenceAnnotationManagerMap.containsKey(zIndex)) {
@@ -316,7 +316,7 @@ internal class MapApplier(
                 null
             )
         } ?: run {
-            LineManager(mapView, map, style)
+            LineManager(mapView, map, style, "mapbox-location-pulsing-circle-layer", null)
         }
 
 

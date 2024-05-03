@@ -8,7 +8,6 @@ plugins {
 android {
     namespace = "com.maplibre.compose"
     compileSdk = 34
-    version = "0.0.6"
 
     defaultConfig {
         minSdk = 25

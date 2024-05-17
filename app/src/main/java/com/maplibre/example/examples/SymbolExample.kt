@@ -14,6 +14,7 @@ import com.maplibre.compose.MapView
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.rememberSaveableMapViewCamera
 import com.maplibre.compose.symbols.CircleWithItem
+import com.maplibre.compose.symbols.Polyline
 import com.maplibre.compose.symbols.Symbol
 import com.maplibre.compose.symbols.builder.SymbolText
 import com.maplibre.example.R
@@ -90,6 +91,17 @@ fun SymbolExample() {
                     onLongPress = {
                         Log.d("SymbolExample", "Long pressed custom circle")
                     }
+                )
+
+                Polyline(
+                    points = listOf(
+                        LatLng(1.147, 103.813),
+                        LatLng(1.259, 103.887),
+                        LatLng(1.205, 103.931),
+                        LatLng(1.295, 103.993)
+                    ),
+                    lineWidth = 12f,
+                    linePatternId = R.drawable.arrow
                 )
             }
         }

@@ -10,9 +10,14 @@
 
 package com.maplibre.compose.symbols
 
+import android.graphics.drawable.VectorDrawable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.currentComposer
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.imageResource
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.plugins.annotation.LineOptions
 import com.mapbox.mapboxsdk.style.layers.Property
@@ -24,15 +29,29 @@ import com.maplibre.compose.ramani.PolyLineNode
 @MapLibreComposable
 fun Polyline(
     points: List<LatLng>,
-    color: String,
+    color: String? = null,
     lineWidth: Float,
     zIndex: Int = 0,
     isDraggable: Boolean = false,
     isDashed: Boolean = false,
     lineCap: String = Property.LINE_CAP_ROUND,
-    lineJoin: String = Property.LINE_JOIN_ROUND
+    lineJoin: String = Property.LINE_JOIN_ROUND,
+    linePatternId: Int? = null
 ) {
+  val context = LocalContext.current
   val mapApplier = currentComposer.applier as MapApplier
+
+  linePatternId?.let {
+    val id = it.toString()
+    if (mapApplier.style.getImage(id) == null) {
+      val vectorDrawable = context.getDrawable(it) as? VectorDrawable
+      if (vectorDrawable == null) {
+        mapApplier.style.addImage(id, ImageBitmap.imageResource(it).asAndroidBitmap())
+      } else {
+        vectorDrawable.let { drawable -> mapApplier.style.addImage(id, drawable) }
+      }
+    }
+  }
 
   ComposeNode<PolyLineNode, MapApplier>(
       factory = {
@@ -44,6 +63,7 @@ fun Polyline(
                 .withLineWidth(lineWidth)
                 .withDraggable(isDraggable)
                 .withLineJoin(lineJoin)
+                .withLinePattern(linePatternId?.toString())
 
         lineManager.lineCap = lineCap
 

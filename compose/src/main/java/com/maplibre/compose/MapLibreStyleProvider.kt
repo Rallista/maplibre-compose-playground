@@ -38,6 +38,26 @@ class MapLibreSystemThemeStyleProvider(
 }
 
 val LocalMapLibreStyleProvider = compositionLocalOf<MapLibreStyleProvider> {
+    /**
+     * If you see this error, you are using [mapLibreStyleUrl()] in your Composable hierarchy but you
+     * have not provided a [MapLibreStyleProvider] to the Composable hierarchy. You must wrap your
+     * view stack in `[MapLibreStyleProviding]`
+     *
+     *  E.g. this setContent block seen in a typical `MainActivity` where mapLibreStyleProvider may
+     *  be a val of `MapLibreSystemThemeStyleProvider`:
+     *
+     * ```kotlin
+     * setContent {
+     *      MapLibreStyleProviding(mapLibreStyleProvider) {
+     *          Surface(modifier = Modifier.fillMaxSize()) {
+     *              Main()
+     *          }
+     *      }
+     *  }
+     * ```
+     *
+     * See the maplibre-compose-playground demo app's MainActivity.kt for more details.
+     */
     error("No MapLibreStyleProvider provided when using mapLibreStyleUrl()")
 }
 

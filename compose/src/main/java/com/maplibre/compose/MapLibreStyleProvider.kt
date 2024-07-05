@@ -58,7 +58,7 @@ val LocalMapLibreStyleProvider = compositionLocalOf<MapLibreStyleProvider> {
      *
      * See the maplibre-compose-playground demo app's MainActivity.kt for more details.
      */
-    error("No MapLibreStyleProvider provided when using mapLibreStyleUrl()")
+    error("No MapLibreStyleProvider wrapping the Composable content calling mapLibreStyleUrl()")
 }
 
 /**

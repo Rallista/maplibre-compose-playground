@@ -3,26 +3,42 @@ package com.maplibre.compose
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 
 /**
- * Create a map style provider to inject your desired light and dark mode style URLs
+ * Create a map style provider to inject your desired URLs
+ * into the Composable hierarchy.
+ *
+ * You can create a custom style provider that uses any composable context
+ * by implementing this interface. See [MapLibreSystemThemeStyleProvider] for an example.
+ */
+interface MapLibreStyleProvider {
+    @Composable
+    fun getStyleUrl(): String
+}
+
+/**
+ * Create a map style provider to inject an automatic light and dark mode style URLs
  * into the Composable hierarchy.
  *
  * @property lightModeStyleUrl
  * @property darkModeStyleUrl
  */
-class MapLibreStyleProvider(
+class MapLibreSystemThemeStyleProvider(
     private var lightModeStyleUrl: String,
     private var darkModeStyleUrl: String
-) {
-    fun getStyleUrl(isDarkMode: Boolean): String {
-        return if (isDarkMode) darkModeStyleUrl else lightModeStyleUrl
+): MapLibreStyleProvider {
+    @Composable
+    override fun getStyleUrl(): String {
+        val isDarkTheme = isSystemInDarkTheme()
+        return if (isDarkTheme) darkModeStyleUrl else lightModeStyleUrl
     }
 }
 
-val LocalMapLibreStyleProvider = staticCompositionLocalOf<MapLibreStyleProvider> {
-    error("No MapLibreStyleProvider provided")
+val LocalMapLibreStyleProvider = compositionLocalOf<MapLibreStyleProvider> {
+    error("No MapLibreStyleProvider provided when using mapLibreStyleUrl()")
 }
 
 /**
@@ -47,8 +63,6 @@ fun MapLibreStyleProviding(
  * @return the map style URL string
  */
 @Composable
-fun rememberMapStyleUrl(): String {
-    val isDarkTheme = isSystemInDarkTheme()
-    val mapStyleProvider = LocalMapLibreStyleProvider.current
-    return mapStyleProvider.getStyleUrl(isDarkTheme)
+fun mapLibreStyleUrl(): String {
+    return LocalMapLibreStyleProvider.current.getStyleUrl()
 }

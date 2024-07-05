@@ -7,10 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import com.maplibre.compose.MapLibreStyleProvider
+import com.maplibre.compose.MapLibreSystemThemeStyleProvider
 import com.maplibre.compose.MapLibreStyleProviding
-import com.maplibre.example.examples.CameraExample
 import com.maplibre.example.ui.theme.MaplibreComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +20,7 @@ class MainActivity : ComponentActivity() {
         val apiKey = getString(R.string.map_style_key)
 
         // Create a dynamic style provider
-        val mapLibreStyleProvider = MapLibreStyleProvider(
+        val mapLibreStyleProvider = MapLibreSystemThemeStyleProvider(
             lightModeStyleUrl = "https://tiles.stadiamaps.com/styles/alidade_smooth.json?api_key=$apiKey",
             darkModeStyleUrl = "https://tiles.stadiamaps.com/styles/alidade_smooth_dark.json?api_key=$apiKey"
         )

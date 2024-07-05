@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.maplibre.compose.MapView
 import com.maplibre.compose.camera.MapViewCamera
-import com.maplibre.compose.rememberMapStyleUrl
+import com.maplibre.compose.mapLibreStyleUrl
 import com.maplibre.compose.rememberSaveableMapViewCamera
 
 @Composable
@@ -23,8 +23,8 @@ fun DarkAndLightModeExample() {
     )
 
     // Get the MapLibre style URL from the provider wrapping the MainActivity
-    // See MainActivity.kt L1
-    val mapStyleUrl = rememberMapStyleUrl()
+    // See MainActivity.kt L23 & L29
+    val mapStyleUrl = mapLibreStyleUrl()
 
     Scaffold {
         Box(modifier = Modifier.padding(it)) {

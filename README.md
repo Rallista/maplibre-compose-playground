@@ -41,7 +41,7 @@ MapView(
 
 ### Setting an API Key for the Light and Dark Mode Demo
 
-Copy or move `api_keys.xml` from the root directory to `app/src/main/res/values/api_keys.xml` and add your own API key. The demo uses https://stadiamaps.com as the map style provider, but can easily be adjusted to review with another provider.
+Copy or move `api_keys_template.xml` from the root directory to `app/src/main/res/values/api_keys.xml` and add your own API key. The demo uses https://stadiamaps.com as the map style provider, but can easily be adjusted to review with another provider.
 
 ### Example Scenes
 

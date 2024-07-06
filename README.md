@@ -39,7 +39,13 @@ MapView(
 
 <img src="maplibre-compose-demo.gif" width="400" alt="Demo Animation"/>
 
+### Setting an API Key for the Light and Dark Mode Demo
+
+Copy or move `api_keys_template.xml` from the root directory to `app/src/main/res/values/api_keys.xml` and add your own API key. The demo uses https://stadiamaps.com as the map style provider, but can easily be adjusted to review with another provider.
+
 ### Example Scenes
 
-* [Camera Example](app/src/main/java/com/maplibre/example/examples/CameraExample.kt) - Shows the basics of camera control using the `MapViewCamera`.
 * [Callback Example](app/src/main/java/com/maplibre/example/examples/CameraExample.kt) - Shows several event callbacks that can be implemented from the `MapView`.
+* [Camera Example](app/src/main/java/com/maplibre/example/examples/CameraExample.kt) - Shows the basics of camera control using the `MapViewCamera`.
+* [Dark and Light Mode Example](app/src/main/java/com/maplibre/example/examples/DarkAndLightModeExample.kt) - Shows usage of rememberMapStyleUrl which dynamically changes the map style based on if the system theme is dark mode. The styles are injected using a Compose wrapper in MainActivity.kt (similar to how a MaterialTheme is injected).
+* [Symbol Example](app/src/main/java/com/maplibre/example/examples/SymbolExample.kt) - Shows the basics of Composable symbol creation. 

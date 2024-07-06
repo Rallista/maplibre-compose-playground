@@ -35,6 +35,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.maplibre.example.examples.CallbackExample
 import com.maplibre.example.examples.CameraExample
+import com.maplibre.example.examples.DarkAndLightModeExample
 import com.maplibre.example.examples.SymbolExample
 
 @Composable
@@ -51,6 +52,9 @@ fun Main() {
         ) {
             composable("main") {
                 MainMenu(modifier = Modifier.fillMaxSize(), navController = navController)
+            }
+            composable("dark") {
+                DarkAndLightModeExample()
             }
             composable("camera") {
                 CameraExample()
@@ -72,6 +76,7 @@ fun MainMenu(modifier: Modifier, navController: NavController) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start
     ) {
+        NavigationLink("Dark and Light Mode Example", "dark", navController)
         NavigationLink("Map Callback Example", "callback", navController)
         NavigationLink("Map Camera Control Example", "camera", navController)
         NavigationLink("Symbols Example", "symbol", navController)
@@ -87,7 +92,7 @@ fun NavigationLink(title: String, destination: String, navController: NavControl
             .height(48.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = Color.Black
+            contentColor = MaterialTheme.colorScheme.onSurface
         )
     ) {
         Text(title, fontSize = MaterialTheme.typography.titleMedium.fontSize)

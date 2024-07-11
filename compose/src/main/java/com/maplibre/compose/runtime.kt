@@ -11,12 +11,12 @@ import com.maplibre.compose.camera.MapViewCamera
 fun rememberMapViewCamera(
     initialCamera: MapViewCamera = MapViewCamera.Default
 ): MutableState<MapViewCamera> {
-    return remember { mutableStateOf(initialCamera) }
+  return remember { mutableStateOf(initialCamera) }
 }
 
 @Composable
 fun rememberSaveableMapViewCamera(
     initialCamera: MapViewCamera = MapViewCamera.Default
 ): MutableState<MapViewCamera> {
-    return rememberSaveable { mutableStateOf(initialCamera) }
+  return rememberSaveable { mutableStateOf(initialCamera) }
 }

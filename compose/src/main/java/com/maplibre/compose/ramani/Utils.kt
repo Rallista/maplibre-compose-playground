@@ -26,40 +26,34 @@ import kotlin.coroutines.suspendCoroutine
 
 @Composable
 fun rememberMapViewWithLifecycle(): MapView {
-    val context = LocalContext.current
-    Mapbox.getInstance(context)
-    val mapView = remember { MapView(context) }
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
+  val context = LocalContext.current
+  Mapbox.getInstance(context)
+  val mapView = remember { MapView(context) }
+  val lifecycle = LocalLifecycleOwner.current.lifecycle
 
-    DisposableEffect(lifecycle, mapView) {
-        val lifecycleObserver = getMapLifecycleObserver(mapView)
-        lifecycle.addObserver(lifecycleObserver)
-        onDispose {
-            lifecycle.removeObserver(lifecycleObserver)
-        }
-    }
+  DisposableEffect(lifecycle, mapView) {
+    val lifecycleObserver = getMapLifecycleObserver(mapView)
+    lifecycle.addObserver(lifecycleObserver)
+    onDispose { lifecycle.removeObserver(lifecycleObserver) }
+  }
 
-    return mapView
+  return mapView
 }
-
 
 fun getMapLifecycleObserver(mapView: MapView): LifecycleEventObserver {
-    return LifecycleEventObserver { _, event ->
-        when (event) {
-            Lifecycle.Event.ON_CREATE -> mapView.onCreate(Bundle())
-            Lifecycle.Event.ON_START -> mapView.onStart()
-            Lifecycle.Event.ON_RESUME -> mapView.onResume()
-            Lifecycle.Event.ON_PAUSE -> mapView.onPause()
-            Lifecycle.Event.ON_STOP -> mapView.onStop()
-            Lifecycle.Event.ON_DESTROY -> mapView.onDestroy()
-            else -> throw IllegalStateException()
-        }
+  return LifecycleEventObserver { _, event ->
+    when (event) {
+      Lifecycle.Event.ON_CREATE -> mapView.onCreate(Bundle())
+      Lifecycle.Event.ON_START -> mapView.onStart()
+      Lifecycle.Event.ON_RESUME -> mapView.onResume()
+      Lifecycle.Event.ON_PAUSE -> mapView.onPause()
+      Lifecycle.Event.ON_STOP -> mapView.onStop()
+      Lifecycle.Event.ON_DESTROY -> mapView.onDestroy()
+      else -> throw IllegalStateException()
     }
+  }
 }
 
-suspend inline fun MapView.awaitMap(): MapboxMap =
-    suspendCoroutine { continuation ->
-        getMapAsync {
-            continuation.resume(it)
-        }
-    }
+suspend inline fun MapView.awaitMap(): MapboxMap = suspendCoroutine { continuation ->
+  getMapAsync { continuation.resume(it) }
+}

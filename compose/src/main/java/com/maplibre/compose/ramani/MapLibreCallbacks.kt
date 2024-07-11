@@ -2,30 +2,23 @@ package com.maplibre.compose.ramani
 
 import android.graphics.PointF
 import android.util.Log
-import com.mapbox.geojson.Feature
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMap
 
 enum class MapGestureType {
-    TAP,
-    LONG_PRESS
+  TAP,
+  LONG_PRESS
 }
 
 data class MapGestureContext(
 
-    /**
-     * The screen location of the gesture.
-     */
+    /** The screen location of the gesture. */
     val screenLocation: PointF,
 
-    /**
-     * The type of gesture.
-     */
+    /** The type of gesture. */
     val type: MapGestureType,
 
-    /**
-     * The coordinate of the gesture.
-     */
+    /** The coordinate of the gesture. */
     val coordinate: LatLng,
 
     // TODO: Bundle other relevant gesture context information here.
@@ -41,45 +34,41 @@ internal fun MapboxMap.setupEventCallbacks(
     onTapGestureCallback: ((MapGestureContext) -> Unit)? = null,
     onLongPressGestureCallback: ((MapGestureContext) -> Unit)? = null,
 ) {
-    onTapGestureCallback?.let {
-        this.addOnMapClickListener { point ->
-            val screenLocation = projection.toScreenLocation(point)
-            val features = queryRenderedFeatures(screenLocation)
+  onTapGestureCallback?.let {
+    this.addOnMapClickListener { point ->
+      val screenLocation = projection.toScreenLocation(point)
+      val features = queryRenderedFeatures(screenLocation)
 
-            if (features.isNotEmpty()) {
-                Log.d("MapLibre", "Ignoring MapView tap gesture because feature exists. Use feature tap gesture instead.")
-                return@addOnMapClickListener false
-            }
+      if (features.isNotEmpty()) {
+        Log.d(
+            "MapLibre",
+            "Ignoring MapView tap gesture because feature exists. Use feature tap gesture instead.")
+        return@addOnMapClickListener false
+      }
 
-            onTapGestureCallback.invoke(
-                MapGestureContext(
-                    screenLocation,
-                    MapGestureType.TAP,
-                    LatLng(point.latitude, point.longitude)
-                )
-            )
-            true
-        }
+      onTapGestureCallback.invoke(
+          MapGestureContext(
+              screenLocation, MapGestureType.TAP, LatLng(point.latitude, point.longitude)))
+      true
     }
+  }
 
-    onLongPressGestureCallback?.let {
-        this.addOnMapLongClickListener { point ->
-            val screenLocation = projection.toScreenLocation(point)
-            val features = queryRenderedFeatures(screenLocation)
+  onLongPressGestureCallback?.let {
+    this.addOnMapLongClickListener { point ->
+      val screenLocation = projection.toScreenLocation(point)
+      val features = queryRenderedFeatures(screenLocation)
 
-            if (features.isNotEmpty()) {
-                Log.d("MapLibre", "Ignoring MapView long press gesture because feature exists. Use feature tap gesture instead.")
-                return@addOnMapLongClickListener false
-            }
+      if (features.isNotEmpty()) {
+        Log.d(
+            "MapLibre",
+            "Ignoring MapView long press gesture because feature exists. Use feature tap gesture instead.")
+        return@addOnMapLongClickListener false
+      }
 
-            onLongPressGestureCallback.invoke(
-                MapGestureContext(
-                    screenLocation,
-                    MapGestureType.LONG_PRESS,
-                    LatLng(point.latitude, point.longitude)
-                )
-            )
-            true
-        }
+      onLongPressGestureCallback.invoke(
+          MapGestureContext(
+              screenLocation, MapGestureType.LONG_PRESS, LatLng(point.latitude, point.longitude)))
+      true
     }
+  }
 }

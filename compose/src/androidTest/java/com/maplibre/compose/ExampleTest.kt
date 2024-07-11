@@ -1,5 +1,3 @@
 package com.maplibre.compose
 
-class ExampleTest {
-
-}
+class ExampleTest {}

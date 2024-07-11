@@ -32,38 +32,39 @@ fun Polyline(
     lineCap: String = Property.LINE_CAP_ROUND,
     lineJoin: String = Property.LINE_JOIN_ROUND
 ) {
-    val mapApplier = currentComposer.applier as MapApplier
+  val mapApplier = currentComposer.applier as MapApplier
 
-    ComposeNode<PolyLineNode, MapApplier>(factory = {
+  ComposeNode<PolyLineNode, MapApplier>(
+      factory = {
         val lineManager = mapApplier.getOrCreateLineManagerForZIndex(zIndex)
-        val lineOptions = LineOptions()
-            .withLatLngs(points)
-            .withLineColor(color)
-            .withLineWidth(lineWidth)
-            .withDraggable(isDraggable)
-            .withLineJoin(lineJoin)
+        val lineOptions =
+            LineOptions()
+                .withLatLngs(points)
+                .withLineColor(color)
+                .withLineWidth(lineWidth)
+                .withDraggable(isDraggable)
+                .withLineJoin(lineJoin)
 
         lineManager.lineCap = lineCap
 
         if (isDashed) {
-            lineManager.lineDasharray = arrayOf(1.0f, 4.0f)
+          lineManager.lineDasharray = arrayOf(1.0f, 4.0f)
         }
 
         val polyLine = lineManager.create(lineOptions)
         PolyLineNode(lineManager, polyLine)
-    }, update = {
+      },
+      update = {
         set(points) {
-            polyLine.latLngs = points
-            lineManager.update(polyLine)
+          polyLine.latLngs = points
+          lineManager.update(polyLine)
         }
 
         set(color) {
-            polyLine.lineColor = color
-            lineManager.update(polyLine)
+          polyLine.lineColor = color
+          lineManager.update(polyLine)
         }
 
-        set(lineWidth) {
-            polyLine.lineWidth = lineWidth
-        }
-    })
+        set(lineWidth) { polyLine.lineWidth = lineWidth }
+      })
 }

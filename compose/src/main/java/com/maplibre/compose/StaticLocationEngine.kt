@@ -14,7 +14,6 @@ import java.lang.Exception
 import java.util.Timer
 import java.util.TimerTask
 
-
 /**
  * A simple class that provides static location updates to a MapLibre view.
  *
@@ -30,95 +29,95 @@ import java.util.TimerTask
  * caller.
  */
 class StaticLocationEngine : LocationEngine {
-    @Volatile
-    var lastLocation: Location? = null
-        @Synchronized set
+  @Volatile
+  var lastLocation: Location? = null
+    @Synchronized set
 
-    private var callbackTimer: Timer? = null
-    private val callbacks: MutableList<Pair<Handler, LocationEngineCallback<LocationEngineResult>>> =
-        mutableListOf()
+  private var callbackTimer: Timer? = null
+  private val callbacks: MutableList<Pair<Handler, LocationEngineCallback<LocationEngineResult>>> =
+      mutableListOf()
 
-    private var pendingIntentTimer: Timer? = null
-    private val pendingIntents: MutableList<PendingIntent> = mutableListOf()
+  private var pendingIntentTimer: Timer? = null
+  private val pendingIntents: MutableList<PendingIntent> = mutableListOf()
 
-    override fun getLastLocation(callback: LocationEngineCallback<LocationEngineResult>) {
-        val loc = lastLocation
-        if (loc != null) {
-            callback.onSuccess(LocationEngineResult.create(loc))
-        } else {
-            callback.onFailure(Exception("No location set"))
-        }
+  override fun getLastLocation(callback: LocationEngineCallback<LocationEngineResult>) {
+    val loc = lastLocation
+    if (loc != null) {
+      callback.onSuccess(LocationEngineResult.create(loc))
+    } else {
+      callback.onFailure(Exception("No location set"))
     }
+  }
 
-    override fun requestLocationUpdates(
-        request: LocationEngineRequest,
-        callback: LocationEngineCallback<LocationEngineResult>,
-        looper: Looper?
-    ) {
-        // Register the callback
-        callbacks.add(Pair(Handler(looper ?: Looper.getMainLooper()), callback))
-        if (callbackTimer == null) {
-            // If a timer isn't already running, create one
-            callbackTimer =
-                Timer().apply {
-                    scheduleAtFixedRate(
-                        object : TimerTask() {
-                            override fun run() {
-                                lastLocation?.let {
-                                    val result = LocationEngineResult.create(it)
-                                    for ((handler, callback) in callbacks) {
-                                        handler.post { callback.onSuccess(result) }
-                                    }
-                                }
-                            }
-                        },
-                        0,
-                        1000)
-                }
-        }
-    }
-
-    override fun requestLocationUpdates(
-        request: LocationEngineRequest,
-        pendingIntent: PendingIntent?
-    ) {
-        if (pendingIntent != null) {
-            pendingIntents.add(pendingIntent)
-            if (pendingIntentTimer == null) {
-                // If a timer isn't already running, create one
-                pendingIntentTimer =
-                    Timer().apply {
-                        scheduleAtFixedRate(
-                            object : TimerTask() {
-                                override fun run() {
-                                    lastLocation?.let {
-                                        for (intent in pendingIntents) {
-                                            val update = Intent()
-                                            update.putExtra(LocationManager.KEY_LOCATION_CHANGED, it)
-                                        }
-                                    }
-                                }
-                            },
-                            0,
-                            1000)
+  override fun requestLocationUpdates(
+      request: LocationEngineRequest,
+      callback: LocationEngineCallback<LocationEngineResult>,
+      looper: Looper?
+  ) {
+    // Register the callback
+    callbacks.add(Pair(Handler(looper ?: Looper.getMainLooper()), callback))
+    if (callbackTimer == null) {
+      // If a timer isn't already running, create one
+      callbackTimer =
+          Timer().apply {
+            scheduleAtFixedRate(
+                object : TimerTask() {
+                  override fun run() {
+                    lastLocation?.let {
+                      val result = LocationEngineResult.create(it)
+                      for ((handler, callback) in callbacks) {
+                        handler.post { callback.onSuccess(result) }
+                      }
                     }
+                  }
+                },
+                0,
+                1000)
+          }
+    }
+  }
+
+  override fun requestLocationUpdates(
+      request: LocationEngineRequest,
+      pendingIntent: PendingIntent?
+  ) {
+    if (pendingIntent != null) {
+      pendingIntents.add(pendingIntent)
+      if (pendingIntentTimer == null) {
+        // If a timer isn't already running, create one
+        pendingIntentTimer =
+            Timer().apply {
+              scheduleAtFixedRate(
+                  object : TimerTask() {
+                    override fun run() {
+                      lastLocation?.let {
+                        for (intent in pendingIntents) {
+                          val update = Intent()
+                          update.putExtra(LocationManager.KEY_LOCATION_CHANGED, it)
+                        }
+                      }
+                    }
+                  },
+                  0,
+                  1000)
             }
-        }
+      }
     }
+  }
 
-    override fun removeLocationUpdates(callback: LocationEngineCallback<LocationEngineResult>) {
-        callbacks.removeIf { it.second == callback }
-        if (callbacks.isEmpty()) {
-            callbackTimer?.cancel()
-            callbackTimer = null
-        }
+  override fun removeLocationUpdates(callback: LocationEngineCallback<LocationEngineResult>) {
+    callbacks.removeIf { it.second == callback }
+    if (callbacks.isEmpty()) {
+      callbackTimer?.cancel()
+      callbackTimer = null
     }
+  }
 
-    override fun removeLocationUpdates(intent: PendingIntent?) {
-        pendingIntents.remove(intent)
-        if (pendingIntents.isEmpty()) {
-            pendingIntentTimer?.cancel()
-            pendingIntentTimer = null
-        }
+  override fun removeLocationUpdates(intent: PendingIntent?) {
+    pendingIntents.remove(intent)
+    if (pendingIntents.isEmpty()) {
+      pendingIntentTimer?.cancel()
+      pendingIntentTimer = null
     }
+  }
 }

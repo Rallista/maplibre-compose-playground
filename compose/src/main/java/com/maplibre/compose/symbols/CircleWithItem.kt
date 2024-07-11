@@ -19,7 +19,7 @@ import com.maplibre.compose.symbols.builder.SymbolText
 
 @Composable
 fun UpdateCenter(coord: LatLng, centerUpdated: (LatLng) -> Unit) {
-    centerUpdated(coord)
+  centerUpdated(coord)
 }
 
 @Composable
@@ -38,65 +38,60 @@ fun CircleWithItem(
     text: SymbolText? = null,
     onCenterChanged: (LatLng) -> Unit = {},
     onDragStopped: () -> Unit = {},
-    onTap: () -> Unit = { },
-    onLongPress: () -> Unit = { }
+    onTap: () -> Unit = {},
+    onLongPress: () -> Unit = {}
 ) {
-    val draggableCenterState = remember { mutableStateOf(center) }
+  val draggableCenterState = remember { mutableStateOf(center) }
 
-    UpdateCenter(coord = center, centerUpdated = { draggableCenterState.value = it })
+  UpdateCenter(coord = center, centerUpdated = { draggableCenterState.value = it })
 
-    // Invisible circle, this is the draggable
-    Circle(
-        center = draggableCenterState.value,
-        radius = dragRadius,
-        isDraggable = isDraggable,
-        color = "Transparent",
-        borderColor = borderColor,
-        borderWidth = 0.0f,
-        zIndex = zIndex + 1,
-        onCenterDragged = {
-            onCenterChanged(it)
-        },
-        onDragFinished = {
-            draggableCenterState.value = center
-            onDragStopped()
-        },
-        onTap = onTap,
-        onLongPress = onLongPress
-    )
+  // Invisible circle, this is the draggable
+  Circle(
+      center = draggableCenterState.value,
+      radius = dragRadius,
+      isDraggable = isDraggable,
+      color = "Transparent",
+      borderColor = borderColor,
+      borderWidth = 0.0f,
+      zIndex = zIndex + 1,
+      onCenterDragged = { onCenterChanged(it) },
+      onDragFinished = {
+        draggableCenterState.value = center
+        onDragStopped()
+      },
+      onTap = onTap,
+      onLongPress = onLongPress)
 
-    // Display circle
-    Circle(
+  // Display circle
+  Circle(
+      center = center,
+      radius = radius,
+      isDraggable = false,
+      color = color,
+      opacity = opacity,
+      zIndex = zIndex,
+      borderColor = borderColor,
+      borderWidth = borderWidth,
+      onCenterDragged = {})
+
+  imageId?.let {
+    Symbol(
         center = center,
-        radius = radius,
+        color = "Black",
         isDraggable = false,
-        color = color,
-        opacity = opacity,
-        zIndex = zIndex,
-        borderColor = borderColor,
-        borderWidth = borderWidth,
-        onCenterDragged = {}
+        imageId = imageId,
+        size = itemSize,
+        zIndex = zIndex + 1,
     )
+  }
 
-    imageId?.let {
-        Symbol(
-            center = center,
-            color = "Black",
-            isDraggable = false,
-            imageId = imageId,
-            size = itemSize,
-            zIndex = zIndex + 1,
-        )
-    }
-
-    text?.let {
-        Symbol(
-            center = center,
-            color = "Black",
-            isDraggable = false,
-            text = text,
-            size = itemSize,
-            zIndex = zIndex + 1
-        )
-    }
+  text?.let {
+    Symbol(
+        center = center,
+        color = "Black",
+        isDraggable = false,
+        text = text,
+        size = itemSize,
+        zIndex = zIndex + 1)
+  }
 }

@@ -19,35 +19,28 @@ import com.mapbox.mapboxsdk.geometry.LatLng
 
 @MapLibreComposable
 @Composable
-fun VertexInsertCalculator(
-    vertices: List<LatLng>,
-    onPointsChanged: (List<LatLng>) -> Unit
-) {
-    val mapApplier = currentComposer.applier as MapApplier
-    val projection = mapApplier.map.projection
+fun VertexInsertCalculator(vertices: List<LatLng>, onPointsChanged: (List<LatLng>) -> Unit) {
+  val mapApplier = currentComposer.applier as MapApplier
+  val projection = mapApplier.map.projection
 
-    val vertexPixel = vertices.map { vertex ->
-        projection.toScreenLocation(vertex)
-    }
+  val vertexPixel = vertices.map { vertex -> projection.toScreenLocation(vertex) }
 
-    val points = mutableListOf<PointF>()
+  val points = mutableListOf<PointF>()
 
-    vertexPixel.forEachIndexed { index, point ->
-        val tmp = if (index < vertexPixel.size - 1) {
-            vertexPixel[index + 1] - point
+  vertexPixel.forEachIndexed { index, point ->
+    val tmp =
+        if (index < vertexPixel.size - 1) {
+          vertexPixel[index + 1] - point
         } else {
-            // last item
-            vertexPixel[0] - point
+          // last item
+          vertexPixel[0] - point
         }
 
-        tmp.x *= 0.5f
-        tmp.y *= 0.5f
+    tmp.x *= 0.5f
+    tmp.y *= 0.5f
 
-        points.add(point + tmp)
-    }
+    points.add(point + tmp)
+  }
 
-    onPointsChanged(points.map {
-        projection.fromScreenLocation(it)
-    })
+  onPointsChanged(points.map { projection.fromScreenLocation(it) })
 }
-

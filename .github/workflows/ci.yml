@@ -11,7 +11,7 @@ jobs:
 
     runs-on: ubuntu-latest
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
+      group: ${{ github.workflow }}-${{ github.ref }}-build
       cancel-in-progress: true
 
     steps:
@@ -37,7 +37,7 @@ jobs:
 
     runs-on: ubuntu-latest
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
+      group: ${{ github.workflow }}-${{ github.ref }}-ktfmt
       cancel-in-progress: true
 
     steps:
@@ -52,7 +52,7 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-      
+
     - name: Copy api_keys.xml
       run: cp api_keys_template.xml app/src/main/res/values/api_keys.xml
 

@@ -27,6 +27,9 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    - name: Copy api_keys.xml
+      run: cp api_keys_template.xml app/src/main/res/values/api_keys.xml
+
     - name: Build with Gradle
       run: ./gradlew build
 
@@ -49,6 +52,9 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+      
+    - name: Copy api_keys.xml
+      run: cp api_keys_template.xml app/src/main/res/values/api_keys.xml
 
     - name: Verify Kotlin formatting
       run: ./gradlew ktfmtCheck

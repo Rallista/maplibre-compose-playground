@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: macos-13
+    runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
@@ -32,7 +32,7 @@ jobs:
 
   check-ktfmt:
 
-    runs-on: macos-13
+    runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true

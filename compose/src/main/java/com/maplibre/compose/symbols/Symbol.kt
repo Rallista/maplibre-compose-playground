@@ -18,12 +18,8 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
-import com.google.gson.JsonElement
 import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.plugins.annotation.Symbol
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
-import com.mapbox.mapboxsdk.style.layers.Property.TEXT_ANCHOR_CENTER
-import com.mapbox.mapboxsdk.style.layers.Property.TEXT_JUSTIFY_CENTER
 import com.maplibre.compose.ramani.MapApplier
 import com.maplibre.compose.ramani.MapLibreComposable
 import com.maplibre.compose.ramani.SymbolNode
@@ -40,75 +36,63 @@ fun Symbol(
     imageId: Int? = null,
     imageRotation: Float? = null,
     text: SymbolText? = null,
-    onTap: () -> Unit = { },
-    onLongPress: () -> Unit = { }
+    onTap: () -> Unit = {},
+    onLongPress: () -> Unit = {}
 ) {
-    val context = LocalContext.current
-    val mapApplier = currentComposer.applier as MapApplier
+  val context = LocalContext.current
+  val mapApplier = currentComposer.applier as MapApplier
 
-    imageId?.let {
-        if (mapApplier.style.getImage("$imageId") == null) {
-            val vectorDrawable = context.getDrawable(imageId) as? VectorDrawable
-            if (vectorDrawable == null) {
-                mapApplier.style.addImage(
-                    "$imageId",
-                    ImageBitmap.imageResource(imageId).asAndroidBitmap()
-                )
-            } else {
-                vectorDrawable.let { drawable ->
-                    mapApplier.style.addImage("$imageId", drawable)
-                }
-            }
-        }
+  imageId?.let {
+    if (mapApplier.style.getImage("$imageId") == null) {
+      val vectorDrawable = context.getDrawable(imageId) as? VectorDrawable
+      if (vectorDrawable == null) {
+        mapApplier.style.addImage("$imageId", ImageBitmap.imageResource(imageId).asAndroidBitmap())
+      } else {
+        vectorDrawable.let { drawable -> mapApplier.style.addImage("$imageId", drawable) }
+      }
     }
+  }
 
-    ComposeNode<SymbolNode, MapApplier>(factory = {
+  ComposeNode<SymbolNode, MapApplier>(
+      factory = {
         val symbolManager = mapApplier.getOrCreateSymbolManagerForZIndex(zIndex)
-        var symbolOptions = SymbolOptions()
-            .withDraggable(isDraggable)
-            .withLatLng(center)
+        var symbolOptions = SymbolOptions().withDraggable(isDraggable).withLatLng(center)
 
         imageId?.let {
-            symbolOptions = symbolOptions
-                .withIconImage(imageId.toString())
-                .withIconColor(color)
-                .withIconSize(size)
-                .withIconRotate(imageRotation)
+          symbolOptions =
+              symbolOptions
+                  .withIconImage(imageId.toString())
+                  .withIconColor(color)
+                  .withIconSize(size)
+                  .withIconRotate(imageRotation)
         }
 
         text?.let {
-            symbolOptions = symbolOptions
-                .withTextField(text.text)
-                .withTextColor(text.color)
-                .withTextSize(text.size)
-                .withTextJustify(text.justify)
-                .withTextAnchor(text.anchor)
+          symbolOptions =
+              symbolOptions
+                  .withTextField(text.text)
+                  .withTextColor(text.color)
+                  .withTextSize(text.size)
+                  .withTextJustify(text.justify)
+                  .withTextAnchor(text.anchor)
         }
 
         val symbol = symbolManager.create(symbolOptions)
-        SymbolNode(
-            symbolManager,
-            symbol,
-            onTap = { onTap() },
-            onLongPress = { onLongPress() }
-        )
-    }, update = {
+        SymbolNode(symbolManager, symbol, onTap = { onTap() }, onLongPress = { onLongPress() })
+      },
+      update = {
         set(center) {
-            symbol.latLng = center
-            symbolManager.update(symbol)
+          symbol.latLng = center
+          symbolManager.update(symbol)
         }
 
         set(text) {
-            symbol.textField = text?.text
-            symbolManager.update(symbol)
+          symbol.textField = text?.text
+          symbolManager.update(symbol)
         }
 
-        set(color) {
-            symbol.iconColor = color
-        }
+        set(color) { symbol.iconColor = color }
 
-        set(imageRotation) {
-            symbol.iconRotate = imageRotation
-        }
-    })
+        set(imageRotation) { symbol.iconRotate = imageRotation }
+      })
 }

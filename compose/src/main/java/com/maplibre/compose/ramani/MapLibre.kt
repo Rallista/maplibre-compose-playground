@@ -53,15 +53,17 @@ annotation class MapLibreComposable
  * @param cameraPosition The position of the map camera.
  * @param uiSettings Settings related to the map UI.
  * @param properties Properties being applied to the map.
- * @param locationRequestProperties Properties related to the location marker. If null (which is
- *        the default), then the location will not be enabled on the map. Enabling the location
- *        requires setting this field and getting the location permission in your app.
+ * @param locationRequestProperties Properties related to the location marker. If null (which is the
+ *   default), then the location will not be enabled on the map. Enabling the location requires
+ *   setting this field and getting the location permission in your app.
  * @param locationStyling Styling related to the location marker (color, pulse, etc).
- * @param userLocation If set and if the location is enabled (by setting [locationRequestProperties],
- *        it will be updated to contain the latest user location as known by the map.
+ * @param userLocation If set and if the location is enabled (by setting
+ *   [locationRequestProperties], it will be updated to contain the latest user location as known by
+ *   the map.
  * @param sources External (user-defined) sources for the map.
  * @param layers External (user-defined) layers for the map.
- * @param images Images to be added to the map and used by external layers (pairs of <id, drawable code>).
+ * @param images Images to be added to the map and used by external layers (pairs of <id, drawable
+ *   code>).
  * @param content The content of the map.
  */
 @Composable
@@ -83,107 +85,98 @@ internal fun MapLibre(
     onLongPressGestureCallback: ((MapGestureContext) -> Unit)? = null,
     content: (@Composable @MapLibreComposable () -> Unit)? = null,
 ) {
-    if (LocalInspectionMode.current) {
-        Box(modifier = modifier)
-        return
-    }
+  if (LocalInspectionMode.current) {
+    Box(modifier = modifier)
+    return
+  }
 
-    val context = LocalContext.current
-    val map = rememberMapViewWithLifecycle()
+  val context = LocalContext.current
+  val map = rememberMapViewWithLifecycle()
 
-    val currentUiSettings by rememberUpdatedState(uiSettings)
-    val currentMapProperties by rememberUpdatedState(properties)
-    val currentLocationEngine by rememberUpdatedState(locationEngine)
-    val currentLocationRequestProperties by rememberUpdatedState(locationRequestProperties)
-    val currentLocationStyling by rememberUpdatedState(locationStyling)
-    val currentSources by rememberUpdatedState(sources)
-    val currentLayers by rememberUpdatedState(layers)
-    val currentImages by rememberUpdatedState(images)
-    val currentContent by rememberUpdatedState(content)
-    val currentCameraPosition by rememberUpdatedState(cameraPosition)
+  val currentUiSettings by rememberUpdatedState(uiSettings)
+  val currentMapProperties by rememberUpdatedState(properties)
+  val currentLocationEngine by rememberUpdatedState(locationEngine)
+  val currentLocationRequestProperties by rememberUpdatedState(locationRequestProperties)
+  val currentLocationStyling by rememberUpdatedState(locationStyling)
+  val currentSources by rememberUpdatedState(sources)
+  val currentLayers by rememberUpdatedState(layers)
+  val currentImages by rememberUpdatedState(images)
+  val currentContent by rememberUpdatedState(content)
+  val currentCameraPosition by rememberUpdatedState(cameraPosition)
 
-    // Update the parent camera when the internal camera position changes.
-    LaunchedEffect(currentCameraPosition.value) {
-        cameraPosition.value = currentCameraPosition.value
-    }
+  // Update the parent camera when the internal camera position changes.
+  LaunchedEffect(currentCameraPosition.value) { cameraPosition.value = currentCameraPosition.value }
 
-    val parentComposition = rememberCompositionContext()
+  val parentComposition = rememberCompositionContext()
 
-    AndroidView(modifier = modifier, factory = { map })
-    LaunchedEffect(
-        currentUiSettings,
-        currentMapProperties,
-        currentLocationRequestProperties,
-        currentLocationStyling
-    ) {
+  AndroidView(modifier = modifier, factory = { map })
+  LaunchedEffect(
+      currentUiSettings,
+      currentMapProperties,
+      currentLocationRequestProperties,
+      currentLocationStyling) {
         disposingComposition {
-            val maplibreMap = map.awaitMap()
-            val style = maplibreMap.awaitStyle(styleUrl)
+          val maplibreMap = map.awaitMap()
+          val style = maplibreMap.awaitStyle(styleUrl)
 
-            maplibreMap.applyUiSettings(currentUiSettings)
-            maplibreMap.applyProperties(currentMapProperties)
-            maplibreMap.setupLocation(
-                context,
-                style,
-                currentLocationEngine,
-                currentLocationRequestProperties,
-                currentLocationStyling,
-                userLocation,
-            )
-            maplibreMap.setupEventCallbacks(
-                onTapGestureCallback,
-                onLongPressGestureCallback
-            )
-            maplibreMap.addImages(context, currentImages)
-            maplibreMap.addSources(currentSources)
-            maplibreMap.addLayers(currentLayers)
+          maplibreMap.applyUiSettings(currentUiSettings)
+          maplibreMap.applyProperties(currentMapProperties)
+          maplibreMap.setupLocation(
+              context,
+              style,
+              currentLocationEngine,
+              currentLocationRequestProperties,
+              currentLocationStyling,
+              userLocation,
+          )
+          maplibreMap.setupEventCallbacks(onTapGestureCallback, onLongPressGestureCallback)
+          maplibreMap.addImages(context, currentImages)
+          maplibreMap.addSources(currentSources)
+          maplibreMap.addLayers(currentLayers)
 
-            // Notify the parent callback that the map is ready with a style.
-            // This must include all style modifications from adding images, sources, and layers.
-            onMapReadyCallback?.invoke(style)
+          // Notify the parent callback that the map is ready with a style.
+          // This must include all style modifications from adding images, sources, and layers.
+          onMapReadyCallback?.invoke(style)
 
-            map.newComposition(parentComposition, style) {
-                CompositionLocalProvider {
-                    MapCameraUpdater(
-                        cameraPosition = currentCameraPosition
-                    )
-                    currentContent?.invoke()
-                }
+          map.newComposition(parentComposition, style) {
+            CompositionLocalProvider {
+              MapCameraUpdater(cameraPosition = currentCameraPosition)
+              currentContent?.invoke()
             }
+          }
         }
-    }
+      }
 }
 
 private fun MapboxMap.applyUiSettings(uiSettings: UiSettings) {
-    this.uiSettings.setCompassMargins(
-        uiSettings.compassMargins.left,
-        uiSettings.compassMargins.top,
-        uiSettings.compassMargins.right,
-        uiSettings.compassMargins.bottom
-    )
+  this.uiSettings.setCompassMargins(
+      uiSettings.compassMargins.left,
+      uiSettings.compassMargins.top,
+      uiSettings.compassMargins.right,
+      uiSettings.compassMargins.bottom)
 }
 
 private fun MapboxMap.applyProperties(properties: MapProperties) {
-    properties.maxZoom?.let { this.setMaxZoomPreference(it) }
-    // TODO: Add Dynamic camera pitch binding
+  properties.maxZoom?.let { this.setMaxZoomPreference(it) }
+  // TODO: Add Dynamic camera pitch binding
 }
 
 private fun MapboxMap.addImages(context: Context, images: List<Pair<String, Int>>?) {
-    images?.let {
-        images.mapNotNull { image ->
-            val drawable = context.getDrawable(image.second)
-            val bitmap = BitmapUtils.getBitmapFromDrawable(drawable)
-            bitmap?.let { Pair(image.first, bitmap) }
-        }.forEach {
-            style!!.addImage(it.first, it.second)
+  images?.let {
+    images
+        .mapNotNull { image ->
+          val drawable = context.getDrawable(image.second)
+          val bitmap = BitmapUtils.getBitmapFromDrawable(drawable)
+          bitmap?.let { Pair(image.first, bitmap) }
         }
-    }
+        .forEach { style!!.addImage(it.first, it.second) }
+  }
 }
 
 private fun MapboxMap.addSources(sources: List<Source>?) {
-    sources?.let { sources.forEach { style!!.addSource(it) } }
+  sources?.let { sources.forEach { style!!.addSource(it) } }
 }
 
 private fun MapboxMap.addLayers(layers: List<Layer>?) {
-    layers?.let { layers.forEach { style!!.addLayer(it) } }
+  layers?.let { layers.forEach { style!!.addLayer(it) } }
 }

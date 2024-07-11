@@ -25,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -40,61 +39,44 @@ import com.maplibre.example.examples.SymbolExample
 
 @Composable
 fun Main() {
-    val navController = rememberNavController()
+  val navController = rememberNavController()
 
-    Scaffold(
-        topBar = { AppTopBar(navController) }
-    ) {
-        NavHost(
-            modifier = Modifier.padding(it),
-            navController = navController,
-            startDestination = "main"
-        ) {
-            composable("main") {
-                MainMenu(modifier = Modifier.fillMaxSize(), navController = navController)
-            }
-            composable("dark") {
-                DarkAndLightModeExample()
-            }
-            composable("camera") {
-                CameraExample()
-            }
-            composable("callback") {
-                CallbackExample()
-            }
-            composable("symbol") {
-                SymbolExample()
-            }
+  Scaffold(topBar = { AppTopBar(navController) }) {
+    NavHost(
+        modifier = Modifier.padding(it), navController = navController, startDestination = "main") {
+          composable("main") {
+            MainMenu(modifier = Modifier.fillMaxSize(), navController = navController)
+          }
+          composable("dark") { DarkAndLightModeExample() }
+          composable("camera") { CameraExample() }
+          composable("callback") { CallbackExample() }
+          composable("symbol") { SymbolExample() }
         }
-    }
+  }
 }
 
 @Composable
 fun MainMenu(modifier: Modifier, navController: NavController) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.Start
-    ) {
+  Column(
+      modifier = modifier,
+      verticalArrangement = Arrangement.Top,
+      horizontalAlignment = Alignment.Start) {
         NavigationLink("Dark and Light Mode Example", "dark", navController)
         NavigationLink("Map Callback Example", "callback", navController)
         NavigationLink("Map Camera Control Example", "camera", navController)
         NavigationLink("Symbols Example", "symbol", navController)
-    }
+      }
 }
 
 @Composable
 fun NavigationLink(title: String, destination: String, navController: NavController) {
-    Button(
-        onClick = { navController.navigate(destination) },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(48.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface
-        )
-    ) {
+  Button(
+      onClick = { navController.navigate(destination) },
+      modifier = Modifier.fillMaxWidth().height(48.dp),
+      colors =
+          ButtonDefaults.buttonColors(
+              containerColor = MaterialTheme.colorScheme.surface,
+              contentColor = MaterialTheme.colorScheme.onSurface)) {
         Text(title, fontSize = MaterialTheme.typography.titleMedium.fontSize)
 
         Spacer(modifier = Modifier.weight(1f))
@@ -104,37 +86,36 @@ fun NavigationLink(title: String, destination: String, navController: NavControl
             contentDescription = "Navigate to $destination",
             tint = MaterialTheme.colorScheme.onSurface,
         )
-    }
+      }
 
-    HorizontalDivider()
+  HorizontalDivider()
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar(navController: NavController) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
+  val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-    TopAppBar(
-        title = { Text(text = "MapLibre Compose Example") },
-        navigationIcon = {
-            if (navBackStackEntry?.destination?.route != "main") {
-                IconButton(onClick = { navController.navigateUp() }) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                }
-            }
-        },
-        colors = TopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            scrolledContainerColor = MaterialTheme.colorScheme.surface,
-            navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
-            titleContentColor = MaterialTheme.colorScheme.onSurface,
-            actionIconContentColor = MaterialTheme.colorScheme.onSurface
-        )
-    )
+  TopAppBar(
+      title = { Text(text = "MapLibre Compose Example") },
+      navigationIcon = {
+        if (navBackStackEntry?.destination?.route != "main") {
+          IconButton(onClick = { navController.navigateUp() }) {
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+          }
+        }
+      },
+      colors =
+          TopAppBarColors(
+              containerColor = MaterialTheme.colorScheme.surfaceVariant,
+              scrolledContainerColor = MaterialTheme.colorScheme.surface,
+              navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
+              titleContentColor = MaterialTheme.colorScheme.onSurface,
+              actionIconContentColor = MaterialTheme.colorScheme.onSurface))
 }
 
 @Composable
 @Preview
 fun MainPreview() {
-    Main()
+  Main()
 }

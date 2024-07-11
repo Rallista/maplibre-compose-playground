@@ -15,7 +15,6 @@ import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.currentComposer
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.plugins.annotation.CircleOptions
-import com.mapbox.mapboxsdk.plugins.annotation.Symbol
 import com.maplibre.compose.ramani.CircleNode
 import com.maplibre.compose.ramani.MapApplier
 import com.maplibre.compose.ramani.MapLibreComposable
@@ -33,21 +32,23 @@ fun Circle(
     zIndex: Int = 0,
     onCenterDragged: (LatLng) -> Unit = {},
     onDragFinished: (LatLng) -> Unit = {},
-    onTap: () -> Unit = { },
-    onLongPress: () -> Unit = { }
+    onTap: () -> Unit = {},
+    onLongPress: () -> Unit = {}
 ) {
-    val mapApplier = currentComposer.applier as MapApplier
+  val mapApplier = currentComposer.applier as MapApplier
 
-    ComposeNode<CircleNode, MapApplier>(factory = {
+  ComposeNode<CircleNode, MapApplier>(
+      factory = {
         val circleManager = mapApplier.getOrCreateCircleManagerForZIndex(zIndex)
 
-        val circleOptions = CircleOptions()
-            .withCircleRadius(radius)
-            .withLatLng(center)
-            .withDraggable(isDraggable)
-            .withCircleStrokeColor(borderColor)
-            .withCircleStrokeWidth(borderWidth)
-            .withCircleOpacity(opacity)
+        val circleOptions =
+            CircleOptions()
+                .withCircleRadius(radius)
+                .withLatLng(center)
+                .withDraggable(isDraggable)
+                .withCircleStrokeColor(borderColor)
+                .withCircleStrokeWidth(borderWidth)
+                .withCircleOpacity(opacity)
 
         val circle = circleManager.create(circleOptions)
 
@@ -57,30 +58,26 @@ fun Circle(
             onCircleDragged = { onCenterDragged(it.latLng) },
             onCircleDragStopped = { onDragFinished(it.latLng) },
             onTap = { onTap() },
-            onLongPress = { onLongPress() }
-        )
-    }, update = {
-        update(onCenterDragged) {
-            this.onCircleDragged = { onCenterDragged(it.latLng) }
-        }
+            onLongPress = { onLongPress() })
+      },
+      update = {
+        update(onCenterDragged) { this.onCircleDragged = { onCenterDragged(it.latLng) } }
 
-        update(onDragFinished) {
-            this.onCircleDragStopped = { onDragFinished(it.latLng) }
-        }
+        update(onDragFinished) { this.onCircleDragStopped = { onDragFinished(it.latLng) } }
 
         set(center) {
-            circle.latLng = center
-            circleManager.update(circle)
+          circle.latLng = center
+          circleManager.update(circle)
         }
 
         set(color) {
-            circle.circleColor = color
-            circleManager.update(circle)
+          circle.circleColor = color
+          circleManager.update(circle)
         }
 
         set(radius) {
-            circle.circleRadius = radius
-            circleManager.update(circle)
+          circle.circleRadius = radius
+          circleManager.update(circle)
         }
-    })
+      })
 }

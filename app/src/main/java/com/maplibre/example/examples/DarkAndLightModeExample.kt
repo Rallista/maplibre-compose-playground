@@ -14,30 +14,21 @@ import com.maplibre.compose.rememberSaveableMapViewCamera
 @Composable
 fun DarkAndLightModeExample() {
 
-    val mapViewCamera = rememberSaveableMapViewCamera(
-        initialCamera = MapViewCamera.Centered(
-            latitude = 15.3,
-            longitude = 74.1,
-            zoom = 9.0
-        )
-    )
+  val mapViewCamera =
+      rememberSaveableMapViewCamera(
+          initialCamera = MapViewCamera.Centered(latitude = 15.3, longitude = 74.1, zoom = 9.0))
 
-    // Get the MapLibre style URL from the provider wrapping the MainActivity
-    // See MainActivity.kt L23 & L29
-    val mapStyleUrl = mapLibreStyleUrl()
+  // Get the MapLibre style URL from the provider wrapping the MainActivity
+  // See MainActivity.kt L23 & L29
+  val mapStyleUrl = mapLibreStyleUrl()
 
-    Scaffold {
-        Box(modifier = Modifier.padding(it)) {
-            MapView(
-                styleUrl = mapStyleUrl,
-                camera = mapViewCamera
-            )
-        }
-    }
+  Scaffold {
+    Box(modifier = Modifier.padding(it)) { MapView(styleUrl = mapStyleUrl, camera = mapViewCamera) }
+  }
 }
 
 @Composable
 @Preview
 fun DarkAndLightModeExamplePreview() {
-    DarkAndLightModeExample()
+  DarkAndLightModeExample()
 }

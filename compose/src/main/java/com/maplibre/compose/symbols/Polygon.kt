@@ -29,19 +29,19 @@ private fun AzimuthCalculator(
     refPos: LatLng,
     onAzimuthChanged: (Float) -> Unit
 ) {
-    val mapApplier = currentComposer.applier as MapApplier
-    val projection = mapApplier.map.projection
+  val mapApplier = currentComposer.applier as MapApplier
+  val projection = mapApplier.map.projection
 
-    val localA = projection.toScreenLocation(posA)
-    val localB = projection.toScreenLocation(posB)
-    val localRef = projection.toScreenLocation(refPos)
+  val localA = projection.toScreenLocation(posA)
+  val localB = projection.toScreenLocation(posB)
+  val localRef = projection.toScreenLocation(refPos)
 
-    val diff = localB - localA
-    val diffRef = localB - localRef
+  val diff = localB - localA
+  val diffRef = localB - localRef
 
-    val refAzimuth = atan2(diffRef.y, diffRef.x)
-    val azimuth = atan2(diff.y, diff.x)
-    onAzimuthChanged(azimuth - refAzimuth)
+  val refAzimuth = atan2(diffRef.y, diffRef.x)
+  val azimuth = atan2(diff.y, diff.x)
+  onAzimuthChanged(azimuth - refAzimuth)
 }
 
 @Composable
@@ -50,28 +50,29 @@ private fun VertexDragger(
     vertices: List<LatLng>,
     onCenterAndVerticesChanged: (LatLng, List<LatLng>) -> Unit
 ) {
-    if (vertices.isEmpty()) {
-        return
-    }
+  if (vertices.isEmpty()) {
+    return
+  }
 
-    val mapApplier = currentComposer.applier as MapApplier
-    val projection = mapApplier.map.projection
+  val mapApplier = currentComposer.applier as MapApplier
+  val projection = mapApplier.map.projection
 
-    var currentCenter = PointF()
+  var currentCenter = PointF()
 
-    vertices.forEach { currentCenter += projection.toScreenLocation(it) }
+  vertices.forEach { currentCenter += projection.toScreenLocation(it) }
 
-    currentCenter.x = currentCenter.x / vertices.size
-    currentCenter.y = currentCenter.y / vertices.size
+  currentCenter.x = currentCenter.x / vertices.size
+  currentCenter.y = currentCenter.y / vertices.size
 
-    val newCenter = projection.toScreenLocation(draggedCenter)
-    val draggedPixels: PointF = newCenter - currentCenter
+  val newCenter = projection.toScreenLocation(draggedCenter)
+  val draggedPixels: PointF = newCenter - currentCenter
 
-    val draggedVertices = vertices.map { vertex ->
+  val draggedVertices =
+      vertices.map { vertex ->
         projection.fromScreenLocation(projection.toScreenLocation(vertex) + draggedPixels)
-    }
+      }
 
-    onCenterAndVerticesChanged(projection.fromScreenLocation(currentCenter), draggedVertices)
+  onCenterAndVerticesChanged(projection.fromScreenLocation(currentCenter), draggedVertices)
 }
 
 @Composable
@@ -85,116 +86,94 @@ private fun PolygonDragHandle(
     onVerticesChanged: (List<LatLng>) -> Unit = {},
     onAzimuthChanged: (Float) -> Unit = {},
 ) {
-    val polygonDragHandleCoord = remember {
-        mutableStateOf(LatLng())
-    }
+  val polygonDragHandleCoord = remember { mutableStateOf(LatLng()) }
 
-    val azimuthHandleCoord = remember {
-        mutableStateOf(LatLng())
-    }
+  val azimuthHandleCoord = remember { mutableStateOf(LatLng()) }
 
-    val inputDragCoord = remember {
-        mutableStateOf(LatLng())
-    }
+  val inputDragCoord = remember { mutableStateOf(LatLng()) }
 
-    val inputAzimuthCoord = remember {
-        mutableStateOf(LatLng())
-    }
+  val inputAzimuthCoord = remember { mutableStateOf(LatLng()) }
 
-    val isDragActive = remember {
-        mutableStateOf(false)
-    }
+  val isDragActive = remember { mutableStateOf(false) }
 
-    val isAzimuthDragActive = remember {
-        mutableStateOf(false)
-    }
+  val isAzimuthDragActive = remember { mutableStateOf(false) }
 
-    val startAzimuth = remember {
-        mutableStateOf(0.0f)
-    }
+  val startAzimuth = remember { mutableStateOf(0.0f) }
 
-    val startAzimuthRefPos = remember {
-        mutableStateOf(LatLng())
-    }
+  val startAzimuthRefPos = remember { mutableStateOf(LatLng()) }
 
-    if (!isAzimuthDragActive.value) {
-        azimuthHandleCoord.value = polygonDragHandleCoord.value
-    }
+  if (!isAzimuthDragActive.value) {
+    azimuthHandleCoord.value = polygonDragHandleCoord.value
+  }
 
-    val counter = remember {
-        mutableStateOf(0)
-    }
+  val counter = remember { mutableStateOf(0) }
 
-    VertexDragger(
-        draggedCenter = inputDragCoord.value,
-        vertices = vertices,
-        onCenterAndVerticesChanged = { center, vertices ->
-            polygonDragHandleCoord.value = center
-            if (isDragActive.value) {
-                onVerticesChanged(vertices)
-            }
-            onCenterChanged(center)
-        })
+  VertexDragger(
+      draggedCenter = inputDragCoord.value,
+      vertices = vertices,
+      onCenterAndVerticesChanged = { center, vertices ->
+        polygonDragHandleCoord.value = center
+        if (isDragActive.value) {
+          onVerticesChanged(vertices)
+        }
+        onCenterChanged(center)
+      })
 
-    AzimuthCalculator(
-        posA = inputAzimuthCoord.value,
-        posB = polygonDragHandleCoord.value,
-        startAzimuthRefPos.value,
-        onAzimuthChanged = {
-            if (isAzimuthDragActive.value) {
-                onAzimuthChanged(it + startAzimuth.value)
-            }
-        })
+  AzimuthCalculator(
+      posA = inputAzimuthCoord.value,
+      posB = polygonDragHandleCoord.value,
+      startAzimuthRefPos.value,
+      onAzimuthChanged = {
+        if (isAzimuthDragActive.value) {
+          onAzimuthChanged(it + startAzimuth.value)
+        }
+      })
 
-    Circle(
+  Circle(
+      center = polygonDragHandleCoord.value,
+      radius = 20.0f,
+      isDraggable = true,
+      color = "Transparent",
+      zIndex = zIndexDragHandle + 2,
+      onCenterDragged = {
+        isDragActive.value = true
+        inputDragCoord.value = it
+      },
+      onDragFinished = { isDragActive.value = false })
+
+  Circle(
+      center = azimuthHandleCoord.value,
+      radius = 50.0f,
+      isDraggable = true,
+      color = "Transparent",
+      zIndex = zIndexRotationHandle,
+      onCenterDragged = {
+        if (!isAzimuthDragActive.value && counter.value > 0) {
+          startAzimuth.value = azimuth
+          startAzimuthRefPos.value = it
+          isAzimuthDragActive.value = true
+        }
+        counter.value = counter.value + 1
+        inputAzimuthCoord.value = it
+        azimuthHandleCoord.value = it
+      },
+      onDragFinished = {
+        isAzimuthDragActive.value = false
+        counter.value = 0
+      })
+
+  imageId?.let {
+    CircleWithItem(
         center = polygonDragHandleCoord.value,
         radius = 20.0f,
-        isDraggable = true,
+        isDraggable = false,
         color = "Transparent",
-        zIndex = zIndexDragHandle + 2,
-        onCenterDragged = {
-            isDragActive.value = true
-            inputDragCoord.value = it
-        },
-        onDragFinished = {
-            isDragActive.value = false
-        })
-
-    Circle(
-        center = azimuthHandleCoord.value,
-        radius = 50.0f,
-        isDraggable = true,
-        color = "Transparent",
-        zIndex = zIndexRotationHandle,
-        onCenterDragged = {
-            if (!isAzimuthDragActive.value && counter.value > 0) {
-                startAzimuth.value = azimuth
-                startAzimuthRefPos.value = it
-                isAzimuthDragActive.value = true
-            }
-            counter.value = counter.value + 1
-            inputAzimuthCoord.value = it
-            azimuthHandleCoord.value = it
-        },
-        onDragFinished = {
-            isAzimuthDragActive.value = false
-            counter.value = 0
-        }
-    )
-
-    imageId?.let {
-        CircleWithItem(
-            center = polygonDragHandleCoord.value,
-            radius = 20.0f,
-            isDraggable = false,
-            color = "Transparent",
-            borderColor = "Black",
-            borderWidth = 1.0f,
-            imageId = imageId,
-            itemSize = 1.0f,
-            zIndex = zIndexDragHandle
-        )
-    }
+        borderColor = "Black",
+        borderWidth = 1.0f,
+        imageId = imageId,
+        itemSize = 1.0f,
+        zIndex = zIndexDragHandle)
+  }
 }
 
 @MapLibreComposable
@@ -215,35 +194,34 @@ fun Polygon(
     onVerticesChanged: (List<LatLng>) -> Unit = {},
     onAzimuthChanged: (Float) -> Unit = {},
 ) {
-    val borderPath = vertices.toMutableList().apply { this.add(this[0]) }
+  val borderPath = vertices.toMutableList().apply { this.add(this[0]) }
 
-    Fill(
+  Fill(
+      points = borderPath,
+      fillColor = fillColor,
+      opacity = opacity,
+      isDraggable = false,
+      zIndex = zIndex)
+
+  if (borderWidth > 0) {
+    Polyline(
         points = borderPath,
-        fillColor = fillColor,
-        opacity = opacity,
-        isDraggable = false,
-        zIndex = zIndex
+        color = borderColor,
+        lineWidth = borderWidth,
+        zIndex = zIndex + 1,
     )
+  }
 
-    if (borderWidth > 0) {
-        Polyline(
-            points = borderPath,
-            color = borderColor,
-            lineWidth = borderWidth,
-            zIndex = zIndex + 1,
-        )
-    }
-
-    if (isDraggable) {
-        PolygonDragHandle(
-            vertices = vertices,
-            imageId = draggerImageId,
-            zIndexDragHandle = zIndexDragHandle,
-            zIndexRotationHandle = zIndexRotationHandle,
-            azimuth = azimuth,
-            onCenterChanged = { onCenterChanged(it) },
-            onVerticesChanged = { onVerticesChanged(it) },
-            onAzimuthChanged = onAzimuthChanged,
-        )
-    }
+  if (isDraggable) {
+    PolygonDragHandle(
+        vertices = vertices,
+        imageId = draggerImageId,
+        zIndexDragHandle = zIndexDragHandle,
+        zIndexRotationHandle = zIndexRotationHandle,
+        azimuth = azimuth,
+        onCenterChanged = { onCenterChanged(it) },
+        onVerticesChanged = { onVerticesChanged(it) },
+        onAzimuthChanged = onAzimuthChanged,
+    )
+  }
 }

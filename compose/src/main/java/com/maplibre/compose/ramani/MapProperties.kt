@@ -18,21 +18,21 @@ import kotlinx.parcelize.Parcelize
 class MapProperties(
     @FloatRange(
         from = MapboxConstants.MINIMUM_ZOOM.toDouble(),
-        to = MapboxConstants.MAXIMUM_ZOOM.toDouble()
-    ) var maxZoom: Double? = null,
+        to = MapboxConstants.MAXIMUM_ZOOM.toDouble())
+    var maxZoom: Double? = null,
 ) : Parcelable {
-    constructor(mapProperties: MapProperties) : this(mapProperties.maxZoom)
+  constructor(mapProperties: MapProperties) : this(mapProperties.maxZoom)
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (javaClass != other?.javaClass) return false
 
-        other as MapProperties
+    other as MapProperties
 
-        return maxZoom == other.maxZoom
-    }
+    return maxZoom == other.maxZoom
+  }
 
-    override fun hashCode(): Int {
-        return maxZoom?.hashCode() ?: 0
-    }
+  override fun hashCode(): Int {
+    return maxZoom?.hashCode() ?: 0
+  }
 }

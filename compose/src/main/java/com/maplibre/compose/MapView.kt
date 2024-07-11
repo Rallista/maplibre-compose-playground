@@ -36,37 +36,35 @@ fun MapView(
     content: (@Composable @MapLibreComposable () -> Unit)? = null
 ) {
 
-    val cameraState by rememberUpdatedState(camera)
-    val cameraPosition = remember(cameraState.value) { mutableStateOf(cameraState.value.toCameraPosition()) }
+  val cameraState by rememberUpdatedState(camera)
+  val cameraPosition =
+      remember(cameraState.value) { mutableStateOf(cameraState.value.toCameraPosition()) }
 
-    // Update the camera position when the parent camera changes.
-    LaunchedEffect(cameraState.value) {
-        cameraPosition.value = camera.value.toCameraPosition()
-    }
+  // Update the camera position when the parent camera changes.
+  LaunchedEffect(cameraState.value) { cameraPosition.value = camera.value.toCameraPosition() }
 
-    // Update the parent camera when the internal camera position changes.
-    LaunchedEffect(cameraPosition.value) {
-        camera.value = MapViewCamera.fromCameraPosition(cameraPosition.value)
-    }
+  // Update the parent camera when the internal camera position changes.
+  LaunchedEffect(cameraPosition.value) {
+    camera.value = MapViewCamera.fromCameraPosition(cameraPosition.value)
+  }
 
-    MapLibre(
-        modifier,
-        styleUrl,
-        cameraPosition = cameraPosition,
-        locationEngine = locationEngine,
-        locationRequestProperties = locationRequestProperties,
-        locationStyling = locationStyling,
-        userLocation = userLocation,
-        onMapReadyCallback = onMapReadyCallback,
-        onTapGestureCallback = onTapGestureCallback,
-        onLongPressGestureCallback = onLongPressGestureCallback
-    ) {
+  MapLibre(
+      modifier,
+      styleUrl,
+      cameraPosition = cameraPosition,
+      locationEngine = locationEngine,
+      locationRequestProperties = locationRequestProperties,
+      locationStyling = locationStyling,
+      userLocation = userLocation,
+      onMapReadyCallback = onMapReadyCallback,
+      onTapGestureCallback = onTapGestureCallback,
+      onLongPressGestureCallback = onLongPressGestureCallback) {
         content?.invoke()
-    }
+      }
 }
 
 @Preview
 @Composable
 fun MapViewPreview() {
-    MapView(styleUrl = "https://demotiles.maplibre.org/style.json")
+  MapView(styleUrl = "https://demotiles.maplibre.org/style.json")
 }

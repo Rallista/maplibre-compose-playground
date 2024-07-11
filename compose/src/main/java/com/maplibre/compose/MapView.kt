@@ -1,14 +1,13 @@
 package com.maplibre.compose
 
 import android.location.Location
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,15 +35,13 @@ fun MapView(
     content: (@Composable @MapLibreComposable () -> Unit)? = null
 ) {
 
-  val cameraState by rememberUpdatedState(camera)
   val cameraPosition =
-      remember(cameraState.value) { mutableStateOf(cameraState.value.toCameraPosition()) }
+      rememberSaveable(camera.value) { mutableStateOf(camera.value.toCameraPosition()) }
 
-  // Update the camera position when the parent camera changes.
-  LaunchedEffect(cameraState.value) { cameraPosition.value = camera.value.toCameraPosition() }
-
-  // Update the parent camera when the internal camera position changes.
+  // Update the parent camera when the internal camera position changes from the map (e.g. pan
+  // gesture).
   LaunchedEffect(cameraPosition.value) {
+    Log.d("MapView", "LaunchedEffect.cameraPosition -> zoom is ${cameraPosition.value.zoom}")
     camera.value = MapViewCamera.fromCameraPosition(cameraPosition.value)
   }
 

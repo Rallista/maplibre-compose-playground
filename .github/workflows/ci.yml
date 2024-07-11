@@ -1,4 +1,4 @@
-name: Android CI
+name: CI
 
 on:
   push:
@@ -10,6 +10,9 @@ jobs:
   build:
 
     runs-on: macos-13
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
     - uses: actions/checkout@v4
@@ -30,6 +33,9 @@ jobs:
   check-ktfmt:
 
     runs-on: macos-13
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
     - uses: actions/checkout@v4

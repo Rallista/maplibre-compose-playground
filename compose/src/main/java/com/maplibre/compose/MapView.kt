@@ -41,7 +41,6 @@ fun MapView(
   // Update the parent camera when the internal camera position changes from the map (e.g. pan
   // gesture).
   LaunchedEffect(cameraPosition.value) {
-    Log.d("MapView", "LaunchedEffect.cameraPosition -> zoom is ${cameraPosition.value.zoom}")
     camera.value = MapViewCamera.fromCameraPosition(cameraPosition.value)
   }
 

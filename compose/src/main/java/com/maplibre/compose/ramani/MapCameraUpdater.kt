@@ -53,7 +53,6 @@ internal fun MapCameraUpdater(cameraPosition: MutableState<CameraPosition>) {
   }
 
   observeIdle {
-    Log.d("MapView", "MapCameraUpdater.observeIdle -> zoom is ${it.zoom}")
     // Getting this to update properly can be tricky. This is a good explanation of why
     // https://stackoverflow.com/questions/77012816/what-are-the-requirements-for-changes-to-a-mutablestate-to-properly-trigger-reco
     cameraPosition.value = it

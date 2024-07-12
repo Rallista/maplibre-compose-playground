@@ -27,6 +27,14 @@ internal fun MapCameraUpdater(cameraPosition: MutableState<CameraPosition>) {
         newTrackingMode = CameraTrackingMode.fromMapbox(mapApplier.map.locationComponent.cameraMode)
       }
 
+      // Exit early if the tracking mode is set to follow the user. We don't need to propagate
+      // the camera position up the tree in this case. Once the user pans the map, they'll exit
+      // tracking and we'll need to update the camera position.
+      if (newTrackingMode == CameraTrackingMode.FOLLOW ||
+          newTrackingMode == CameraTrackingMode.FOLLOW_WITH_BEARING) {
+        return@addOnCameraIdleListener
+      }
+
       // Generate a new camera position here. This helps trigger an update to the MutableState.
       // See stack overflow link below for more info.
       onCameraIdle(
@@ -64,7 +72,6 @@ private class CameraTransitionListener(val map: MapboxMap, val zoom: Double?, va
     OnLocationCameraTransitionListener {
   override fun onLocationCameraTransitionFinished(cameraMode: Int) {
     zoom?.let { zoom -> map.locationComponent.zoomWhileTracking(zoom) }
-
     tilt?.let { tilt -> map.locationComponent.tiltWhileTracking(tilt) }
   }
 
@@ -103,7 +110,9 @@ private fun cameraUpdate(map: MapboxMap, cameraPosition: CameraPosition) {
       assert(map.locationComponent.isLocationComponentActivated)
 
       map.locationComponent.renderMode = RenderMode.COMPASS
-      if (map.locationComponent.cameraMode != CameraMode.TRACKING) {
+      if (map.locationComponent.cameraMode != CameraMode.TRACKING ||
+          map.cameraPosition.zoom != cameraPosition.zoom ||
+          map.cameraPosition.tilt != cameraPosition.tilt) {
         map.locationComponent.setCameraMode(
             CameraMode.TRACKING,
             CameraTransitionListener(map, cameraPosition.zoom, cameraPosition.tilt))
@@ -114,7 +123,9 @@ private fun cameraUpdate(map: MapboxMap, cameraPosition: CameraPosition) {
       assert(map.locationComponent.isLocationComponentActivated)
 
       map.locationComponent.renderMode = RenderMode.GPS
-      if (map.locationComponent.cameraMode != CameraMode.TRACKING_GPS) {
+      if (map.locationComponent.cameraMode != CameraMode.TRACKING_GPS ||
+          map.cameraPosition.zoom != cameraPosition.zoom ||
+          map.cameraPosition.tilt != cameraPosition.tilt) {
         map.locationComponent.setCameraMode(
             CameraMode.TRACKING_GPS,
             CameraTransitionListener(map, cameraPosition.zoom, cameraPosition.tilt))

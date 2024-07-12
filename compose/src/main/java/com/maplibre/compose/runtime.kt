@@ -7,6 +7,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import com.maplibre.compose.camera.MapViewCamera
 
+@Deprecated(
+    "Use rememberSaveableMapViewCamera instead",
+    ReplaceWith(
+        "rememberSaveableMapViewCamera()", "com.maplibre.compose.rememberSaveableMapViewCamera"))
 @Composable
 fun rememberMapViewCamera(
     initialCamera: MapViewCamera = MapViewCamera.Default

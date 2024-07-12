@@ -103,10 +103,6 @@ internal fun MapLibre(
   val currentImages by rememberUpdatedState(images)
   val currentContent by rememberUpdatedState(content)
   val currentCameraPosition by rememberUpdatedState(cameraPosition)
-
-  // Update the parent camera when the internal camera position changes.
-  LaunchedEffect(currentCameraPosition.value) { cameraPosition.value = currentCameraPosition.value }
-
   val parentComposition = rememberCompositionContext()
 
   AndroidView(modifier = modifier, factory = { map })

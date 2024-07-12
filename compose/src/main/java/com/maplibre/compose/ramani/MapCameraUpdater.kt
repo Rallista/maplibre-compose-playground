@@ -1,6 +1,5 @@
 package com.maplibre.compose.ramani
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.MutableState

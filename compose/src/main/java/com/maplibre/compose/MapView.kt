@@ -1,7 +1,6 @@
 package com.maplibre.compose
 
 import android.location.Location
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

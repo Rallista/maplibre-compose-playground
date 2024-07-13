@@ -10,7 +10,7 @@
 package com.maplibre.compose.ramani
 
 import android.os.Parcelable
-import com.mapbox.mapboxsdk.location.engine.LocationEngineRequest
+import org.maplibre.android.location.engine.LocationEngineRequest
 import com.maplibre.compose.ramani.LocationPriority.PRIORITY_BALANCED_POWER_ACCURACY
 import com.maplibre.compose.ramani.LocationPriority.PRIORITY_HIGH_ACCURACY
 import com.maplibre.compose.ramani.LocationPriority.PRIORITY_LOW_POWER

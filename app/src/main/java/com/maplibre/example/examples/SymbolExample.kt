@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.style.layers.Property.TEXT_ANCHOR_BOTTOM_RIGHT
+import org.maplibre.android.geometry.LatLng
+import org.maplibre.android.style.layers.Property.TEXT_ANCHOR_BOTTOM_RIGHT
 import com.maplibre.compose.MapView
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.rememberSaveableMapViewCamera

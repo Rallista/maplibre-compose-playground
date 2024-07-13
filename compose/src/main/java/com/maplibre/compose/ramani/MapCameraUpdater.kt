@@ -4,11 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.currentComposer
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
-import com.mapbox.mapboxsdk.location.OnLocationCameraTransitionListener
-import com.mapbox.mapboxsdk.location.modes.CameraMode
-import com.mapbox.mapboxsdk.location.modes.RenderMode
-import com.mapbox.mapboxsdk.maps.MapboxMap
+import org.maplibre.android.camera.CameraUpdateFactory
+import org.maplibre.android.location.OnLocationCameraTransitionListener
+import org.maplibre.android.location.modes.CameraMode
+import org.maplibre.android.location.modes.RenderMode
+import org.maplibre.android.maps.MapLibreMap
 import com.maplibre.compose.camera.CameraMotionType
 import com.maplibre.compose.camera.CameraPitch
 import com.maplibre.compose.camera.CameraPosition
@@ -68,7 +68,7 @@ internal fun MapCameraUpdater(cameraPosition: MutableState<CameraPosition>) {
       })
 }
 
-private class CameraTransitionListener(val map: MapboxMap, val zoom: Double?, val tilt: Double?) :
+private class CameraTransitionListener(val map: MapLibreMap, val zoom: Double?, val tilt: Double?) :
     OnLocationCameraTransitionListener {
   override fun onLocationCameraTransitionFinished(cameraMode: Int) {
     zoom?.let { zoom -> map.locationComponent.zoomWhileTracking(zoom) }
@@ -81,7 +81,7 @@ private class CameraTransitionListener(val map: MapboxMap, val zoom: Double?, va
 }
 
 private class MapPropertiesNode(
-    val map: MapboxMap,
+    val map: MapLibreMap,
     var cameraPosition: MutableState<CameraPosition>
 ) : MapNode {
   override fun onAttached() {
@@ -89,7 +89,7 @@ private class MapPropertiesNode(
   }
 }
 
-private fun cameraUpdate(map: MapboxMap, cameraPosition: CameraPosition) {
+private fun cameraUpdate(map: MapLibreMap, cameraPosition: CameraPosition) {
   val cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition.toMapbox())
 
   when (cameraPosition.trackingMode) {

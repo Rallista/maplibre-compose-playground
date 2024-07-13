@@ -13,8 +13,8 @@ package com.maplibre.compose.symbols
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.currentComposer
-import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.plugins.annotation.FillOptions
+import org.maplibre.android.geometry.LatLng
+import org.maplibre.android.plugins.annotation.FillOptions
 import com.maplibre.compose.ramani.FillNode
 import com.maplibre.compose.ramani.MapApplier
 import com.maplibre.compose.ramani.MapLibreComposable

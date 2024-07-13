@@ -11,9 +11,9 @@
 package com.maplibre.compose.camera
 
 import android.os.Parcelable
-import com.mapbox.mapboxsdk.geometry.LatLng
 import com.maplibre.compose.camera.CameraMotionType.FLY
 import kotlinx.parcelize.Parcelize
+import org.maplibre.android.geometry.LatLng
 
 /**
  * @property NONE The camera does not track the user location.
@@ -30,9 +30,9 @@ enum class CameraTrackingMode : Parcelable {
   companion object {
     fun fromMapbox(cameraMode: Int): CameraTrackingMode {
       return when (cameraMode) {
-        com.mapbox.mapboxsdk.location.modes.CameraMode.TRACKING -> FOLLOW
-        com.mapbox.mapboxsdk.location.modes.CameraMode.TRACKING_GPS -> FOLLOW_WITH_BEARING
-        com.mapbox.mapboxsdk.location.modes.CameraMode.TRACKING_COMPASS -> FOLLOW_WITH_BEARING
+        org.maplibre.android.location.modes.CameraMode.TRACKING -> FOLLOW
+        org.maplibre.android.location.modes.CameraMode.TRACKING_GPS -> FOLLOW_WITH_BEARING
+        org.maplibre.android.location.modes.CameraMode.TRACKING_COMPASS -> FOLLOW_WITH_BEARING
         else -> NONE
       }
     }
@@ -104,8 +104,8 @@ class CameraPosition(
     return result
   }
 
-  internal fun toMapbox(): com.mapbox.mapboxsdk.camera.CameraPosition {
-    val builder = com.mapbox.mapboxsdk.camera.CameraPosition.Builder()
+  internal fun toMapbox(): org.maplibre.android.camera.CameraPosition {
+    val builder = org.maplibre.android.camera.CameraPosition.Builder()
 
     target?.let { builder.target(it) }
     zoom?.let { builder.zoom(it) }
@@ -117,7 +117,7 @@ class CameraPosition(
 
   companion object {
     fun fromMapbox(
-        cameraPosition: com.mapbox.mapboxsdk.camera.CameraPosition,
+        cameraPosition: org.maplibre.android.camera.CameraPosition,
         pitch: CameraPitch = CameraPitch.Free,
         trackingMode: CameraTrackingMode = CameraTrackingMode.NONE,
     ): CameraPosition {

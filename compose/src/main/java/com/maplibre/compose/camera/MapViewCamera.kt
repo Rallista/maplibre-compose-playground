@@ -1,8 +1,8 @@
 package com.maplibre.compose.camera
 
 import android.os.Parcelable
-import com.mapbox.mapboxsdk.geometry.LatLng
 import kotlinx.parcelize.Parcelize
+import org.maplibre.android.geometry.LatLng
 
 sealed class MapViewCameraDefaults {
   companion object {

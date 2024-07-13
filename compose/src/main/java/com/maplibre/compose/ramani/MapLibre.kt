@@ -25,13 +25,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.viewinterop.AndroidView
-import com.mapbox.mapboxsdk.location.engine.LocationEngine
-import com.mapbox.mapboxsdk.maps.MapboxMap
-import com.mapbox.mapboxsdk.maps.Style
-import com.mapbox.mapboxsdk.style.layers.Layer
-import com.mapbox.mapboxsdk.style.sources.Source
-import com.mapbox.mapboxsdk.utils.BitmapUtils
 import com.maplibre.compose.camera.CameraPosition
+import org.maplibre.android.location.engine.LocationEngine
+import org.maplibre.android.maps.MapLibreMap
+import org.maplibre.android.maps.Style
+import org.maplibre.android.style.layers.Layer
+import org.maplibre.android.style.sources.Source
+import org.maplibre.android.utils.BitmapUtils
 import setupLocation
 
 @Retention(AnnotationRetention.BINARY)
@@ -144,7 +144,7 @@ internal fun MapLibre(
       }
 }
 
-private fun MapboxMap.applyUiSettings(uiSettings: UiSettings) {
+private fun MapLibreMap.applyUiSettings(uiSettings: UiSettings) {
   this.uiSettings.setCompassMargins(
       uiSettings.compassMargins.left,
       uiSettings.compassMargins.top,
@@ -152,12 +152,12 @@ private fun MapboxMap.applyUiSettings(uiSettings: UiSettings) {
       uiSettings.compassMargins.bottom)
 }
 
-private fun MapboxMap.applyProperties(properties: MapProperties) {
+private fun MapLibreMap.applyProperties(properties: MapProperties) {
   properties.maxZoom?.let { this.setMaxZoomPreference(it) }
   // TODO: Add Dynamic camera pitch binding
 }
 
-private fun MapboxMap.addImages(context: Context, images: List<Pair<String, Int>>?) {
+private fun MapLibreMap.addImages(context: Context, images: List<Pair<String, Int>>?) {
   images?.let {
     images
         .mapNotNull { image ->
@@ -169,10 +169,10 @@ private fun MapboxMap.addImages(context: Context, images: List<Pair<String, Int>
   }
 }
 
-private fun MapboxMap.addSources(sources: List<Source>?) {
+private fun MapLibreMap.addSources(sources: List<Source>?) {
   sources?.let { sources.forEach { style!!.addSource(it) } }
 }
 
-private fun MapboxMap.addLayers(layers: List<Layer>?) {
+private fun MapLibreMap.addLayers(layers: List<Layer>?) {
   layers?.let { layers.forEach { style!!.addLayer(it) } }
 }

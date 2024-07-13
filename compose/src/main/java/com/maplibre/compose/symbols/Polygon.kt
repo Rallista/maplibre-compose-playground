@@ -17,10 +17,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.core.graphics.minus
 import androidx.core.graphics.plus
-import org.maplibre.android.geometry.LatLng
 import com.maplibre.compose.ramani.MapApplier
 import com.maplibre.compose.ramani.MapLibreComposable
 import kotlin.math.atan2
+import org.maplibre.android.geometry.LatLng
 
 @Composable
 private fun AzimuthCalculator(

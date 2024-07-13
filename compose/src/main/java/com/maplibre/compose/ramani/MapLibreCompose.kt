@@ -17,11 +17,15 @@ import androidx.compose.runtime.CompositionContext
 import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.android.gestures.RotateGestureDetector
 import com.mapbox.android.gestures.StandardScaleGestureDetector
-import org.maplibre.android.maps.MapView
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
+import kotlin.math.abs
+import kotlinx.coroutines.awaitCancellation
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.MapLibreMap.OnMoveListener
 import org.maplibre.android.maps.MapLibreMap.OnRotateListener
 import org.maplibre.android.maps.MapLibreMap.OnScaleListener
+import org.maplibre.android.maps.MapView
 import org.maplibre.android.maps.Style
 import org.maplibre.android.plugins.annotation.AnnotationManager
 import org.maplibre.android.plugins.annotation.Circle
@@ -37,10 +41,6 @@ import org.maplibre.android.plugins.annotation.OnSymbolClickListener
 import org.maplibre.android.plugins.annotation.OnSymbolLongClickListener
 import org.maplibre.android.plugins.annotation.Symbol
 import org.maplibre.android.plugins.annotation.SymbolManager
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
-import kotlin.math.abs
-import kotlinx.coroutines.awaitCancellation
 
 internal suspend inline fun disposingComposition(factory: () -> Composition) {
   val composition = factory()

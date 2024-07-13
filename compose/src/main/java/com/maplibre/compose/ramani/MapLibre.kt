@@ -25,13 +25,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.viewinterop.AndroidView
+import com.maplibre.compose.camera.CameraPosition
 import org.maplibre.android.location.engine.LocationEngine
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.Style
 import org.maplibre.android.style.layers.Layer
 import org.maplibre.android.style.sources.Source
 import org.maplibre.android.utils.BitmapUtils
-import com.maplibre.compose.camera.CameraPosition
 import setupLocation
 
 @Retention(AnnotationRetention.BINARY)

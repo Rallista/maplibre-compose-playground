@@ -5,6 +5,8 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.util.Log
 import androidx.compose.runtime.MutableState
+import com.maplibre.compose.ramani.LocationRequestProperties
+import com.maplibre.compose.ramani.LocationStyling
 import org.maplibre.android.location.LocationComponentActivationOptions
 import org.maplibre.android.location.LocationComponentOptions
 import org.maplibre.android.location.engine.LocationEngine
@@ -14,8 +16,6 @@ import org.maplibre.android.location.engine.LocationEngineRequest
 import org.maplibre.android.location.engine.LocationEngineResult
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.Style
-import com.maplibre.compose.ramani.LocationRequestProperties
-import com.maplibre.compose.ramani.LocationStyling
 
 internal fun MapLibreMap.setupLocation(
     context: Context,

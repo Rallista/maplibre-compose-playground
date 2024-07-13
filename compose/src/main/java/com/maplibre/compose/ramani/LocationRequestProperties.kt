@@ -10,12 +10,12 @@
 package com.maplibre.compose.ramani
 
 import android.os.Parcelable
-import org.maplibre.android.location.engine.LocationEngineRequest
 import com.maplibre.compose.ramani.LocationPriority.PRIORITY_BALANCED_POWER_ACCURACY
 import com.maplibre.compose.ramani.LocationPriority.PRIORITY_HIGH_ACCURACY
 import com.maplibre.compose.ramani.LocationPriority.PRIORITY_LOW_POWER
 import com.maplibre.compose.ramani.LocationPriority.PRIORITY_NO_POWER
 import kotlinx.parcelize.Parcelize
+import org.maplibre.android.location.engine.LocationEngineRequest
 
 /**
  * @property PRIORITY_HIGH_ACCURACY Request the most accurate location.

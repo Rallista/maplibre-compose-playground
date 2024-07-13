@@ -4,15 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.currentComposer
+import com.maplibre.compose.camera.CameraMotionType
+import com.maplibre.compose.camera.CameraPitch
+import com.maplibre.compose.camera.CameraPosition
+import com.maplibre.compose.camera.CameraTrackingMode
 import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.location.OnLocationCameraTransitionListener
 import org.maplibre.android.location.modes.CameraMode
 import org.maplibre.android.location.modes.RenderMode
 import org.maplibre.android.maps.MapLibreMap
-import com.maplibre.compose.camera.CameraMotionType
-import com.maplibre.compose.camera.CameraPitch
-import com.maplibre.compose.camera.CameraPosition
-import com.maplibre.compose.camera.CameraTrackingMode
 
 @Composable
 internal fun MapCameraUpdater(cameraPosition: MutableState<CameraPosition>) {

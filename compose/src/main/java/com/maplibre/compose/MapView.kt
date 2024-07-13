@@ -10,14 +10,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import org.maplibre.android.location.engine.LocationEngine
-import org.maplibre.android.maps.Style
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.ramani.LocationRequestProperties
 import com.maplibre.compose.ramani.LocationStyling
 import com.maplibre.compose.ramani.MapGestureContext
 import com.maplibre.compose.ramani.MapLibre
 import com.maplibre.compose.ramani.MapLibreComposable
+import org.maplibre.android.location.engine.LocationEngine
+import org.maplibre.android.maps.Style
 
 @Composable
 fun MapView(

@@ -11,9 +11,9 @@
 package com.maplibre.compose.camera
 
 import android.os.Parcelable
-import org.maplibre.android.geometry.LatLng
 import com.maplibre.compose.camera.CameraMotionType.FLY
 import kotlinx.parcelize.Parcelize
+import org.maplibre.android.geometry.LatLng
 
 /**
  * @property NONE The camera does not track the user location.

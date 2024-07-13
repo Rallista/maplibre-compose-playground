@@ -11,8 +11,8 @@ package com.maplibre.compose.ramani
 
 import android.os.Parcelable
 import androidx.annotation.FloatRange
-import org.maplibre.android.constants.MapLibreConstants
 import kotlinx.parcelize.Parcelize
+import org.maplibre.android.constants.MapLibreConstants
 
 @Parcelize
 class MapProperties(

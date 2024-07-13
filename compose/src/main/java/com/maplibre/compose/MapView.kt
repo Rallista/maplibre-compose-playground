@@ -16,6 +16,7 @@ import com.maplibre.compose.ramani.LocationStyling
 import com.maplibre.compose.ramani.MapGestureContext
 import com.maplibre.compose.ramani.MapLibre
 import com.maplibre.compose.ramani.MapLibreComposable
+import com.maplibre.compose.settings.MapControls
 import org.maplibre.android.location.engine.LocationEngine
 import org.maplibre.android.maps.Style
 
@@ -23,6 +24,7 @@ import org.maplibre.android.maps.Style
 fun MapView(
     modifier: Modifier = Modifier.fillMaxSize(),
     styleUrl: String,
+    mapControls: MapControls = MapControls(),
     camera: MutableState<MapViewCamera> = rememberSaveable { mutableStateOf(MapViewCamera()) },
     locationEngine: LocationEngine? = null,
     locationRequestProperties: LocationRequestProperties = LocationRequestProperties.Default,
@@ -46,6 +48,7 @@ fun MapView(
   MapLibre(
       modifier,
       styleUrl,
+      mapControls = mapControls,
       cameraPosition = cameraPosition,
       locationEngine = locationEngine,
       locationRequestProperties = locationRequestProperties,

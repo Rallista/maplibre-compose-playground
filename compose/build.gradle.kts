@@ -60,7 +60,6 @@ dependencies {
 
     api(libs.maplibre)
     api(libs.maplibre.annotation)
-    implementation(libs.androidx.camera.core)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

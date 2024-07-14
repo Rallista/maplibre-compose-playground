@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.viewinterop.AndroidView
 import com.maplibre.compose.camera.CameraPosition
+import com.maplibre.compose.settings.MapControls
 import org.maplibre.android.location.engine.LocationEngine
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.Style
@@ -71,7 +72,7 @@ internal fun MapLibre(
     modifier: Modifier,
     styleUrl: String,
     cameraPosition: MutableState<CameraPosition>,
-    uiSettings: UiSettings = UiSettings(),
+    mapControls: MapControls = MapControls(),
     properties: MapProperties = MapProperties(),
     locationEngine: LocationEngine? = null,
     locationRequestProperties: LocationRequestProperties? = null,
@@ -93,7 +94,7 @@ internal fun MapLibre(
   val context = LocalContext.current
   val map = rememberMapViewWithLifecycle()
 
-  val currentUiSettings by rememberUpdatedState(uiSettings)
+  val currentMapControls by rememberUpdatedState(mapControls)
   val currentMapProperties by rememberUpdatedState(properties)
   val currentLocationEngine by rememberUpdatedState(locationEngine)
   val currentLocationRequestProperties by rememberUpdatedState(locationRequestProperties)
@@ -107,7 +108,7 @@ internal fun MapLibre(
 
   AndroidView(modifier = modifier, factory = { map })
   LaunchedEffect(
-      currentUiSettings,
+      currentMapControls,
       currentMapProperties,
       currentLocationRequestProperties,
       currentLocationStyling) {
@@ -115,7 +116,7 @@ internal fun MapLibre(
           val maplibreMap = map.awaitMap()
           val style = maplibreMap.awaitStyle(styleUrl)
 
-          maplibreMap.applyUiSettings(currentUiSettings)
+          maplibreMap.applyMapControls(currentMapControls)
           maplibreMap.applyProperties(currentMapProperties)
           maplibreMap.setupLocation(
               context,
@@ -144,12 +145,30 @@ internal fun MapLibre(
       }
 }
 
-private fun MapLibreMap.applyUiSettings(uiSettings: UiSettings) {
-  this.uiSettings.setCompassMargins(
-      uiSettings.compassMargins.left,
-      uiSettings.compassMargins.top,
-      uiSettings.compassMargins.right,
-      uiSettings.compassMargins.bottom)
+private fun MapLibreMap.applyMapControls(mapControls: MapControls) {
+  mapControls.attribution?.let { newAttribution ->
+    newAttribution.enabled?.let { this.uiSettings.isAttributionEnabled = it }
+    newAttribution.gravity?.let { this.uiSettings.attributionGravity = it }
+    newAttribution.margins?.let {
+      this.uiSettings.setAttributionMargins(it.start, it.top, it.end, it.bottom)
+    }
+    newAttribution.tintColor?.let { this.uiSettings.setAttributionTintColor(it) }
+  }
+
+  mapControls.compass?.let { newCompass ->
+    newCompass.enabled?.let { this.uiSettings.isCompassEnabled = it }
+    newCompass.gravity?.let { this.uiSettings.compassGravity = it }
+    newCompass.fadeFacingNorth?.let { this.uiSettings.setCompassFadeFacingNorth(it) }
+    newCompass.margins?.let {
+      this.uiSettings.setCompassMargins(it.start, it.top, it.end, it.bottom)
+    }
+  }
+
+  mapControls.logo?.let { newLogo ->
+    newLogo.enabled?.let { this.uiSettings.isLogoEnabled = it }
+    newLogo.gravity?.let { this.uiSettings.logoGravity = it }
+    newLogo.margins?.let { this.uiSettings.setLogoMargins(it.start, it.top, it.end, it.bottom) }
+  }
 }
 
 private fun MapLibreMap.applyProperties(properties: MapProperties) {

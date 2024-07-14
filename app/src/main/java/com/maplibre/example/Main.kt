@@ -35,6 +35,7 @@ import androidx.navigation.compose.rememberNavController
 import com.maplibre.example.examples.CallbackExample
 import com.maplibre.example.examples.CameraExample
 import com.maplibre.example.examples.DarkAndLightModeExample
+import com.maplibre.example.examples.MapControlsExample
 import com.maplibre.example.examples.SymbolExample
 
 @Composable
@@ -51,6 +52,7 @@ fun Main() {
           composable("camera") { CameraExample() }
           composable("callback") { CallbackExample() }
           composable("symbol") { SymbolExample() }
+          composable("map-controls") { MapControlsExample() }
         }
   }
 }
@@ -65,6 +67,7 @@ fun MainMenu(modifier: Modifier, navController: NavController) {
         NavigationLink("Map Callback Example", "callback", navController)
         NavigationLink("Map Camera Control Example", "camera", navController)
         NavigationLink("Symbols Example", "symbol", navController)
+        NavigationLink(title = "Map Controls Example", destination = "map-controls", navController)
       }
 }
 

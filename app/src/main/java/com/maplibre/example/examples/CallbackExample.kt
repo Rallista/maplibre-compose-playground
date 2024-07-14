@@ -1,6 +1,7 @@
 package com.maplibre.example.examples
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -31,6 +32,7 @@ fun CallbackExample() {
   Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) {
     Box(modifier = Modifier.padding(it)) {
       MapView(
+          modifier = Modifier.fillMaxSize(),
           styleUrl = "https://demotiles.maplibre.org/style.json",
           camera = mapViewCamera,
           onMapReadyCallback = { scope.launch { snackbarHostState.showSnackbar("Map ready!") } },

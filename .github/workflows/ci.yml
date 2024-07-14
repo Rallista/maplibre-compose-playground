@@ -58,3 +58,29 @@ jobs:
 
     - name: Verify Kotlin formatting
       run: ./gradlew ktfmtCheck
+
+  test:
+
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-ktfmt
+      cancel-in-progress: true
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Copy api_keys.xml
+      run: cp api_keys_template.xml app/src/main/res/values/api_keys.xml
+
+    - name: Verify Kotlin formatting
+      run: ./gradlew test

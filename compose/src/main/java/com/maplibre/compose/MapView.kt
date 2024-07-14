@@ -3,7 +3,6 @@ package com.maplibre.compose
 import android.location.Location
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,7 +21,7 @@ import org.maplibre.android.maps.Style
 
 @Composable
 fun MapView(
-    modifier: Modifier = Modifier.fillMaxSize(),
+    modifier: Modifier,
     styleUrl: String,
     mapControls: MapControls = MapControls(),
     camera: MutableState<MapViewCamera> = rememberSaveable { mutableStateOf(MapViewCamera()) },
@@ -35,21 +34,12 @@ fun MapView(
     onLongPressGestureCallback: ((MapGestureContext) -> Unit)? = null,
     content: (@Composable @MapLibreComposable () -> Unit)? = null
 ) {
-
-  val cameraPosition =
-      rememberSaveable(camera.value) { mutableStateOf(camera.value.toCameraPosition()) }
-
-  // Update the parent camera when the internal camera position changes from the map (e.g. pan
-  // gesture).
-  LaunchedEffect(cameraPosition.value) {
-    camera.value = MapViewCamera.fromCameraPosition(cameraPosition.value)
-  }
-
+  // TODO: We may be close to just renaming this to MapView and propagating the defaults above.
   MapLibre(
       modifier,
       styleUrl,
       mapControls = mapControls,
-      cameraPosition = cameraPosition,
+      camera = camera,
       locationEngine = locationEngine,
       locationRequestProperties = locationRequestProperties,
       locationStyling = locationStyling,
@@ -64,5 +54,5 @@ fun MapView(
 @Preview
 @Composable
 fun MapViewPreview() {
-  MapView(styleUrl = "https://demotiles.maplibre.org/style.json")
+  MapView(modifier = Modifier.fillMaxSize(), styleUrl = "https://demotiles.maplibre.org/style.json")
 }

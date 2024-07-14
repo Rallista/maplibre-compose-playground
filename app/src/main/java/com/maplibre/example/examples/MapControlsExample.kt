@@ -1,7 +1,9 @@
 package com.maplibre.example.examples
 
 import android.view.Gravity
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.maplibre.compose.MapView
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.rememberSaveableMapViewCamera
@@ -23,6 +25,7 @@ fun MapControlsExample() {
           initialCamera = MapViewCamera.Centered(latitude = -50.04, longitude = -73.71, zoom = 7.0))
 
   MapView(
+      modifier = Modifier.fillMaxSize(),
       styleUrl = "https://demotiles.maplibre.org/style.json",
       camera = mapViewCamera,
       mapControls =

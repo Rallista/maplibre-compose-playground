@@ -63,7 +63,7 @@ jobs:
 
     runs-on: ubuntu-latest
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-ktfmt
+      group: ${{ github.workflow }}-${{ github.ref }}-test
       cancel-in-progress: true
 
     steps:

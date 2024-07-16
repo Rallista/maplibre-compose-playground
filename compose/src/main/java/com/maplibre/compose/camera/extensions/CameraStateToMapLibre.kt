@@ -30,7 +30,7 @@ internal fun CameraState.toCameraMode(): Int {
 internal fun CameraState.needsUpdate(
     mapCurrentCameraMode: Int,
     mapCurrentZoom: Double,
-    mapCurrentPitch: Double,
+    mapCurrentPitch: Double
 ): Boolean {
   when (this) {
     is CameraState.Centered -> {

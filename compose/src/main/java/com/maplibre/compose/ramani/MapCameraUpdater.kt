@@ -105,6 +105,8 @@ private class MapPropertiesNode(val map: MapLibreMap, var camera: MutableState<M
 private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
   val cameraUpdate = CameraUpdateFactory.newCameraPosition(camera.toCameraPosition())
 
+  val newPadding = camera.padding.toDoubleArray()
+
   // Handle values for all cases not in CameraPosition (pitchRange)
   // Pitch and pitch range are validated on their own types.
   camera.pitchRange.toMapLibre().let {
@@ -141,11 +143,14 @@ private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
       map.locationComponent.renderMode = RenderMode.COMPASS
 
       if (camera.state.needsUpdate(
-          map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt)) {
+          map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt) || !map.cameraPosition.padding.contentEquals(
+          newPadding
+        )
+      ) {
         map.locationComponent.setCameraMode(
             camera.state.toCameraMode(),
             CameraTransitionListener(
-                map, camera.state.zoom, camera.state.pitch, camera.padding.toDoubleArray()))
+                map, camera.state.zoom, camera.state.pitch, newPadding))
       }
     }
 
@@ -159,11 +164,13 @@ private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
       map.locationComponent.renderMode = RenderMode.GPS
 
       if (camera.state.needsUpdate(
-          map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt)) {
+          map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt) || !map.cameraPosition.padding.contentEquals(
+          newPadding
+        )) {
         map.locationComponent.setCameraMode(
             camera.state.toCameraMode(),
             CameraTransitionListener(
-                map, camera.state.zoom, camera.state.pitch, camera.padding.toDoubleArray()))
+                map, camera.state.zoom, camera.state.pitch, newPadding))
       }
     }
   }

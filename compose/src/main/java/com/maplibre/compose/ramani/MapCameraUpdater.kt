@@ -93,7 +93,7 @@ private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
   val cameraUpdate = CameraUpdateFactory.newCameraPosition(camera.toCameraPosition())
 
   // Handle values for all cases not in CameraPosition (pitchRange)
-  // TODO: Test how an invalid pitch value is handled when pitchRange is more restrictive.
+  // Pitch and pitch range are validated on their own types.
   camera.pitchRange.toMapLibre().let {
     map.setMinPitchPreference(it.first)
     map.setMaxPitchPreference(it.second)
@@ -107,16 +107,13 @@ private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
         map.locationComponent.cameraMode = CameraMode.NONE
       }
       // Apply the camera update to the map using the correct motion type.
-      val value = camera.state as CameraState.Centered
-      when (camera.motion) {
+      when (camera.state.motion) {
         is CameraMotion.Instant -> map.moveCamera(cameraUpdate)
         is CameraMotion.Ease -> {
-          val motion = camera.motion as CameraMotion.Ease
-          map.easeCamera(cameraUpdate, motion.animationDurationMs)
+          map.easeCamera(cameraUpdate, camera.state.motion.animationDurationMs)
         }
         is CameraMotion.Fly -> {
-          val motion = camera.motion as CameraMotion.Fly
-          map.animateCamera(cameraUpdate, motion.animationDurationMs)
+          map.animateCamera(cameraUpdate, camera.state.motion.animationDurationMs)
         }
       }
     }
@@ -130,11 +127,11 @@ private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
       // which camera mode.
       map.locationComponent.renderMode = RenderMode.COMPASS
 
-      val value = camera.state as CameraState.TrackingUserLocation
-      if (value.needsUpdate(
+      if (camera.state.needsUpdate(
           map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt)) {
         map.locationComponent.setCameraMode(
-            value.toCameraMode(), CameraTransitionListener(map, value.zoom, value.pitch))
+            camera.state.toCameraMode(),
+            CameraTransitionListener(map, camera.state.zoom, camera.state.pitch))
       }
     }
 
@@ -147,11 +144,11 @@ private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
       // which camera mode.
       map.locationComponent.renderMode = RenderMode.GPS
 
-      val value = camera.state as CameraState.TrackingUserLocationWithBearing
-      if (value.needsUpdate(
+      if (camera.state.needsUpdate(
           map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt)) {
         map.locationComponent.setCameraMode(
-            value.toCameraMode(), CameraTransitionListener(map, value.zoom, value.pitch))
+            camera.state.toCameraMode(),
+            CameraTransitionListener(map, camera.state.zoom, camera.state.pitch))
       }
     }
   }

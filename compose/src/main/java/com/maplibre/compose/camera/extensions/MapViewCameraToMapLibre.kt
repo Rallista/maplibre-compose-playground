@@ -15,20 +15,17 @@ internal fun MapViewCamera.toCameraPosition(): CameraPosition {
 
   when (this.state) {
     is CameraState.Centered -> {
-      val value = this.state as CameraState.Centered
       builder
-          .target(LatLng(value.latitude, value.longitude))
-          .zoom(value.zoom)
-          .tilt(value.pitch)
-          .bearing(value.direction)
+          .target(LatLng(this.state.latitude, this.state.longitude))
+          .zoom(this.state.zoom)
+          .tilt(this.state.pitch)
+          .bearing(this.state.direction)
     }
     is CameraState.TrackingUserLocation -> {
-      val value = this.state as CameraState.TrackingUserLocation
-      builder.zoom(value.zoom).tilt(value.pitch).bearing(value.direction)
+      builder.zoom(this.state.zoom).tilt(this.state.pitch).bearing(this.state.direction)
     }
     is CameraState.TrackingUserLocationWithBearing -> {
-      val value = this.state as CameraState.TrackingUserLocationWithBearing
-      builder.zoom(value.zoom).tilt(value.pitch)
+      builder.zoom(this.state.zoom).tilt(this.state.pitch)
     }
   }
 

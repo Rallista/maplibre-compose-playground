@@ -1,7 +1,6 @@
 package com.maplibre.compose.camera
 
 import android.os.Parcelable
-import com.maplibre.compose.camera.extensions.validZoom
 import com.maplibre.compose.camera.models.CameraMotion
 import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.camera.models.CameraPitchRange
@@ -34,8 +33,7 @@ data class MapViewCamera(
             pitch = MapViewCameraDefaults.PITCH,
             direction = MapViewCameraDefaults.DIRECTION),
     val pitchRange: CameraPitchRange = MapViewCameraDefaults.PITCH_RANGE,
-    val padding: CameraPadding = MapViewCameraDefaults.PADDING,
-    val motion: CameraMotion = MapViewCameraDefaults.MOTION
+    val padding: CameraPadding = MapViewCameraDefaults.PADDING
     // TODO: Last change reason (See
     // https://github.com/stadiamaps/maplibre-swiftui-dsl-playground/blob/main/Sources/MapLibreSwiftUI/Models/MapCamera/MapViewCamera.swift#L4C1-L53C2)
 ) : Parcelable {
@@ -54,36 +52,52 @@ data class MapViewCamera(
         motion: CameraMotion = MapViewCameraDefaults.MOTION
     ) =
         MapViewCamera(
-            CameraState.Centered(latitude, longitude, validZoom(zoom), pitch, direction),
+            CameraState.Centered(
+                latitude, longitude, validZoom(zoom), validPitch(pitch), direction, motion),
             pitchRange,
-            padding,
-            motion)
+            padding)
 
     fun TrackingUserLocation(
         zoom: Double = MapViewCameraDefaults.ZOOM,
         pitch: Double = MapViewCameraDefaults.PITCH,
         direction: Double = MapViewCameraDefaults.DIRECTION,
         pitchRange: CameraPitchRange = MapViewCameraDefaults.PITCH_RANGE,
-        padding: CameraPadding = MapViewCameraDefaults.PADDING,
-        motion: CameraMotion = MapViewCameraDefaults.MOTION
+        padding: CameraPadding = MapViewCameraDefaults.PADDING
     ) =
         MapViewCamera(
-            CameraState.TrackingUserLocation(validZoom(zoom), pitch, direction),
+            CameraState.TrackingUserLocation(validZoom(zoom), validPitch(pitch), direction),
             pitchRange,
-            padding,
-            motion)
+            padding)
 
     fun TrackingUserLocationWithBearing(
         zoom: Double = MapViewCameraDefaults.ZOOM,
         pitch: Double = MapViewCameraDefaults.PITCH,
         pitchRange: CameraPitchRange = MapViewCameraDefaults.PITCH_RANGE,
-        padding: CameraPadding = MapViewCameraDefaults.PADDING,
-        motion: CameraMotion = MapViewCameraDefaults.MOTION
+        padding: CameraPadding = MapViewCameraDefaults.PADDING
     ) =
         MapViewCamera(
-            CameraState.TrackingUserLocationWithBearing(validZoom(zoom), pitch),
+            CameraState.TrackingUserLocationWithBearing(validZoom(zoom), validPitch(pitch)),
             pitchRange,
-            padding,
-            motion)
+            padding)
+  }
+}
+
+private fun validPitch(pitch: Double): Double {
+  return if (pitch < MapViewCameraDefaults.MIN_PITCH) {
+    MapViewCameraDefaults.MIN_PITCH
+  } else if (pitch > MapViewCameraDefaults.MAX_PITCH) {
+    MapViewCameraDefaults.MAX_PITCH
+  } else {
+    pitch
+  }
+}
+
+private fun validZoom(zoom: Double): Double {
+  return if (zoom < MapViewCameraDefaults.MIN_ZOOM) {
+    MapViewCameraDefaults.MIN_ZOOM
+  } else if (zoom > MapViewCameraDefaults.MAX_ZOOM) {
+    MapViewCameraDefaults.MAX_ZOOM
+  } else {
+    zoom
   }
 }

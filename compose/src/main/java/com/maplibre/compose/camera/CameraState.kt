@@ -1,6 +1,7 @@
 package com.maplibre.compose.camera
 
 import android.os.Parcelable
+import com.maplibre.compose.camera.models.CameraMotion
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -10,7 +11,8 @@ sealed class CameraState : Parcelable {
       val longitude: Double,
       val zoom: Double = MapViewCameraDefaults.ZOOM,
       val pitch: Double = MapViewCameraDefaults.PITCH,
-      val direction: Double = MapViewCameraDefaults.DIRECTION
+      val direction: Double = MapViewCameraDefaults.DIRECTION,
+      val motion: CameraMotion = MapViewCameraDefaults.MOTION
   ) : CameraState() {
     override fun equals(other: Any?): Boolean {
       return other is Centered &&
@@ -18,7 +20,8 @@ sealed class CameraState : Parcelable {
           longitude == other.longitude &&
           zoom == other.zoom &&
           pitch == other.pitch &&
-          direction == other.direction
+          direction == other.direction &&
+          motion == other.motion
     }
 
     override fun hashCode(): Int {
@@ -28,6 +31,7 @@ sealed class CameraState : Parcelable {
       result = 31 * result + zoom.hashCode()
       result = 31 * result + pitch.hashCode()
       result = 31 * result + direction.hashCode()
+      result = 31 * result + motion.hashCode()
       return result
     }
   }

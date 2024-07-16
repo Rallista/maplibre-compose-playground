@@ -20,33 +20,25 @@ import kotlin.math.roundToInt
 fun MapViewCamera.setZoom(zoom: Double): MapViewCamera {
   when (this.state) {
     is CameraState.Centered -> {
-      val centered = this.state as CameraState.Centered
       return this.copy(
           state =
               CameraState.Centered(
-                  latitude = centered.latitude,
-                  longitude = centered.longitude,
-                  zoom = validZoom(zoom),
-                  pitch = validPitch(centered.pitch),
-                  direction = centered.direction))
+                  latitude = this.state.latitude,
+                  longitude = this.state.longitude,
+                  zoom = zoom,
+                  pitch = this.state.pitch,
+                  direction = this.state.direction))
     }
     is CameraState.TrackingUserLocation -> {
-      val trackingUserLocation = this.state as CameraState.TrackingUserLocation
       return this.copy(
           state =
               CameraState.TrackingUserLocation(
-                  zoom = validZoom(zoom),
-                  pitch = validPitch(trackingUserLocation.pitch),
-                  direction = trackingUserLocation.direction))
+                  zoom = zoom, pitch = this.state.pitch, direction = this.state.direction))
     }
     is CameraState.TrackingUserLocationWithBearing -> {
-      val trackingUserLocationWithBearing =
-          this.state as CameraState.TrackingUserLocationWithBearing
       return this.copy(
           state =
-              CameraState.TrackingUserLocationWithBearing(
-                  zoom = validZoom(zoom),
-                  pitch = validPitch(trackingUserLocationWithBearing.pitch)))
+              CameraState.TrackingUserLocationWithBearing(zoom = zoom, pitch = this.state.pitch))
     }
   }
 }
@@ -69,19 +61,9 @@ fun MapViewCamera.setZoom(zoom: Double): MapViewCamera {
 fun MapViewCamera.incrementZoom(increment: Double, rounded: Boolean = true): MapViewCamera {
   val currentRawZoom =
       when (this.state) {
-        is CameraState.Centered -> {
-          val centered = this.state as CameraState.Centered
-          centered.zoom
-        }
-        is CameraState.TrackingUserLocation -> {
-          val trackingUserLocation = this.state as CameraState.TrackingUserLocation
-          trackingUserLocation.zoom
-        }
-        is CameraState.TrackingUserLocationWithBearing -> {
-          val trackingUserLocationWithBearing =
-              this.state as CameraState.TrackingUserLocationWithBearing
-          trackingUserLocationWithBearing.zoom
-        }
+        is CameraState.Centered -> this.state.zoom
+        is CameraState.TrackingUserLocation -> this.state.zoom
+        is CameraState.TrackingUserLocationWithBearing -> this.state.zoom
       }
 
   val currentZoom = if (rounded) currentRawZoom.roundToInt().toDouble() else currentRawZoom

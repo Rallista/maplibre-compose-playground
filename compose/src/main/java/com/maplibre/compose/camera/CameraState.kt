@@ -1,6 +1,8 @@
 package com.maplibre.compose.camera
 
 import android.os.Parcelable
+import com.maplibre.compose.camera.extensions.validPitch
+import com.maplibre.compose.camera.extensions.validZoom
 import com.maplibre.compose.camera.models.CameraMotion
 import kotlinx.parcelize.Parcelize
 
@@ -9,11 +11,19 @@ sealed class CameraState : Parcelable {
   data class Centered(
       val latitude: Double,
       val longitude: Double,
-      val zoom: Double = MapViewCameraDefaults.ZOOM,
-      val pitch: Double = MapViewCameraDefaults.PITCH,
+      var zoom: Double = MapViewCameraDefaults.ZOOM,
+      var pitch: Double = MapViewCameraDefaults.PITCH,
       val direction: Double = MapViewCameraDefaults.DIRECTION,
       val motion: CameraMotion = MapViewCameraDefaults.MOTION
   ) : CameraState() {
+
+    init {
+      // Ensure that the zoom and pitch are within the min and max values.
+      zoom = validZoom(zoom)
+      pitch = validPitch(pitch)
+    }
+
+
     override fun equals(other: Any?): Boolean {
       return other is Centered &&
           latitude == other.latitude &&
@@ -37,10 +47,17 @@ sealed class CameraState : Parcelable {
   }
 
   data class TrackingUserLocation(
-      val zoom: Double = MapViewCameraDefaults.ZOOM,
-      val pitch: Double = MapViewCameraDefaults.PITCH,
+      var zoom: Double = MapViewCameraDefaults.ZOOM,
+      var pitch: Double = MapViewCameraDefaults.PITCH,
       val direction: Double = MapViewCameraDefaults.DIRECTION
   ) : CameraState() {
+
+    init {
+      // Ensure that the zoom and pitch are within the min and max values.
+      zoom = validZoom(zoom)
+      pitch = validPitch(pitch)
+    }
+
     override fun equals(other: Any?): Boolean {
       return other is TrackingUserLocation &&
           zoom == other.zoom &&
@@ -58,9 +75,15 @@ sealed class CameraState : Parcelable {
   }
 
   data class TrackingUserLocationWithBearing(
-      val zoom: Double = MapViewCameraDefaults.ZOOM,
-      val pitch: Double = MapViewCameraDefaults.PITCH
+      var zoom: Double = MapViewCameraDefaults.ZOOM,
+      var pitch: Double = MapViewCameraDefaults.PITCH
   ) : CameraState() {
+    init {
+      // Ensure that the zoom and pitch are within the min and max values.
+      zoom = validZoom(zoom)
+      pitch = validPitch(pitch)
+    }
+
     override fun equals(other: Any?): Boolean {
       return other is TrackingUserLocationWithBearing && zoom == other.zoom && pitch == other.pitch
     }

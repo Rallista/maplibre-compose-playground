@@ -1,6 +1,8 @@
 package com.maplibre.compose.camera
 
 import android.os.Parcelable
+import com.maplibre.compose.camera.extensions.validPitch
+import com.maplibre.compose.camera.extensions.validZoom
 import com.maplibre.compose.camera.models.CameraMotion
 import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.camera.models.CameraPitchRange
@@ -82,22 +84,4 @@ data class MapViewCamera(
   }
 }
 
-private fun validPitch(pitch: Double): Double {
-  return if (pitch < MapViewCameraDefaults.MIN_PITCH) {
-    MapViewCameraDefaults.MIN_PITCH
-  } else if (pitch > MapViewCameraDefaults.MAX_PITCH) {
-    MapViewCameraDefaults.MAX_PITCH
-  } else {
-    pitch
-  }
-}
 
-private fun validZoom(zoom: Double): Double {
-  return if (zoom < MapViewCameraDefaults.MIN_ZOOM) {
-    MapViewCameraDefaults.MIN_ZOOM
-  } else if (zoom > MapViewCameraDefaults.MAX_ZOOM) {
-    MapViewCameraDefaults.MAX_ZOOM
-  } else {
-    zoom
-  }
-}

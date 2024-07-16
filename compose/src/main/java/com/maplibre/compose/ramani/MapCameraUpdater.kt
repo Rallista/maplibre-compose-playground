@@ -143,14 +143,11 @@ private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
       map.locationComponent.renderMode = RenderMode.COMPASS
 
       if (camera.state.needsUpdate(
-          map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt) || !map.cameraPosition.padding.contentEquals(
-          newPadding
-        )
-      ) {
+          map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt) ||
+          !map.cameraPosition.padding.contentEquals(newPadding)) {
         map.locationComponent.setCameraMode(
             camera.state.toCameraMode(),
-            CameraTransitionListener(
-                map, camera.state.zoom, camera.state.pitch, newPadding))
+            CameraTransitionListener(map, camera.state.zoom, camera.state.pitch, newPadding))
       }
     }
 
@@ -164,13 +161,11 @@ private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
       map.locationComponent.renderMode = RenderMode.GPS
 
       if (camera.state.needsUpdate(
-          map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt) || !map.cameraPosition.padding.contentEquals(
-          newPadding
-        )) {
+          map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt) ||
+          !map.cameraPosition.padding.contentEquals(newPadding)) {
         map.locationComponent.setCameraMode(
             camera.state.toCameraMode(),
-            CameraTransitionListener(
-                map, camera.state.zoom, camera.state.pitch, newPadding))
+            CameraTransitionListener(map, camera.state.zoom, camera.state.pitch, newPadding))
       }
     }
   }

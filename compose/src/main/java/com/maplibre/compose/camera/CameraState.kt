@@ -23,7 +23,6 @@ sealed class CameraState : Parcelable {
       pitch = validPitch(pitch)
     }
 
-
     override fun equals(other: Any?): Boolean {
       return other is Centered &&
           latitude == other.latitude &&

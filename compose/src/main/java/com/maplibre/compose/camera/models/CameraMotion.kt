@@ -32,8 +32,4 @@ sealed class CameraMotion : Parcelable {
       return this::class.hashCode() + 31 * animationDurationMs
     }
   }
-
-  companion object {
-    val Default = Ease(1000)
-  }
 }

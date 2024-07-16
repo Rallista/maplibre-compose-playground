@@ -90,7 +90,7 @@ class CameraStateTest {
     val trackingUserLocationWithBearing = CameraState.TrackingUserLocationWithBearing()
     assertEquals(
         centered.toString(),
-        "Centered(latitude=0.0, longitude=0.0, zoom=10.0, pitch=0.0, direction=0.0, motion=Fly(animationDurationMs=1000))")
+        "Centered(latitude=0.0, longitude=0.0, zoom=10.0, pitch=0.0, direction=0.0, motion=Ease(animationDurationMs=1000))")
     assertEquals(
         trackingUserLocation.toString(),
         "TrackingUserLocation(zoom=10.0, pitch=0.0, direction=0.0)")

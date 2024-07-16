@@ -21,7 +21,7 @@ sealed class MapViewCameraDefaults {
     val PITCH_RANGE: CameraPitchRange = CameraPitchRange.Free
     const val DIRECTION: Double = 0.0
     val PADDING: CameraPadding = CameraPadding()
-    val MOTION: CameraMotion = CameraMotion.Fly(1000)
+    val MOTION: CameraMotion = CameraMotion.Ease(1000)
   }
 }
 
@@ -33,7 +33,8 @@ data class MapViewCamera(
             longitude = 0.0,
             zoom = MapViewCameraDefaults.ZOOM,
             pitch = MapViewCameraDefaults.PITCH,
-            direction = MapViewCameraDefaults.DIRECTION),
+            direction = MapViewCameraDefaults.DIRECTION,
+            motion = MapViewCameraDefaults.MOTION),
     val pitchRange: CameraPitchRange = MapViewCameraDefaults.PITCH_RANGE,
     val padding: CameraPadding = MapViewCameraDefaults.PADDING
     // TODO: Last change reason (See
@@ -83,5 +84,3 @@ data class MapViewCamera(
             padding)
   }
 }
-
-

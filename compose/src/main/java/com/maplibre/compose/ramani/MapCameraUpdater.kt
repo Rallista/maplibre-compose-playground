@@ -6,11 +6,14 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.currentComposer
 import com.maplibre.compose.camera.CameraState
 import com.maplibre.compose.camera.MapViewCamera
+import com.maplibre.compose.camera.extensions.fromMapLibre
 import com.maplibre.compose.camera.extensions.needsUpdate
 import com.maplibre.compose.camera.extensions.toCameraMode
 import com.maplibre.compose.camera.extensions.toCameraPosition
 import com.maplibre.compose.camera.extensions.toMapLibre
 import com.maplibre.compose.camera.models.CameraMotion
+import com.maplibre.compose.camera.models.CameraPadding
+import com.maplibre.compose.camera.models.CameraPitchRange
 import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.location.OnLocationCameraTransitionListener
 import org.maplibre.android.location.modes.CameraMode
@@ -51,7 +54,11 @@ internal fun MapCameraUpdater(camera: MutableState<MapViewCamera>) {
                   longitude = target.longitude,
                   zoom = mapApplier.map.cameraPosition.zoom,
                   pitch = mapApplier.map.cameraPosition.tilt,
-                  direction = mapApplier.map.cameraPosition.bearing)))
+                  direction = mapApplier.map.cameraPosition.bearing,
+                  motion = CameraMotion.Default),
+              pitchRange =
+                  CameraPitchRange.fromMapLibre(mapApplier.map.maxPitch, mapApplier.map.minPitch),
+              padding = CameraPadding.fromCameraPosition(mapApplier.map.cameraPosition.padding)))
     }
   }
 

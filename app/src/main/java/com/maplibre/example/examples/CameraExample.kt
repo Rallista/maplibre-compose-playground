@@ -23,6 +23,7 @@ import com.maplibre.compose.StaticLocationEngine
 import com.maplibre.compose.camera.CameraState
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.camera.extensions.incrementZoom
+import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.rememberSaveableMapViewCamera
 import com.maplibre.example.support.locationPermissions
 import com.maplibre.example.support.rememberLocationPermissionLauncher
@@ -81,12 +82,12 @@ fun CameraExample() {
 
             mapViewCamera.value = getNextCamera(mapViewCamera.value.state)
           },
-          modifier = Modifier.align(Alignment.BottomStart).padding(bottom = 32.dp, start = 16.dp)) {
+          modifier = Modifier.align(Alignment.BottomStart).padding(bottom = 32.dp, start = 16.dp, end = 16.dp)) {
             Text("To ${nextCameraState.state}")
           }
 
       Column(
-          modifier = Modifier.align(Alignment.BottomEnd).padding(bottom = 32.dp, end = 16.dp),
+          modifier = Modifier.align(Alignment.BottomEnd).padding(bottom = 150.dp, end = 16.dp),
           horizontalAlignment = Alignment.End) {
             Button(onClick = { mapViewCamera.value = mapViewCamera.value.incrementZoom(1.0) }) {
               Text("+")
@@ -101,9 +102,16 @@ fun CameraExample() {
 }
 
 private fun getNextCamera(currentState: CameraState): MapViewCamera {
+  val padding = CameraPadding(
+      start = 0.0,
+      top = 500.0,
+      end = 0.0,
+      bottom = 0.0
+  )
+
   return when (currentState) {
-    is CameraState.Centered -> MapViewCamera.TrackingUserLocation()
-    is CameraState.TrackingUserLocation -> MapViewCamera.Default
+    is CameraState.Centered -> MapViewCamera.TrackingUserLocation(zoom = 18.0, pitch = 45.0)
+    is CameraState.TrackingUserLocation -> MapViewCamera.TrackingUserLocationWithBearing(zoom = 18.0, pitch = 45.0, padding = padding)
     is CameraState.TrackingUserLocationWithBearing -> MapViewCamera.Default
   }
 }

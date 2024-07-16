@@ -2,6 +2,7 @@ package com.maplibre.compose.camera.extensions
 
 import com.maplibre.compose.camera.MapViewCameraDefaults
 import com.maplibre.compose.camera.models.CameraPitchRange
+import kotlin.math.roundToInt
 
 /**
  * Converts a MapLibre minimum and maximum pitch a CameraPitchRange.
@@ -18,14 +19,14 @@ fun CameraPitchRange.Companion.fromMapLibre(minPitch: Double, maxPitch: Double):
       if (minPitch < MapViewCameraDefaults.MIN_PITCH) {
         MapViewCameraDefaults.MIN_PITCH
       } else {
-        minPitch
+        minPitch.roundToInt().toDouble()
       }
 
   val maxFinal =
       if (maxPitch > MapViewCameraDefaults.MAX_PITCH) {
         MapViewCameraDefaults.MAX_PITCH
       } else {
-        maxPitch
+        maxPitch.roundToInt().toDouble()
       }
 
   if (minFinal == MapViewCameraDefaults.MIN_PITCH && maxFinal == MapViewCameraDefaults.MAX_PITCH) {

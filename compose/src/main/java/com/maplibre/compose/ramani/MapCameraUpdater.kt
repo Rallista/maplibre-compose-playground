@@ -58,7 +58,7 @@ internal fun MapCameraUpdater(camera: MutableState<MapViewCamera>) {
                   direction = mapApplier.map.cameraPosition.bearing,
                   motion = MapViewCameraDefaults.MOTION),
               pitchRange =
-                  CameraPitchRange.fromMapLibre(mapApplier.map.maxPitch, mapApplier.map.minPitch),
+                  CameraPitchRange.fromMapLibre(mapApplier.map.minPitch, mapApplier.map.maxPitch),
               padding = CameraPadding.fromCameraPosition(mapApplier.map.cameraPosition.padding)))
     }
   }
@@ -85,9 +85,22 @@ private class CameraTransitionListener(
     val padding: DoubleArray?
 ) : OnLocationCameraTransitionListener {
   override fun onLocationCameraTransitionFinished(cameraMode: Int) {
-    zoom?.let { zoom -> map.locationComponent.zoomWhileTracking(zoom) }
-    tilt?.let { tilt -> map.locationComponent.tiltWhileTracking(tilt) }
-    padding?.let { padding -> map.locationComponent.paddingWhileTracking(padding) }
+    // Update only if the value has changed.
+    zoom?.let { zoom ->
+      if (map.cameraPosition.zoom != zoom) {
+        map.locationComponent.zoomWhileTracking(zoom)
+      }
+    }
+    tilt?.let { tilt ->
+      if (map.cameraPosition.tilt != tilt) {
+        map.locationComponent.tiltWhileTracking(tilt)
+      }
+    }
+    padding?.let { padding ->
+      if (!map.cameraPosition.padding.contentEquals(padding)) {
+        map.locationComponent.paddingWhileTracking(padding)
+      }
+    }
   }
 
   override fun onLocationCameraTransitionCanceled(cameraMode: Int) {

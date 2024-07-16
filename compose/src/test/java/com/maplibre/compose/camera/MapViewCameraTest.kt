@@ -1,7 +1,6 @@
-package com.maplibre.compose
+package com.maplibre.compose.camera
 
 import androidx.compose.runtime.mutableStateOf
-import com.maplibre.compose.camera.MapViewCamera
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Test

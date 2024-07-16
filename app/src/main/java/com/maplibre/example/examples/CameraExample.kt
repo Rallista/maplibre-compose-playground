@@ -4,6 +4,7 @@ import android.location.Location
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
@@ -21,7 +22,7 @@ import com.maplibre.compose.MapView
 import com.maplibre.compose.StaticLocationEngine
 import com.maplibre.compose.camera.CameraState
 import com.maplibre.compose.camera.MapViewCamera
-import com.maplibre.compose.camera.incrementZoom
+import com.maplibre.compose.camera.extensions.incrementZoom
 import com.maplibre.compose.rememberSaveableMapViewCamera
 import com.maplibre.example.support.locationPermissions
 import com.maplibre.example.support.rememberLocationPermissionLauncher
@@ -59,6 +60,7 @@ fun CameraExample() {
   Scaffold {
     Box(modifier = Modifier.padding(it)) {
       MapView(
+          modifier = Modifier.fillMaxSize(),
           styleUrl = "https://demotiles.maplibre.org/style.json",
           camera = mapViewCamera,
           locationEngine = remember { locationEngine })
@@ -101,8 +103,8 @@ fun CameraExample() {
 private fun getNextCamera(currentState: CameraState): MapViewCamera {
   return when (currentState) {
     is CameraState.Centered -> MapViewCamera.TrackingUserLocation()
-    CameraState.TrackingUserLocation -> MapViewCamera.Default
-    CameraState.TrackingUserLocationWithBearing -> MapViewCamera.Default
+    is CameraState.TrackingUserLocation -> MapViewCamera.Default
+    is CameraState.TrackingUserLocationWithBearing -> MapViewCamera.Default
   }
 }
 

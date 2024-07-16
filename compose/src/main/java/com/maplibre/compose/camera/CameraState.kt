@@ -1,67 +1,99 @@
 package com.maplibre.compose.camera
 
 import android.os.Parcelable
+import com.maplibre.compose.camera.extensions.validPitch
+import com.maplibre.compose.camera.extensions.validZoom
+import com.maplibre.compose.camera.models.CameraMotion
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 sealed class CameraState : Parcelable {
-  data class Centered(val latitude: Double, val longitude: Double) : CameraState()
+  data class Centered(
+      val latitude: Double,
+      val longitude: Double,
+      var zoom: Double = MapViewCameraDefaults.ZOOM,
+      var pitch: Double = MapViewCameraDefaults.PITCH,
+      val direction: Double = MapViewCameraDefaults.DIRECTION,
+      val motion: CameraMotion = MapViewCameraDefaults.MOTION
+  ) : CameraState() {
 
-  data object TrackingUserLocation : CameraState()
+    init {
+      // Ensure that the zoom and pitch are within the min and max values.
+      zoom = validZoom(zoom)
+      pitch = validPitch(pitch)
+    }
 
-  data object TrackingUserLocationWithBearing : CameraState()
+    override fun equals(other: Any?): Boolean {
+      return other is Centered &&
+          latitude == other.latitude &&
+          longitude == other.longitude &&
+          zoom == other.zoom &&
+          pitch == other.pitch &&
+          direction == other.direction &&
+          motion == other.motion
+    }
+
+    override fun hashCode(): Int {
+      var result = this::class.hashCode()
+      result = 31 * result + latitude.hashCode()
+      result = 31 * result + longitude.hashCode()
+      result = 31 * result + zoom.hashCode()
+      result = 31 * result + pitch.hashCode()
+      result = 31 * result + direction.hashCode()
+      result = 31 * result + motion.hashCode()
+      return result
+    }
+  }
+
+  data class TrackingUserLocation(
+      var zoom: Double = MapViewCameraDefaults.ZOOM,
+      var pitch: Double = MapViewCameraDefaults.PITCH,
+      val direction: Double = MapViewCameraDefaults.DIRECTION
+  ) : CameraState() {
+
+    init {
+      // Ensure that the zoom and pitch are within the min and max values.
+      zoom = validZoom(zoom)
+      pitch = validPitch(pitch)
+    }
+
+    override fun equals(other: Any?): Boolean {
+      return other is TrackingUserLocation &&
+          zoom == other.zoom &&
+          pitch == other.pitch &&
+          direction == other.direction
+    }
+
+    override fun hashCode(): Int {
+      var result = this::class.hashCode()
+      result = 31 * result + zoom.hashCode()
+      result = 31 * result + pitch.hashCode()
+      result = 31 * result + direction.hashCode()
+      return result
+    }
+  }
+
+  data class TrackingUserLocationWithBearing(
+      var zoom: Double = MapViewCameraDefaults.ZOOM,
+      var pitch: Double = MapViewCameraDefaults.PITCH
+  ) : CameraState() {
+    init {
+      // Ensure that the zoom and pitch are within the min and max values.
+      zoom = validZoom(zoom)
+      pitch = validPitch(pitch)
+    }
+
+    override fun equals(other: Any?): Boolean {
+      return other is TrackingUserLocationWithBearing && zoom == other.zoom && pitch == other.pitch
+    }
+
+    override fun hashCode(): Int {
+      var result = this::class.hashCode()
+      result = 31 * result + zoom.hashCode()
+      result = 31 * result + pitch.hashCode()
+      return result
+    }
+  }
 
   // TODO: Bounding box & showcase
-
-  override fun toString(): String {
-    return when (this) {
-      is Centered -> "Centered(latitude=$latitude, longitude=$longitude)"
-      is TrackingUserLocation -> "TrackingUserLocation"
-      is TrackingUserLocationWithBearing -> "TrackingUserLocationWithBearing"
-    }
-  }
-
-  override fun equals(other: Any?): Boolean {
-    if (this === other) return true
-    if (javaClass != other?.javaClass) return false
-
-    other as CameraState
-
-    when (this) {
-      is Centered -> {
-        when (other) {
-          !is Centered -> return false
-          else -> {
-            if (latitude != other.latitude) return false
-            if (longitude != other.longitude) return false
-          }
-        }
-      }
-      is TrackingUserLocation -> {
-        if (other !is TrackingUserLocation) return false
-      }
-      is TrackingUserLocationWithBearing -> {
-        if (other !is TrackingUserLocationWithBearing) return false
-      }
-    }
-
-    return true
-  }
-
-  override fun hashCode(): Int {
-    var result = 0
-    when (this) {
-      is Centered -> {
-        result = 31 * result + latitude.hashCode()
-        result = 31 * result + longitude.hashCode()
-      }
-      is TrackingUserLocation -> {
-        result = 31 * result + 1
-      }
-      is TrackingUserLocationWithBearing -> {
-        result = 31 * result + 2
-      }
-    }
-    return result
-  }
 }

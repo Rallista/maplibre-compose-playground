@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.viewinterop.AndroidView
-import com.maplibre.compose.camera.CameraPosition
+import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.settings.MapControls
 import org.maplibre.android.location.engine.LocationEngine
 import org.maplibre.android.maps.MapLibreMap
@@ -71,7 +71,7 @@ annotation class MapLibreComposable
 internal fun MapLibre(
     modifier: Modifier,
     styleUrl: String,
-    cameraPosition: MutableState<CameraPosition>,
+    camera: MutableState<MapViewCamera>,
     mapControls: MapControls = MapControls(),
     properties: MapProperties = MapProperties(),
     locationEngine: LocationEngine? = null,
@@ -103,7 +103,7 @@ internal fun MapLibre(
   val currentLayers by rememberUpdatedState(layers)
   val currentImages by rememberUpdatedState(images)
   val currentContent by rememberUpdatedState(content)
-  val currentCameraPosition by rememberUpdatedState(cameraPosition)
+  val currentCamera by rememberUpdatedState(camera)
   val parentComposition = rememberCompositionContext()
 
   AndroidView(modifier = modifier, factory = { map })
@@ -137,7 +137,7 @@ internal fun MapLibre(
 
           map.newComposition(parentComposition, style) {
             CompositionLocalProvider {
-              MapCameraUpdater(cameraPosition = currentCameraPosition)
+              MapCameraUpdater(camera = currentCamera)
               currentContent?.invoke()
             }
           }

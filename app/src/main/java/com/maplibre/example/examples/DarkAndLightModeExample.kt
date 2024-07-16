@@ -1,6 +1,7 @@
 package com.maplibre.example.examples
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -23,7 +24,9 @@ fun DarkAndLightModeExample() {
   val mapStyleUrl = mapLibreStyleUrl()
 
   Scaffold {
-    Box(modifier = Modifier.padding(it)) { MapView(styleUrl = mapStyleUrl, camera = mapViewCamera) }
+    Box(modifier = Modifier.padding(it)) {
+      MapView(modifier = Modifier.fillMaxSize(), styleUrl = mapStyleUrl, camera = mapViewCamera)
+    }
   }
 }
 

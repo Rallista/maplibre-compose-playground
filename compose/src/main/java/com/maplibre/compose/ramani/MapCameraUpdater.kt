@@ -4,10 +4,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.currentComposer
-import com.maplibre.compose.camera.CameraMotionType
-import com.maplibre.compose.camera.CameraPitch
-import com.maplibre.compose.camera.CameraPosition
-import com.maplibre.compose.camera.CameraTrackingMode
+import com.maplibre.compose.camera.CameraState
+import com.maplibre.compose.camera.MapViewCamera
+import com.maplibre.compose.camera.MapViewCameraDefaults
+import com.maplibre.compose.camera.extensions.fromMapLibre
+import com.maplibre.compose.camera.extensions.needsUpdate
+import com.maplibre.compose.camera.extensions.toCameraMode
+import com.maplibre.compose.camera.extensions.toCameraPosition
+import com.maplibre.compose.camera.extensions.toMapLibre
+import com.maplibre.compose.camera.models.CameraMotion
+import com.maplibre.compose.camera.models.CameraPadding
+import com.maplibre.compose.camera.models.CameraPitchRange
 import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.location.OnLocationCameraTransitionListener
 import org.maplibre.android.location.modes.CameraMode
@@ -15,56 +22,59 @@ import org.maplibre.android.location.modes.RenderMode
 import org.maplibre.android.maps.MapLibreMap
 
 @Composable
-internal fun MapCameraUpdater(cameraPosition: MutableState<CameraPosition>) {
+internal fun MapCameraUpdater(camera: MutableState<MapViewCamera>) {
 
   val mapApplier = currentComposer.applier as MapApplier
 
-  fun observeIdle(onCameraIdle: (CameraPosition) -> Unit) {
+  fun observeIdle(onCameraIdle: (MapViewCamera) -> Unit) {
     mapApplier.map.addOnCameraIdleListener {
       // Safely calculate the new tracking mode.
-      var newTrackingMode = CameraTrackingMode.NONE
+      var newCameraMode = CameraMode.NONE
       if (mapApplier.map.locationComponent.isLocationComponentActivated) {
-        newTrackingMode = CameraTrackingMode.fromMapbox(mapApplier.map.locationComponent.cameraMode)
+        newCameraMode = mapApplier.map.locationComponent.cameraMode
       }
 
       // Exit early if the tracking mode is set to follow the user. We don't need to propagate
       // the camera position up the tree in this case. Once the user pans the map, they'll exit
       // tracking and we'll need to update the camera position.
-      if (newTrackingMode == CameraTrackingMode.FOLLOW ||
-          newTrackingMode == CameraTrackingMode.FOLLOW_WITH_BEARING) {
+      if (newCameraMode != CameraMode.NONE) {
         return@addOnCameraIdleListener
       }
+
+      // Exit early if the camera target is null. This will result in a NullPointerException
+      // on the next applied MapLibre CameraPosition.
+      // TODO: Should we log/throw an error here?
+      val target = mapApplier.map.cameraPosition.target ?: return@addOnCameraIdleListener
 
       // Generate a new camera position here. This helps trigger an update to the MutableState.
       // See stack overflow link below for more info.
       onCameraIdle(
-          CameraPosition(
-              target = mapApplier.map.cameraPosition.target,
-              zoom = mapApplier.map.cameraPosition.zoom,
-              tilt = mapApplier.map.cameraPosition.tilt,
-              // TODO: This should PROBABLY not be hard-coded? I'm also not really sure if pitch
-              // constraints are part of position...
-              pitch = CameraPitch.Free,
-              bearing = mapApplier.map.cameraPosition.bearing,
-              trackingMode = newTrackingMode,
-          ))
+          MapViewCamera(
+              CameraState.Centered(
+                  latitude = target.latitude,
+                  longitude = target.longitude,
+                  zoom = mapApplier.map.cameraPosition.zoom,
+                  pitch = mapApplier.map.cameraPosition.tilt,
+                  direction = mapApplier.map.cameraPosition.bearing,
+                  motion = MapViewCameraDefaults.MOTION),
+              pitchRange =
+                  CameraPitchRange.fromMapLibre(mapApplier.map.maxPitch, mapApplier.map.minPitch),
+              padding = CameraPadding.fromCameraPosition(mapApplier.map.cameraPosition.padding)))
     }
   }
 
   observeIdle {
     // Getting this to update properly can be tricky. This is a good explanation of why
     // https://stackoverflow.com/questions/77012816/what-are-the-requirements-for-changes-to-a-mutablestate-to-properly-trigger-reco
-    cameraPosition.value = it
+    camera.value = it
   }
 
   ComposeNode<MapPropertiesNode, MapApplier>(
-      factory = { MapPropertiesNode(mapApplier.map, cameraPosition) },
+      factory = { MapPropertiesNode(mapApplier.map, camera) },
       update = {
         // This function is run any time the cameraPosition changes.
         // It applies an update from the parent to the Map (maintained by the MapApplier)
-        update(cameraPosition.value) { updatedCameraPosition ->
-          cameraUpdate(map, updatedCameraPosition)
-        }
+        update(camera.value) { updatedCameraPosition -> cameraUpdate(map, updatedCameraPosition) }
       })
 }
 
@@ -80,55 +90,73 @@ private class CameraTransitionListener(val map: MapLibreMap, val zoom: Double?, 
   }
 }
 
-private class MapPropertiesNode(
-    val map: MapLibreMap,
-    var cameraPosition: MutableState<CameraPosition>
-) : MapNode {
+private class MapPropertiesNode(val map: MapLibreMap, var camera: MutableState<MapViewCamera>) :
+    MapNode {
   override fun onAttached() {
-    cameraUpdate(map, cameraPosition.value)
+    cameraUpdate(map, camera.value)
   }
 }
 
-private fun cameraUpdate(map: MapLibreMap, cameraPosition: CameraPosition) {
-  val cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition.toMapbox())
+private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
+  val cameraUpdate = CameraUpdateFactory.newCameraPosition(camera.toCameraPosition())
 
-  when (cameraPosition.trackingMode) {
-    CameraTrackingMode.NONE -> {
+  // Handle values for all cases not in CameraPosition (pitchRange)
+  // Pitch and pitch range are validated on their own types.
+  camera.pitchRange.toMapLibre().let {
+    map.setMinPitchPreference(it.first)
+    map.setMaxPitchPreference(it.second)
+  }
+
+  when (camera.state) {
+    // The new-updated camera is centered on a specific location.
+    is CameraState.Centered -> {
+      // Unset any tracking modes.
       if (map.locationComponent.isLocationComponentActivated) {
         map.locationComponent.cameraMode = CameraMode.NONE
       }
-      when (cameraPosition.motionType) {
-        CameraMotionType.INSTANT -> map.moveCamera(cameraUpdate)
-
-        CameraMotionType.EASE -> map.easeCamera(cameraUpdate, cameraPosition.animationDurationMs)
-
-        CameraMotionType.FLY -> map.animateCamera(cameraUpdate, cameraPosition.animationDurationMs)
+      // Apply the camera update to the map using the correct motion type.
+      when (camera.state.motion) {
+        is CameraMotion.Instant -> map.moveCamera(cameraUpdate)
+        is CameraMotion.Ease -> {
+          map.easeCamera(cameraUpdate, camera.state.motion.animationDurationMs)
+        }
+        is CameraMotion.Fly -> {
+          map.animateCamera(cameraUpdate, camera.state.motion.animationDurationMs)
+        }
       }
     }
 
-    CameraTrackingMode.FOLLOW -> {
+    // The new-updated camera is tracking the user's location.
+    is CameraState.TrackingUserLocation -> {
+      // Ensure the location component is activated before we manipulate any locationComponent
+      // values.
       assert(map.locationComponent.isLocationComponentActivated)
-
+      // Set the render mode to compass, this is the style of the user location icon. Not the
+      // which camera mode.
       map.locationComponent.renderMode = RenderMode.COMPASS
-      if (map.locationComponent.cameraMode != CameraMode.TRACKING ||
-          map.cameraPosition.zoom != cameraPosition.zoom ||
-          map.cameraPosition.tilt != cameraPosition.tilt) {
+
+      if (camera.state.needsUpdate(
+          map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt)) {
         map.locationComponent.setCameraMode(
-            CameraMode.TRACKING,
-            CameraTransitionListener(map, cameraPosition.zoom, cameraPosition.tilt))
+            camera.state.toCameraMode(),
+            CameraTransitionListener(map, camera.state.zoom, camera.state.pitch))
       }
     }
 
-    CameraTrackingMode.FOLLOW_WITH_BEARING -> {
+    // The new-updated camera is tracking the user's location with bearing.
+    is CameraState.TrackingUserLocationWithBearing -> {
+      // Ensure the location component is activated before we manipulate any locationComponent
+      // values.
       assert(map.locationComponent.isLocationComponentActivated)
-
+      // Set the render mode to compass, this is the style of the user location icon. Not the
+      // which camera mode.
       map.locationComponent.renderMode = RenderMode.GPS
-      if (map.locationComponent.cameraMode != CameraMode.TRACKING_GPS ||
-          map.cameraPosition.zoom != cameraPosition.zoom ||
-          map.cameraPosition.tilt != cameraPosition.tilt) {
+
+      if (camera.state.needsUpdate(
+          map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt)) {
         map.locationComponent.setCameraMode(
-            CameraMode.TRACKING_GPS,
-            CameraTransitionListener(map, cameraPosition.zoom, cameraPosition.tilt))
+            camera.state.toCameraMode(),
+            CameraTransitionListener(map, camera.state.zoom, camera.state.pitch))
       }
     }
   }

@@ -78,11 +78,16 @@ internal fun MapCameraUpdater(camera: MutableState<MapViewCamera>) {
       })
 }
 
-private class CameraTransitionListener(val map: MapLibreMap, val zoom: Double?, val tilt: Double?) :
-    OnLocationCameraTransitionListener {
+private class CameraTransitionListener(
+    val map: MapLibreMap,
+    val zoom: Double?,
+    val tilt: Double?,
+    val padding: DoubleArray?
+) : OnLocationCameraTransitionListener {
   override fun onLocationCameraTransitionFinished(cameraMode: Int) {
     zoom?.let { zoom -> map.locationComponent.zoomWhileTracking(zoom) }
     tilt?.let { tilt -> map.locationComponent.tiltWhileTracking(tilt) }
+    padding?.let { padding -> map.locationComponent.paddingWhileTracking(padding) }
   }
 
   override fun onLocationCameraTransitionCanceled(cameraMode: Int) {
@@ -139,7 +144,8 @@ private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
           map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt)) {
         map.locationComponent.setCameraMode(
             camera.state.toCameraMode(),
-            CameraTransitionListener(map, camera.state.zoom, camera.state.pitch))
+            CameraTransitionListener(
+                map, camera.state.zoom, camera.state.pitch, camera.padding.toDoubleArray()))
       }
     }
 
@@ -156,7 +162,8 @@ private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
           map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt)) {
         map.locationComponent.setCameraMode(
             camera.state.toCameraMode(),
-            CameraTransitionListener(map, camera.state.zoom, camera.state.pitch))
+            CameraTransitionListener(
+                map, camera.state.zoom, camera.state.pitch, camera.padding.toDoubleArray()))
       }
     }
   }

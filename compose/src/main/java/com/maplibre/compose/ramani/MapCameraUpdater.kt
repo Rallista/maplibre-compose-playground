@@ -78,11 +78,16 @@ internal fun MapCameraUpdater(camera: MutableState<MapViewCamera>) {
       })
 }
 
-private class CameraTransitionListener(val map: MapLibreMap, val zoom: Double?, val tilt: Double?) :
-    OnLocationCameraTransitionListener {
+private class CameraTransitionListener(
+    val map: MapLibreMap,
+    val zoom: Double?,
+    val tilt: Double?,
+    val padding: DoubleArray?
+) : OnLocationCameraTransitionListener {
   override fun onLocationCameraTransitionFinished(cameraMode: Int) {
     zoom?.let { zoom -> map.locationComponent.zoomWhileTracking(zoom) }
     tilt?.let { tilt -> map.locationComponent.tiltWhileTracking(tilt) }
+    padding?.let { padding -> map.locationComponent.paddingWhileTracking(padding) }
   }
 
   override fun onLocationCameraTransitionCanceled(cameraMode: Int) {
@@ -99,6 +104,8 @@ private class MapPropertiesNode(val map: MapLibreMap, var camera: MutableState<M
 
 private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
   val cameraUpdate = CameraUpdateFactory.newCameraPosition(camera.toCameraPosition())
+
+  val newPadding = camera.padding.toDoubleArray()
 
   // Handle values for all cases not in CameraPosition (pitchRange)
   // Pitch and pitch range are validated on their own types.
@@ -136,10 +143,11 @@ private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
       map.locationComponent.renderMode = RenderMode.COMPASS
 
       if (camera.state.needsUpdate(
-          map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt)) {
+          map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt) ||
+          !map.cameraPosition.padding.contentEquals(newPadding)) {
         map.locationComponent.setCameraMode(
             camera.state.toCameraMode(),
-            CameraTransitionListener(map, camera.state.zoom, camera.state.pitch))
+            CameraTransitionListener(map, camera.state.zoom, camera.state.pitch, newPadding))
       }
     }
 
@@ -153,10 +161,11 @@ private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
       map.locationComponent.renderMode = RenderMode.GPS
 
       if (camera.state.needsUpdate(
-          map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt)) {
+          map.locationComponent.cameraMode, map.cameraPosition.zoom, map.cameraPosition.tilt) ||
+          !map.cameraPosition.padding.contentEquals(newPadding)) {
         map.locationComponent.setCameraMode(
             camera.state.toCameraMode(),
-            CameraTransitionListener(map, camera.state.zoom, camera.state.pitch))
+            CameraTransitionListener(map, camera.state.zoom, camera.state.pitch, newPadding))
       }
     }
   }

@@ -1,7 +1,7 @@
 package com.maplibre.compose.symbols.builder
 
-import org.maplibre.android.style.layers.Property.TEXT_ANCHOR_CENTER
-import org.maplibre.android.style.layers.Property.TEXT_JUSTIFY_AUTO
+import com.mapbox.mapboxsdk.style.layers.Property.TEXT_ANCHOR_CENTER
+import com.mapbox.mapboxsdk.style.layers.Property.TEXT_JUSTIFY_AUTO
 
 data class SymbolText(
     var text: String,

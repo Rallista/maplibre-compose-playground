@@ -2,8 +2,8 @@ package com.maplibre.compose.ramani
 
 import android.graphics.PointF
 import android.util.Log
-import org.maplibre.android.geometry.LatLng
-import org.maplibre.android.maps.MapLibreMap
+import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mapbox.mapboxsdk.maps.MapboxMap
 
 enum class MapGestureType {
   TAP,
@@ -30,7 +30,7 @@ data class MapGestureContext(
  * @param onTapGestureCallback The callback for a tap gesture.
  * @param onLongPressGestureCallback The callback for a long press gesture.
  */
-internal fun MapLibreMap.setupEventCallbacks(
+internal fun MapboxMap.setupEventCallbacks(
     onTapGestureCallback: ((MapGestureContext) -> Unit)? = null,
     onLongPressGestureCallback: ((MapGestureContext) -> Unit)? = null,
 ) {

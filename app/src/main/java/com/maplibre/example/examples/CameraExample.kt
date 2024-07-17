@@ -44,7 +44,7 @@ fun CameraExample() {
 
   val canChangeCamera = remember { mutableStateOf(false) }
 
-  val cameraPadding = cameraPaddingFractionOfScreen(top = 1.8f)
+  val cameraPadding = cameraPaddingFractionOfScreen(top = 0.8f)
 
   val mapViewCamera = rememberSaveableMapViewCamera() // Or rememberMapViewCamera()
   val nextCameraState = getNextCamera(mapViewCamera.value.state, cameraPadding)

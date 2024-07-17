@@ -18,16 +18,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.mapbox.mapboxsdk.Mapbox
+import com.mapbox.mapboxsdk.maps.MapView
+import com.mapbox.mapboxsdk.maps.MapboxMap
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import org.maplibre.android.MapLibre
-import org.maplibre.android.maps.MapLibreMap
-import org.maplibre.android.maps.MapView
 
 @Composable
 fun rememberMapViewWithLifecycle(): MapView {
   val context = LocalContext.current
-  MapLibre.getInstance(context)
+  Mapbox.getInstance(context)
   val mapView = remember { MapView(context) }
   val lifecycle = LocalLifecycleOwner.current.lifecycle
 
@@ -54,6 +54,6 @@ fun getMapLifecycleObserver(mapView: MapView): LifecycleEventObserver {
   }
 }
 
-suspend inline fun MapView.awaitMap(): MapLibreMap = suspendCoroutine { continuation ->
+suspend inline fun MapView.awaitMap(): MapboxMap = suspendCoroutine { continuation ->
   getMapAsync { continuation.resume(it) }
 }

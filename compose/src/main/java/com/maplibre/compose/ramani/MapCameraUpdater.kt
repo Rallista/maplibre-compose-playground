@@ -4,6 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.currentComposer
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+import com.mapbox.mapboxsdk.location.OnLocationCameraTransitionListener
+import com.mapbox.mapboxsdk.location.modes.CameraMode
+import com.mapbox.mapboxsdk.location.modes.RenderMode
+import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.maplibre.compose.camera.CameraState
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.camera.MapViewCameraDefaults
@@ -15,11 +20,6 @@ import com.maplibre.compose.camera.extensions.toMapLibre
 import com.maplibre.compose.camera.models.CameraMotion
 import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.camera.models.CameraPitchRange
-import org.maplibre.android.camera.CameraUpdateFactory
-import org.maplibre.android.location.OnLocationCameraTransitionListener
-import org.maplibre.android.location.modes.CameraMode
-import org.maplibre.android.location.modes.RenderMode
-import org.maplibre.android.maps.MapLibreMap
 
 @Composable
 internal fun MapCameraUpdater(camera: MutableState<MapViewCamera>) {
@@ -79,7 +79,7 @@ internal fun MapCameraUpdater(camera: MutableState<MapViewCamera>) {
 }
 
 private class CameraTransitionListener(
-    val map: MapLibreMap,
+    val map: MapboxMap,
     val zoom: Double?,
     val tilt: Double?,
     val padding: DoubleArray?
@@ -108,14 +108,14 @@ private class CameraTransitionListener(
   }
 }
 
-private class MapPropertiesNode(val map: MapLibreMap, var camera: MutableState<MapViewCamera>) :
+private class MapPropertiesNode(val map: MapboxMap, var camera: MutableState<MapViewCamera>) :
     MapNode {
   override fun onAttached() {
     cameraUpdate(map, camera.value)
   }
 }
 
-private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
+private fun cameraUpdate(map: MapboxMap, camera: MapViewCamera) {
   val cameraUpdate = CameraUpdateFactory.newCameraPosition(camera.toCameraPosition())
 
   val newPadding = camera.padding.toDoubleArray()

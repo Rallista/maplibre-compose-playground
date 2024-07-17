@@ -8,8 +8,8 @@ import com.maplibre.compose.camera.models.CameraPadding
 /**
  * Create a camera padding that's a fraction of the screen size.
  *
- * Important! This function can take values larger than 1.0 (need to investigate maplibre-native
- * to determine what the acceptable range is).
+ * Important! This function can take values larger than 1.0 (need to investigate maplibre-native to
+ * determine what the acceptable range is).
  *
  * The default is 0.0f for all values.
  *

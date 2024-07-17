@@ -1,6 +1,5 @@
 package com.maplibre.example.examples
 
-import android.graphics.Camera
 import android.location.Location
 import android.util.Log
 import androidx.compose.foundation.layout.Box
@@ -45,8 +44,8 @@ fun CameraExample() {
 
   val canChangeCamera = remember { mutableStateOf(false) }
 
-  val cameraPadding = cameraPaddingFractionOfScreen(top = 2.0f)
-  
+  val cameraPadding = cameraPaddingFractionOfScreen(top = 1.8f)
+
   val mapViewCamera = rememberSaveableMapViewCamera() // Or rememberMapViewCamera()
   val nextCameraState = getNextCamera(mapViewCamera.value.state, cameraPadding)
 
@@ -73,9 +72,7 @@ fun CameraExample() {
       Text(
           "Camera: ${mapViewCamera.value}",
           modifier =
-          Modifier
-            .align(Alignment.TopCenter)
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+              Modifier.align(Alignment.TopCenter).padding(top = 16.dp, start = 16.dp, end = 16.dp),
           fontSize = 11.sp,
           textAlign = TextAlign.Center)
 
@@ -89,16 +86,13 @@ fun CameraExample() {
             mapViewCamera.value = getNextCamera(mapViewCamera.value.state, cameraPadding)
           },
           modifier =
-          Modifier
-            .align(Alignment.BottomStart)
-            .padding(bottom = 32.dp, start = 16.dp, end = 16.dp)) {
+              Modifier.align(Alignment.BottomStart)
+                  .padding(bottom = 32.dp, start = 16.dp, end = 16.dp)) {
             Text("To ${nextCameraState.state}")
           }
 
       Column(
-          modifier = Modifier
-            .align(Alignment.BottomEnd)
-            .padding(bottom = 150.dp, end = 16.dp),
+          modifier = Modifier.align(Alignment.BottomEnd).padding(bottom = 150.dp, end = 16.dp),
           horizontalAlignment = Alignment.End) {
             Button(onClick = { mapViewCamera.value = mapViewCamera.value.incrementZoom(1.0) }) {
               Text("+")

@@ -13,9 +13,9 @@ package com.maplibre.compose.symbols
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mapbox.mapboxsdk.plugins.annotation.Symbol
 import com.maplibre.compose.symbols.builder.SymbolText
-import org.maplibre.android.geometry.LatLng
-import org.maplibre.android.plugins.annotation.Symbol
 
 @Composable
 fun UpdateCenter(coord: LatLng, centerUpdated: (LatLng) -> Unit) {

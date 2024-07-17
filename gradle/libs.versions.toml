@@ -11,8 +11,8 @@ activityCompose = "1.9.0"
 composeBom = "2024.06.00"
 appcompat = "1.6.1"
 material = "1.11.0"
-maplibre = "11.0.1"
-maplibre-annotation = "3.0.0"
+maplibre = "10.3.1"
+maplibre-annotation = "2.0.2"
 navigationCompose = "2.7.7"
 
 [libraries]

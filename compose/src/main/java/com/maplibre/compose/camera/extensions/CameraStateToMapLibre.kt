@@ -1,7 +1,7 @@
 package com.maplibre.compose.camera.extensions
 
+import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.maplibre.compose.camera.CameraState
-import org.maplibre.android.location.modes.CameraMode
 
 /**
  * Converts a [CameraState] to a MapLibre [CameraMode].
@@ -20,11 +20,11 @@ internal fun CameraState.toCameraMode(): Int {
  * Determines if the map's current cameraMode & cameraPosition needs to be updated.
  *
  * @param mapCurrentCameraMode the current camera mode provided by the map's
- *   [org.maplibre.android.location.LocationComponent].
+ *   [com.mapbox.mapboxsdk.location.LocationComponent].
  * @param mapCurrentZoom the current zoom level provided by the map's
- *   [org.maplibre.android.camera.CameraPosition].
+ *   [com.mapbox.mapboxsdk.camera.CameraPosition].
  * @param mapCurrentPitch the current pitch provided by the map's
- *   [org.maplibre.android.camera.CameraPosition].
+ *   [com.mapbox.mapboxsdk.camera.CameraPosition].
  * @return true if the camera state needs to be updated.
  */
 internal fun CameraState.needsUpdate(

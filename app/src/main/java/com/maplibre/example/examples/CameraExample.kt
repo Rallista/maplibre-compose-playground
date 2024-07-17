@@ -22,7 +22,9 @@ import com.maplibre.compose.MapView
 import com.maplibre.compose.StaticLocationEngine
 import com.maplibre.compose.camera.CameraState
 import com.maplibre.compose.camera.MapViewCamera
+import com.maplibre.compose.camera.cameraPaddingFractionOfScreen
 import com.maplibre.compose.camera.extensions.incrementZoom
+import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.rememberSaveableMapViewCamera
 import com.maplibre.example.support.locationPermissions
 import com.maplibre.example.support.rememberLocationPermissionLauncher
@@ -42,8 +44,10 @@ fun CameraExample() {
 
   val canChangeCamera = remember { mutableStateOf(false) }
 
+  val cameraPadding = cameraPaddingFractionOfScreen(top = 1.8f)
+
   val mapViewCamera = rememberSaveableMapViewCamera() // Or rememberMapViewCamera()
-  val nextCameraState = getNextCamera(mapViewCamera.value.state)
+  val nextCameraState = getNextCamera(mapViewCamera.value.state, cameraPadding)
 
   // TODO: This could use improvement to handle failure cases.
   //      Not really in the scope of this project, but just to reduce
@@ -79,14 +83,16 @@ fun CameraExample() {
               return@Button
             }
 
-            mapViewCamera.value = getNextCamera(mapViewCamera.value.state)
+            mapViewCamera.value = getNextCamera(mapViewCamera.value.state, cameraPadding)
           },
-          modifier = Modifier.align(Alignment.BottomStart).padding(bottom = 32.dp, start = 16.dp)) {
+          modifier =
+              Modifier.align(Alignment.BottomStart)
+                  .padding(bottom = 32.dp, start = 16.dp, end = 16.dp)) {
             Text("To ${nextCameraState.state}")
           }
 
       Column(
-          modifier = Modifier.align(Alignment.BottomEnd).padding(bottom = 32.dp, end = 16.dp),
+          modifier = Modifier.align(Alignment.BottomEnd).padding(bottom = 150.dp, end = 16.dp),
           horizontalAlignment = Alignment.End) {
             Button(onClick = { mapViewCamera.value = mapViewCamera.value.incrementZoom(1.0) }) {
               Text("+")
@@ -100,10 +106,11 @@ fun CameraExample() {
   }
 }
 
-private fun getNextCamera(currentState: CameraState): MapViewCamera {
+private fun getNextCamera(currentState: CameraState, padding: CameraPadding): MapViewCamera {
   return when (currentState) {
-    is CameraState.Centered -> MapViewCamera.TrackingUserLocation()
-    is CameraState.TrackingUserLocation -> MapViewCamera.Default
+    is CameraState.Centered -> MapViewCamera.TrackingUserLocation(zoom = 18.0, pitch = 45.0)
+    is CameraState.TrackingUserLocation ->
+        MapViewCamera.TrackingUserLocationWithBearing(zoom = 18.0, pitch = 45.0, padding = padding)
     is CameraState.TrackingUserLocationWithBearing -> MapViewCamera.Default
   }
 }

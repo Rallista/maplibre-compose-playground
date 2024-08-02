@@ -42,8 +42,7 @@ internal fun MapboxMap.setupEventCallbacks(
       if (features.isNotEmpty()) {
         Log.d(
             "MapLibre",
-            "Ignoring MapView tap gesture because feature exists. Use feature tap gesture instead.")
-        return@addOnMapClickListener false
+            "MapView detected features at location. Consider using feature tap gesture instead if using have runtime features.")
       }
 
       onTapGestureCallback.invoke(
@@ -61,8 +60,7 @@ internal fun MapboxMap.setupEventCallbacks(
       if (features.isNotEmpty()) {
         Log.d(
             "MapLibre",
-            "Ignoring MapView long press gesture because feature exists. Use feature tap gesture instead.")
-        return@addOnMapLongClickListener false
+            "MapView detected features at location. Consider using feature tap gesture instead if using have runtime features.")
       }
 
       onLongPressGestureCallback.invoke(

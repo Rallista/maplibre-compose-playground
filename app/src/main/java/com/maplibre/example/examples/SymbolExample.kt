@@ -12,9 +12,11 @@ import com.mapbox.mapboxsdk.style.layers.Property.TEXT_ANCHOR_BOTTOM_RIGHT
 import com.maplibre.compose.MapView
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.rememberSaveableMapViewCamera
+import com.maplibre.compose.symbols.Circle
 import com.maplibre.compose.symbols.CircleWithItem
 import com.maplibre.compose.symbols.Symbol
 import com.maplibre.compose.symbols.builder.SymbolText
+import com.maplibre.compose.symbols.models.SymbolOffset
 import com.maplibre.example.R
 
 @Composable
@@ -40,10 +42,12 @@ fun SymbolExample() {
                 onTap = { Log.d("SymbolExample", "Tapped red star") },
                 onLongPress = { Log.d("SymbolExample", "Long pressed red star") })
 
+            Circle(center = LatLng(1.253, 104.019), radius = 2f, color = "Blue")
+
             Symbol(
                 center = LatLng(1.253, 104.019),
                 imageId = R.drawable.vector,
-                imageRotation = 40f,
+                imageOffset = SymbolOffset(-20f, 20f),
                 onTap = { Log.d("SymbolExample", "Tapped blue star") },
                 onLongPress = { Log.d("SymbolExample", "Long pressed blue star") })
 

@@ -14,8 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.plugins.annotation.Symbol
+import com.mapbox.mapboxsdk.style.layers.Property.ICON_ANCHOR_CENTER
 import com.maplibre.compose.symbols.builder.SymbolText
+import com.maplibre.compose.symbols.models.SymbolOffset
 
 @Composable
 fun UpdateCenter(coord: LatLng, centerUpdated: (LatLng) -> Unit) {
@@ -34,6 +35,9 @@ fun CircleWithItem(
     opacity: Float = 1.0f,
     zIndex: Int = 0,
     imageId: Int? = null,
+    imageRotation: Float? = null,
+    imageAnchor: String = ICON_ANCHOR_CENTER,
+    imageOffset: SymbolOffset = SymbolOffset(),
     itemSize: Float = 0.0f,
     text: SymbolText? = null,
     onCenterChanged: (LatLng) -> Unit = {},
@@ -80,6 +84,9 @@ fun CircleWithItem(
         color = "Black",
         isDraggable = false,
         imageId = imageId,
+        imageRotation = imageRotation,
+        imageAnchor = imageAnchor,
+        imageOffset = imageOffset,
         size = itemSize,
         zIndex = zIndex + 1,
     )

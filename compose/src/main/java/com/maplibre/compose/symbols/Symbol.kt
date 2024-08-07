@@ -20,10 +20,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
+import com.mapbox.mapboxsdk.style.layers.Property.ICON_ANCHOR_CENTER
 import com.maplibre.compose.ramani.MapApplier
 import com.maplibre.compose.ramani.MapLibreComposable
 import com.maplibre.compose.ramani.SymbolNode
 import com.maplibre.compose.symbols.builder.SymbolText
+import com.maplibre.compose.symbols.models.SymbolOffset
+import com.maplibre.compose.symbols.models.toMaplibreOffset
 
 @Composable
 @MapLibreComposable
@@ -35,6 +38,8 @@ fun Symbol(
     zIndex: Int = 0,
     imageId: Int? = null,
     imageRotation: Float? = null,
+    imageAnchor: String = ICON_ANCHOR_CENTER,
+    imageOffset: SymbolOffset = SymbolOffset(),
     text: SymbolText? = null,
     onTap: () -> Unit = {},
     onLongPress: () -> Unit = {}
@@ -65,6 +70,8 @@ fun Symbol(
                   .withIconColor(color)
                   .withIconSize(size)
                   .withIconRotate(imageRotation)
+                  .withIconAnchor(imageAnchor)
+                  .withIconOffset(imageOffset.toMaplibreOffset())
         }
 
         text?.let {
@@ -75,6 +82,7 @@ fun Symbol(
                   .withTextSize(text.size)
                   .withTextJustify(text.justify)
                   .withTextAnchor(text.anchor)
+                  .withTextOffset(text.offset.toMaplibreOffset())
         }
 
         val symbol = symbolManager.create(symbolOptions)

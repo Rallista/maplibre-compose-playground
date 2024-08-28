@@ -3,9 +3,8 @@
 name: Publish to Maven Central
 
 on:
-  workflow_dispatch:
-#   release:
-#     types: [published]
+  release:
+    types: [published]
 
 jobs:
   publish:
@@ -30,8 +29,7 @@ jobs:
       uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
     - name: Publish to Maven Central
-      # TODO: upgrade to publish and release once tested out.
-      run: ./gradlew publishToMavenCentral --no-configuration-cache
+      run: ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
       env:
         ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
         ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}

@@ -128,17 +128,3 @@ mavenPublishing {
         }
     }
 }
-
-// Docs for release https://developer.android.com/build/publish-library
-//publishing {
-//    repositories {
-//        maven {
-//            name = "GitHubPackages"
-//            setUrl("https://maven.pkg.github.com/Rallista/maplibre-compose-playground")
-//            credentials {
-//                username = System.getenv("GITHUB_ACTOR")
-//                password = System.getenv("GITHUB_TOKEN")
-//            }
-//        }
-//    }
-//}

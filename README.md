@@ -4,25 +4,13 @@ This project is based off of <https://github.com/ramani-maps/ramani-maps> [MPL-2
 
 ## Getting Started
 
-We're currently using GitHub to release the package. To install you need: 
-
-In your `settings.gradle`. A personal access token (PAT) is required to access the library through maven, even though the repository is public. 
+This library is published through Maven Central. In your app `build.gradle` add:
 
 ```groovy
-        maven {
-            url = "https://maven.pkg.github.com/Rallista/maplibre-compose-playground"
-            credentials {
-                username = "your_github_username"
-                password = "your_github_personal_access_token" 
-            }
-        }
+implementation 'io.github.rallista:maplibre-compose:0.0.16'
 ```
 
-In your app `build.gradle`
-
-```groovy
-implementation 'io.github.rallista:maplibre-compose:0.0.7'
-```
+> Note: GitHub package manager releases are deprecated but will remain available.
 
 ## Usage
 

@@ -1,8 +1,12 @@
+import com.vanniktech.maven.publish.AndroidMultiVariantLibrary
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.kotlinParcelize)
     alias(libs.plugins.ktfmt)
+    alias(libs.plugins.mavenPublish)
     id("maven-publish")
 }
 
@@ -71,39 +75,70 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 }
 
-// Docs for release https://developer.android.com/build/publish-library
-publishing {
-    publications {
-        register<MavenPublication>("release") {
-            groupId = "io.github.rallista"
-            artifactId = "maplibre-compose"
-            version = project.version.toString()
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
 
-            afterEvaluate {
-                from(components["release"])
+    coordinates("io.github.rallista", "maplibre-compose", project.version.toString())
+
+    configure(AndroidMultiVariantLibrary(sourcesJar = true, publishJavadocJar = true))
+
+    pom {
+        name.set("Maplibre Compose")
+        url.set("https://github.com/Rallista/maplibre-compose-playground")
+        description.set("Composable UI wrapper for Maplibre-Native Android")
+        inceptionYear.set("2023")
+        licenses {
+            license {
+                name.set("MPL-2.0")
+                url.set("https://www.mozilla.org/en-US/MPL/2.0/")
             }
         }
-    }
-
-//    repositories {
-//        maven {
-//            name = "Sonatype"
-//            setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-//            credentials {
-//                username = System.getenv("OSSRH_USERNAME")?.toString()
-//                password = System.getenv("OSSRH_PASSWORD")?.toString()
-//            }
-//        }
-//    }
-
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            setUrl("https://maven.pkg.github.com/Rallista/maplibre-compose-playground")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+        developers {
+            developer {
+                name.set("Jacob Fielding")
+                organization.set("Rallista")
+                organizationUrl.set("https://rallista.app")
             }
+            developer {
+                name.set("Ian Wagner")
+                organization.set("Stadia Maps")
+                organizationUrl.set("https://stadiamaps.com/")
+            }
+        }
+        contributors {
+            contributor {
+                name.set("Ramani Maps")
+                organizationUrl.set("https://github.com/ramani-maps/ramani-maps")
+            }
+        }
+        scm {
+            connection.set("scm:git:https://github.com/Rallista/maplibre-compose-playground.git")
+            developerConnection.set("scm:git:ssh://github.com/Rallista/maplibre-compose-playground.git")
+            url.set("https://github.com/Rallista/maplibre-compose-playground")
+        }
+
+        withXml {
+            val rootNode = asNode()
+            val repositoriesNode = rootNode.appendNode("repositories")
+            val repositoryNode = repositoriesNode.appendNode("repository")
+            repositoryNode.appendNode("name", "Google")
+            repositoryNode.appendNode("id", "google")
+            repositoryNode.appendNode("url", "https://maven.google.com/")
         }
     }
 }
+
+// Docs for release https://developer.android.com/build/publish-library
+//publishing {
+//    repositories {
+//        maven {
+//            name = "GitHubPackages"
+//            setUrl("https://maven.pkg.github.com/Rallista/maplibre-compose-playground")
+//            credentials {
+//                username = System.getenv("GITHUB_ACTOR")
+//                password = System.getenv("GITHUB_TOKEN")
+//            }
+//        }
+//    }
+//}

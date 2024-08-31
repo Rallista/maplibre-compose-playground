@@ -148,7 +148,7 @@ internal fun MapLibre(
 private fun MapboxMap.applyMapControls(mapControls: MapControls) {
   mapControls.attribution?.let { newAttribution ->
     newAttribution.enabled?.let { this.uiSettings.isAttributionEnabled = it }
-    newAttribution.gravity.let { this.uiSettings.attributionGravity = it }
+    newAttribution.gravity?.let { this.uiSettings.attributionGravity = it }
     newAttribution.margins?.let {
       this.uiSettings.setAttributionMargins(it.start, it.top, it.end, it.bottom)
     }

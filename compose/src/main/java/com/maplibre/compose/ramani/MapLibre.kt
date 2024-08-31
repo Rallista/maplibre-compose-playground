@@ -51,8 +51,8 @@ annotation class MapLibreComposable
  *
  * @param modifier The modifier applied to the map.
  * @param styleUrl The style url to access the tile provider.
- * @param cameraPosition The position of the map camera.
- * @param uiSettings Settings related to the map UI.
+ * @param camera The position of the map camera.
+ * @param mapControls The control configuration to be displayed on the map.
  * @param properties Properties being applied to the map.
  * @param locationRequestProperties Properties related to the location marker. If null (which is the
  *   default), then the location will not be enabled on the map. Enabling the location requires
@@ -148,7 +148,7 @@ internal fun MapLibre(
 private fun MapboxMap.applyMapControls(mapControls: MapControls) {
   mapControls.attribution?.let { newAttribution ->
     newAttribution.enabled?.let { this.uiSettings.isAttributionEnabled = it }
-    newAttribution.gravity?.let { this.uiSettings.attributionGravity = it }
+    newAttribution.gravity.let { this.uiSettings.attributionGravity = it }
     newAttribution.margins?.let {
       this.uiSettings.setAttributionMargins(it.start, it.top, it.end, it.bottom)
     }

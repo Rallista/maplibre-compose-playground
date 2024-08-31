@@ -1,6 +1,8 @@
 package com.maplibre.compose.settings
 
 import android.os.Parcelable
+import android.view.Gravity
+import androidx.compose.runtime.Composable
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -15,7 +17,18 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class AttributionSettings(
     var enabled: Boolean? = null,
-    var gravity: Int? = null,
+    var gravity: Int = Gravity.TOP or Gravity.START,
     var margins: MarginInsets? = null,
     var tintColor: Int? = null
-) : Parcelable
+) : Parcelable {
+
+  companion object {
+    @Composable
+    fun initWithPosition(
+        enabled: Boolean? = null,
+        position: MapControlPosition = MapControlPosition.TopStart(),
+        tintColor: Int? = null
+    ): AttributionSettings =
+        AttributionSettings(enabled, position.asGravity(), position.asMarginInsets(), tintColor)
+  }
+}

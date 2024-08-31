@@ -35,8 +35,7 @@ fun MapControlsExample() {
           MapControls(
               attribution =
                   AttributionSettings.initWithPosition(
-                      position =
-                          MapControlPosition.TopEnd(horizontal = 64.dp, vertical = 64.dp)),
+                      position = MapControlPosition.TopEnd(horizontal = 64.dp, vertical = 64.dp)),
               compass =
                   // Using margins directly is possible, but it's better to use
                   // [MapControlPosition] as seen above in with AttributionSettings

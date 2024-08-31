@@ -1,7 +1,6 @@
 package com.maplibre.compose.settings
 
 import android.os.Parcelable
-import android.view.Gravity
 import androidx.compose.runtime.Composable
 import kotlinx.parcelize.Parcelize
 

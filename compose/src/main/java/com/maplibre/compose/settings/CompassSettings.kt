@@ -1,6 +1,7 @@
 package com.maplibre.compose.settings
 
 import android.os.Parcelable
+import androidx.compose.runtime.Composable
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -17,4 +18,24 @@ data class CompassSettings(
     var fadeFacingNorth: Boolean? = null,
     var gravity: Int? = null,
     var margins: MarginInsets? = null,
-) : Parcelable
+) : Parcelable {
+
+  companion object {
+
+    /**
+     * Configure the compass.
+     *
+     * @param enabled Whether the compass is enabled.
+     * @param isFacingNorth
+     * @param position The position of the compass.
+     * @return The compass settings.
+     */
+    @Composable
+    fun initWithPosition(
+        enabled: Boolean? = null,
+        isFacingNorth: Boolean? = null,
+        position: MapControlPosition = MapControlPosition.TopStart()
+    ): CompassSettings =
+        CompassSettings(enabled, isFacingNorth, position.asGravity(), position.asMarginInsets())
+  }
+}

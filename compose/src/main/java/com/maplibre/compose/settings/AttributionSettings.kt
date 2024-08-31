@@ -17,7 +17,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class AttributionSettings(
     var enabled: Boolean? = null,
-    var gravity: Int = Gravity.TOP or Gravity.START,
+    var gravity: Int? = null,
     var margins: MarginInsets? = null,
     var tintColor: Int? = null
 ) : Parcelable {

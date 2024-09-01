@@ -6,11 +6,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.maplibre.compose.runtime.localLayoutDirection
 import kotlinx.parcelize.Parcelize
 
 sealed class MapControlPosition(open val horizontal: Dp = 0.dp, open val vertical: Dp = 0.dp) {
@@ -100,9 +101,10 @@ sealed class MapControlPosition(open val horizontal: Dp = 0.dp, open val vertica
     }
   }
 
-  @Composable
-  internal fun asMarginInsets(): MarginInsets {
-    return MarginInsets.createFromPadding(
+  internal fun asMarginInsets(layoutDirection: LayoutDirection, density: Density): MarginInsets {
+    return MarginInsets.createFromLayoutAndPadding(
+        layoutDirection = layoutDirection,
+        density = density,
         padding =
             PaddingValues(start = horizontal, top = vertical, end = horizontal, bottom = vertical))
   }
@@ -139,11 +141,27 @@ data class MarginInsets(
      */
     @Composable
     fun createFromPadding(padding: PaddingValues): MarginInsets {
-      val rawLayoutDirection = LocalConfiguration.current.layoutDirection
-      val layoutDirection: LayoutDirection = LayoutDirection.entries[rawLayoutDirection]
+      return createFromLayoutAndPadding(
+          layoutDirection = localLayoutDirection(),
+          density = LocalDensity.current,
+          padding = padding)
+    }
 
-      val density = LocalDensity.current
-
+    /**
+     * Manually position the control on the map using dp padding, a layout direction, and a density.
+     *
+     * To more easily position the control on a map use the control's `initWithPosition` and
+     * [MapControlPosition] as it safely handles the nuances of map control positioning.
+     *
+     * @param layoutDirection The layout direction to use
+     * @param density The screen density to use (e.g. LocalDensity.current).
+     * @param padding The padding values to use.
+     */
+    fun createFromLayoutAndPadding(
+        layoutDirection: LayoutDirection,
+        density: Density,
+        padding: PaddingValues
+    ): MarginInsets {
       val start = padding.calculateStartPadding(layoutDirection)
       val top = padding.calculateTopPadding()
       val end = padding.calculateEndPadding(layoutDirection)

@@ -2,6 +2,10 @@ package com.maplibre.compose.settings
 
 import android.os.Parcelable
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
+import com.maplibre.compose.runtime.localLayoutDirection
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -33,6 +37,23 @@ data class LogoSettings(
     fun initWithPosition(
         enabled: Boolean? = null,
         position: MapControlPosition = MapControlPosition.TopStart()
-    ): LogoSettings = LogoSettings(enabled, position.asGravity(), position.asMarginInsets())
+    ): LogoSettings = LogoSettings(enabled, position.asGravity(), position.asMarginInsets(
+      localLayoutDirection(), LocalDensity.current))
+
+    /**
+     * Configure the logo.
+     *
+     * @param layoutDirection The layout direction of the logo.
+     * @param density The density of the logo.
+     * @param enabled Whether the logo is enabled.
+     * @param position The position of the logo.
+     * @return The logo settings.
+     */
+    fun initWithLayoutAndPosition(
+      layoutDirection: LayoutDirection,
+      density: Density,
+      enabled: Boolean? = null,
+      position: MapControlPosition = MapControlPosition.TopStart()
+    ): LogoSettings = LogoSettings(enabled, position.asGravity(), position.asMarginInsets(layoutDirection, density))
   }
 }

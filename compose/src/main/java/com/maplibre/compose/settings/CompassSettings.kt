@@ -2,6 +2,10 @@ package com.maplibre.compose.settings
 
 import android.os.Parcelable
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
+import com.maplibre.compose.runtime.localLayoutDirection
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -36,6 +40,27 @@ data class CompassSettings(
         isFacingNorth: Boolean? = null,
         position: MapControlPosition = MapControlPosition.TopStart()
     ): CompassSettings =
-        CompassSettings(enabled, isFacingNorth, position.asGravity(), position.asMarginInsets())
+        initWithLayoutAndPosition(
+            localLayoutDirection(), LocalDensity.current, enabled, isFacingNorth, position)
+
+    /**
+     * Configure the compass.
+     *
+     * @param layoutDirection The layout direction of the screen.
+     * @param density The layout density (e.g. [LocalDensity.current]).
+     * @param enabled Whether the compass is enabled.
+     * @param isFacingNorth
+     * @param position The position of the compass.
+     * @return The compass settings.
+     */
+    fun initWithLayoutAndPosition(
+      layoutDirection: LayoutDirection,
+      density: Density,
+      enabled: Boolean? = null,
+      isFacingNorth: Boolean? = null,
+      position: MapControlPosition = MapControlPosition.TopStart()
+    ): CompassSettings =
+      CompassSettings(enabled, isFacingNorth, position.asGravity(), position.asMarginInsets(
+        layoutDirection,density))
   }
 }

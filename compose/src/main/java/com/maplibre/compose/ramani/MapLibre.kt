@@ -116,7 +116,7 @@ internal fun MapLibre(
           val maplibreMap = map.awaitMap()
           val style = maplibreMap.awaitStyle(styleUrl)
 
-          maplibreMap.applyMapControls(currentMapControls)
+          maplibreMap.applyMapControls(mapControls)
           maplibreMap.applyProperties(currentMapProperties)
           maplibreMap.setupLocation(
               context,

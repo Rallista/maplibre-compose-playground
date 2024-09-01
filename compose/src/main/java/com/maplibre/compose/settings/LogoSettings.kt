@@ -37,8 +37,11 @@ data class LogoSettings(
     fun initWithPosition(
         enabled: Boolean? = null,
         position: MapControlPosition = MapControlPosition.TopStart()
-    ): LogoSettings = LogoSettings(enabled, position.asGravity(), position.asMarginInsets(
-      localLayoutDirection(), LocalDensity.current))
+    ): LogoSettings =
+        LogoSettings(
+            enabled,
+            position.asGravity(),
+            position.asMarginInsets(localLayoutDirection(), LocalDensity.current))
 
     /**
      * Configure the logo.
@@ -50,10 +53,12 @@ data class LogoSettings(
      * @return The logo settings.
      */
     fun initWithLayoutAndPosition(
-      layoutDirection: LayoutDirection,
-      density: Density,
-      enabled: Boolean? = null,
-      position: MapControlPosition = MapControlPosition.TopStart()
-    ): LogoSettings = LogoSettings(enabled, position.asGravity(), position.asMarginInsets(layoutDirection, density))
+        layoutDirection: LayoutDirection,
+        density: Density,
+        enabled: Boolean? = null,
+        position: MapControlPosition = MapControlPosition.TopStart()
+    ): LogoSettings =
+        LogoSettings(
+            enabled, position.asGravity(), position.asMarginInsets(layoutDirection, density))
   }
 }

@@ -27,7 +27,6 @@ data class AttributionSettings(
 
   companion object {
 
-
     /**
      * Configure the attribution view.
      *
@@ -41,8 +40,9 @@ data class AttributionSettings(
         enabled: Boolean? = null,
         position: MapControlPosition = MapControlPosition.TopStart(),
         tintColor: Int? = null
-    ): AttributionSettings = initWithLayoutAndPosition(
-        localLayoutDirection(), LocalDensity.current, enabled, position, tintColor)
+    ): AttributionSettings =
+        initWithLayoutAndPosition(
+            localLayoutDirection(), LocalDensity.current, enabled, position, tintColor)
 
     /**
      * Configure the attribution view.
@@ -55,12 +55,16 @@ data class AttributionSettings(
      * @return The attribution settings.
      */
     fun initWithLayoutAndPosition(
-      layoutDirection: LayoutDirection,
-      density: Density,
-      enabled: Boolean? = null,
-      position: MapControlPosition = MapControlPosition.TopStart(),
-      tintColor: Int? = null
+        layoutDirection: LayoutDirection,
+        density: Density,
+        enabled: Boolean? = null,
+        position: MapControlPosition = MapControlPosition.TopStart(),
+        tintColor: Int? = null
     ): AttributionSettings =
-        AttributionSettings(enabled, position.asGravity(), position.asMarginInsets(layoutDirection, density), tintColor)
+        AttributionSettings(
+            enabled,
+            position.asGravity(),
+            position.asMarginInsets(layoutDirection, density),
+            tintColor)
   }
 }

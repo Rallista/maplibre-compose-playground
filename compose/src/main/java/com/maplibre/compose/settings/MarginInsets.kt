@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
@@ -143,10 +142,9 @@ data class MarginInsets(
     @Composable
     fun createFromPadding(padding: PaddingValues): MarginInsets {
       return createFromLayoutAndPadding(
-        layoutDirection = localLayoutDirection(),
-        density = LocalDensity.current,
-        padding = padding
-      )
+          layoutDirection = localLayoutDirection(),
+          density = LocalDensity.current,
+          padding = padding)
     }
 
     /**
@@ -160,9 +158,9 @@ data class MarginInsets(
      * @param padding The padding values to use.
      */
     fun createFromLayoutAndPadding(
-      layoutDirection: LayoutDirection,
-      density: Density,
-      padding: PaddingValues
+        layoutDirection: LayoutDirection,
+        density: Density,
+        padding: PaddingValues
     ): MarginInsets {
       val start = padding.calculateStartPadding(layoutDirection)
       val top = padding.calculateTopPadding()

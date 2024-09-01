@@ -54,13 +54,16 @@ data class CompassSettings(
      * @return The compass settings.
      */
     fun initWithLayoutAndPosition(
-      layoutDirection: LayoutDirection,
-      density: Density,
-      enabled: Boolean? = null,
-      isFacingNorth: Boolean? = null,
-      position: MapControlPosition = MapControlPosition.TopStart()
+        layoutDirection: LayoutDirection,
+        density: Density,
+        enabled: Boolean? = null,
+        isFacingNorth: Boolean? = null,
+        position: MapControlPosition = MapControlPosition.TopStart()
     ): CompassSettings =
-      CompassSettings(enabled, isFacingNorth, position.asGravity(), position.asMarginInsets(
-        layoutDirection,density))
+        CompassSettings(
+            enabled,
+            isFacingNorth,
+            position.asGravity(),
+            position.asMarginInsets(layoutDirection, density))
   }
 }

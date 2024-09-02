@@ -60,7 +60,7 @@ class StaticLocationEngine : LocationEngine {
       // If a timer isn't already running, create one
       callbackTimer =
           Timer().apply {
-            scheduleAtFixedRate(
+            schedule(
                 object : TimerTask() {
                   override fun run() {
                     lastLocation?.let {
@@ -87,7 +87,7 @@ class StaticLocationEngine : LocationEngine {
         // If a timer isn't already running, create one
         pendingIntentTimer =
             Timer().apply {
-              scheduleAtFixedRate(
+              schedule(
                   object : TimerTask() {
                     override fun run() {
                       lastLocation?.let {

@@ -11,6 +11,7 @@
 /.idea/deploymentTargetSelector.xml
 /.idea/other.xml
 /.idea/material_theme_project_new.xml
+/.idea/ktfmt.xml
 .DS_Store
 /build
 /captures

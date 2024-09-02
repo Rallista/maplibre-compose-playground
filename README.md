@@ -27,6 +27,34 @@ MapView(
 
 <img src="maplibre-compose-demo.gif" width="400" alt="Demo Animation"/>
 
+### Local development in an app
+
+Local development in your Android app projects is a bit tricky,
+but here's something that mostly works
+without thoroughly confusing yourself with Maven Local repos.
+(This is definitely a hack, but it works; suggestions welcome.)
+
+First, do a local release build.
+
+```shell
+./gradlew assembleRelease
+```
+
+Then, update your `build.gradle` to reference the locally built AAR
+(`api` works as well of course, if you had an API dependency):
+
+```groovy
+implementation files('/path/to/maplibre-compose-playground/compose/build/outputs/aar/compose-release.aar')
+```
+
+You will also need to manually specify any MapLibre dependencies now.
+For example:
+
+```groovy
+api 'org.maplibre.gl:android-sdk:10.3.1'
+api 'org.maplibre.gl:android-plugin-annotation-v9:2.0.2'
+```
+
 ### Setting an API Key for the Light and Dark Mode Demo
 
 Copy or move `api_keys_template.xml` from the root directory to `app/src/main/res/values/api_keys.xml` and add your own API key. The demo uses https://stadiamaps.com as the map style provider, but can easily be adjusted to review with another provider.

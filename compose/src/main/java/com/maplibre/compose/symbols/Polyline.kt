@@ -25,6 +25,7 @@ import com.maplibre.compose.ramani.PolyLineNode
 @MapLibreComposable
 fun Polyline(
     points: List<LatLng>,
+    // Either `color` or `linePatternId` should be non-null
     color: String? = null,
     lineWidth: Float,
     zIndex: Int = 0,

@@ -9,7 +9,7 @@ import com.maplibre.compose.ramani.MapApplier
 import com.maplibre.compose.ramani.MapNode
 
 /**
- * A ComposeNode that applies a map update to the MapboxMap whenever the a state changes.
+ * A ComposeNode that applies a map update to the MapboxMap whenever the state changes.
  *
  * @param state The state that will be observed for changes.
  * @param mapApplier The MapApplier that will be used to apply the update.

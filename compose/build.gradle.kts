@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlinParcelize)
     alias(libs.plugins.ktfmt)
     alias(libs.plugins.mavenPublish)
+    alias(libs.plugins.compose.compiler)
     id("maven-publish")
 }
 

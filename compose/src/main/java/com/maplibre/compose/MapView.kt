@@ -4,9 +4,6 @@ import android.location.Location
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.mapbox.mapboxsdk.location.engine.LocationEngine
@@ -23,8 +20,8 @@ import com.maplibre.compose.settings.MapControls
 fun MapView(
     modifier: Modifier,
     styleUrl: String,
-    mapControls: MapControls = MapControls(),
-    camera: MutableState<MapViewCamera> = rememberSaveable { mutableStateOf(MapViewCamera()) },
+    camera: MutableState<MapViewCamera> = rememberSaveableMapViewCamera(),
+    mapControls: MutableState<MapControls> = rememberSaveableMapControls(),
     locationEngine: LocationEngine? = null,
     locationRequestProperties: LocationRequestProperties = LocationRequestProperties.Default,
     locationStyling: LocationStyling = LocationStyling.Default,
@@ -38,8 +35,8 @@ fun MapView(
   MapLibre(
       modifier,
       styleUrl,
-      mapControls = mapControls,
-      camera = camera,
+      camera,
+      mapControls,
       locationEngine = locationEngine,
       locationRequestProperties = locationRequestProperties,
       locationStyling = locationStyling,

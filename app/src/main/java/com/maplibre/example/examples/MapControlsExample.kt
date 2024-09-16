@@ -10,7 +10,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.mapbox.mapboxsdk.geometry.LatLng
 import com.maplibre.compose.MapView
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.rememberSaveableMapViewCamera
@@ -23,6 +22,7 @@ import com.maplibre.compose.settings.MapControls
 import com.maplibre.compose.settings.MarginInsets
 import com.maplibre.compose.symbols.Polyline
 import kotlinx.coroutines.delay
+import org.maplibre.android.geometry.LatLng
 
 /**
  * MapControls modify the UiSettings for controls on the map including the compass, logo, and

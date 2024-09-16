@@ -1,7 +1,7 @@
 package com.maplibre.compose.camera.extensions
 
-import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.maplibre.compose.camera.CameraState
+import org.maplibre.android.location.modes.CameraMode
 
 /**
  * Converts a [CameraState] to a MapLibre [CameraMode].

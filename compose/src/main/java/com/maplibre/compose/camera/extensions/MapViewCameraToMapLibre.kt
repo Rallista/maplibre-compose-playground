@@ -1,9 +1,9 @@
 package com.maplibre.compose.camera.extensions
 
-import com.mapbox.mapboxsdk.camera.CameraPosition
-import com.mapbox.mapboxsdk.geometry.LatLng
 import com.maplibre.compose.camera.CameraState
 import com.maplibre.compose.camera.MapViewCamera
+import org.maplibre.android.camera.CameraPosition
+import org.maplibre.android.geometry.LatLng
 
 /**
  * Converts a [MapViewCamera] to a MapLibre [CameraPosition].

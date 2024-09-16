@@ -18,6 +18,7 @@ import androidx.compose.runtime.ComposableTargetMarker
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCompositionContext
 import androidx.compose.runtime.rememberUpdatedState
@@ -75,7 +76,7 @@ internal fun MapLibre(
     modifier: Modifier,
     styleUrl: String,
     camera: MutableState<MapViewCamera>,
-    mapControls: MutableState<MapControls> = rememberSaveableMapControls(),
+    mapControls: State<MapControls> = rememberSaveableMapControls(),
     properties: MapProperties = MapProperties(),
     locationEngine: LocationEngine? = null,
     locationRequestProperties: LocationRequestProperties? = null,

@@ -2,12 +2,13 @@ package com.maplibre.compose.runtime.nodes
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.currentComposer
 import com.maplibre.compose.ramani.MapApplier
 import com.maplibre.compose.settings.MapControls
 
 @Composable
-internal fun MapControlsNode(mapControls: MutableState<MapControls>) {
+internal fun MapControlsNode(mapControls: State<MapControls>) {
 
   val mapApplier = currentComposer.applier as MapApplier
 

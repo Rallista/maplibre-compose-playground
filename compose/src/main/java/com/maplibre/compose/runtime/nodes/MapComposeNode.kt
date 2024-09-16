@@ -54,7 +54,7 @@ private class MapStateNode<T>(
     var state: State<T>,
     var applyUpdate: (MapboxMap, T) -> Unit
 ) : MapNode {
-    override fun onAttached() {
-        applyUpdate(map, state.value)
-    }
+  override fun onAttached() {
+    applyUpdate(map, state.value)
+  }
 }

@@ -12,7 +12,7 @@ import com.maplibre.compose.ramani.MapNode
 /**
  * A ComposeNode that applies a map update to the MapboxMap whenever the state changes.
  *
- * @param state The state that will be observed for changes.
+ * @param state The mutable state that will be observed for changes.
  * @param mapApplier The MapApplier that will be used to apply the update.
  * @param applyUpdate The function that will be called to apply the update to the MapboxMap. This
  *   function is called whenever the state changes and when the map is attached.
@@ -27,6 +27,14 @@ internal fun <T> MapComposeNode(
         factory = { MapMutableStateNode(mapApplier.map, state, applyUpdate) },
         update = { update(state.value) { updatedState -> applyUpdate(map, updatedState) } })
 
+/**
+ * A ComposeNode that applies a map update to the MapboxMap whenever the state changes.
+ *
+ * @param state The state that will be observed for changes.
+ * @param mapApplier The MapApplier that will be used to apply the update.
+ * @param applyUpdate The function that will be called to apply the update to the MapboxMap. This
+ *   function is called whenever the state changes and when the map is attached.
+ */
 @Composable
 internal fun <T> MapComposeNode(
     state: State<T>,

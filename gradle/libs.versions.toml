@@ -1,18 +1,18 @@
 [versions]
-agp = "8.5.0"
-kotlin = "1.9.24"
-ktfmt = "0.19.0"
+agp = "8.6.0"
+kotlin = "2.0.20"
+ktfmt = "0.20.1"
 mavenPublish = "0.29.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.3"
-activityCompose = "1.9.0"
-composeBom = "2024.06.00"
-maplibre = "10.3.1"
+lifecycleRuntimeKtx = "2.8.5"
+activityCompose = "1.9.2"
+composeBom = "2024.09.01"
+maplibre = "10.3.1" # 11.0.0 is currently blocked by a crash - need to re-test in the near future.
 maplibre-annotation = "2.0.2"
-navigationCompose = "2.7.7"
+navigationCompose = "2.8.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,6 +38,7 @@ maplibre-annotation = { group = "org.maplibre.gl", name = "android-plugin-annota
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinParcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 ktfmt = { id = "com.ncorti.ktfmt.gradle", version.ref = "ktfmt" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }

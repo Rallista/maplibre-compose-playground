@@ -1,4 +1,4 @@
-import com.vanniktech.maven.publish.AndroidMultiVariantLibrary
+import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
 import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
@@ -44,12 +44,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
     }
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-            withJavadocJar()
-        }
-    }
 }
 
 dependencies {
@@ -82,7 +76,7 @@ mavenPublishing {
 
     coordinates("io.github.rallista", "maplibre-compose", project.version.toString())
 
-    configure(AndroidMultiVariantLibrary(sourcesJar = true, publishJavadocJar = true))
+    configure(AndroidSingleVariantLibrary(sourcesJar = true, publishJavadocJar = true))
 
     pom {
         name.set("Maplibre Compose")

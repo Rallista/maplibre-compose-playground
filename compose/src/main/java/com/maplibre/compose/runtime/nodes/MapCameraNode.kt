@@ -1,7 +1,6 @@
-package com.maplibre.compose.ramani
+package com.maplibre.compose.runtime.nodes
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.currentComposer
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
@@ -20,9 +19,10 @@ import com.maplibre.compose.camera.extensions.toMapLibre
 import com.maplibre.compose.camera.models.CameraMotion
 import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.camera.models.CameraPitchRange
+import com.maplibre.compose.ramani.MapApplier
 
 @Composable
-internal fun MapCameraUpdater(camera: MutableState<MapViewCamera>) {
+internal fun MapCameraNode(camera: MutableState<MapViewCamera>) {
 
   val mapApplier = currentComposer.applier as MapApplier
 
@@ -69,13 +69,7 @@ internal fun MapCameraUpdater(camera: MutableState<MapViewCamera>) {
     camera.value = it
   }
 
-  ComposeNode<MapPropertiesNode, MapApplier>(
-      factory = { MapPropertiesNode(mapApplier.map, camera) },
-      update = {
-        // This function is run any time the cameraPosition changes.
-        // It applies an update from the parent to the Map (maintained by the MapApplier)
-        update(camera.value) { updatedCameraPosition -> cameraUpdate(map, updatedCameraPosition) }
-      })
+  MapComposeNode(camera, mapApplier, ::cameraUpdate)
 }
 
 private class CameraTransitionListener(
@@ -105,13 +99,6 @@ private class CameraTransitionListener(
 
   override fun onLocationCameraTransitionCanceled(cameraMode: Int) {
     // Do nothing
-  }
-}
-
-private class MapPropertiesNode(val map: MapboxMap, var camera: MutableState<MapViewCamera>) :
-    MapNode {
-  override fun onAttached() {
-    cameraUpdate(map, camera.value)
   }
 }
 

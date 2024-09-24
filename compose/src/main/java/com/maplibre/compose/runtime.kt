@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import com.maplibre.compose.camera.MapViewCamera
+import com.maplibre.compose.settings.MapControls
 
 @Deprecated(
     "Use rememberSaveableMapViewCamera instead",
@@ -23,4 +24,11 @@ fun rememberSaveableMapViewCamera(
     initialCamera: MapViewCamera = MapViewCamera.Default
 ): MutableState<MapViewCamera> {
   return rememberSaveable { mutableStateOf(initialCamera) }
+}
+
+@Composable
+fun rememberSaveableMapControls(
+    initialMapControls: MapControls = MapControls()
+): MutableState<MapControls> {
+  return rememberSaveable { mutableStateOf(initialMapControls) }
 }

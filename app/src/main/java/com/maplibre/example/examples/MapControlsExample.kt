@@ -55,7 +55,9 @@ fun MapControlsExample() {
   val mapControls = remember { mutableStateOf(initialMapControls) }
   val color = remember { mutableStateOf("#000") }
 
-  // Dynamically update the map controls and polyline after a delay
+  // Dynamically update the map controls and polyline after a delay.
+  // Using a launched effect for dynamic map controls is likely incorrect, but easily
+  // demonstrates the behavior.
   LaunchedEffect(Unit) {
     delay(2000)
 
@@ -88,7 +90,7 @@ fun MapControlsExample() {
       modifier = Modifier.fillMaxSize(),
       styleUrl = "https://demotiles.maplibre.org/style.json",
       camera = mapViewCamera,
-      mapControls = mapControls.value) {
+      mapControls) {
         Polyline(points = latLngs, color = color.value, lineWidth = 12f)
       }
 }

@@ -5,8 +5,9 @@ plugins {
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.kotlinParcelize) apply false
     alias(libs.plugins.ktfmt) apply false
+    alias(libs.plugins.compose.compiler) apply false
 }
 
 allprojects {
-    version = "0.0.19"
+    version = "0.1.0"
 }

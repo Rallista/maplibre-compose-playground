@@ -13,6 +13,7 @@ package com.maplibre.compose.symbols
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.currentComposer
+import androidx.compose.ui.platform.LocalContext
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.plugins.annotation.LineOptions
 import com.mapbox.mapboxsdk.style.layers.Property
@@ -24,15 +25,20 @@ import com.maplibre.compose.ramani.PolyLineNode
 @MapLibreComposable
 fun Polyline(
     points: List<LatLng>,
-    color: String,
+    // Either `color` or `linePatternId` should be non-null
+    color: String? = null,
     lineWidth: Float,
     zIndex: Int = 0,
     isDraggable: Boolean = false,
     isDashed: Boolean = false,
     lineCap: String = Property.LINE_CAP_ROUND,
-    lineJoin: String = Property.LINE_JOIN_ROUND
+    lineJoin: String = Property.LINE_JOIN_ROUND,
+    linePatternId: Int? = null
 ) {
+  val context = LocalContext.current
   val mapApplier = currentComposer.applier as MapApplier
+
+  mapApplier.style.addImageFromResourceId(context = context, resourceId = linePatternId)
 
   ComposeNode<PolyLineNode, MapApplier>(
       factory = {
@@ -44,6 +50,7 @@ fun Polyline(
                 .withLineWidth(lineWidth)
                 .withDraggable(isDraggable)
                 .withLineJoin(lineJoin)
+                .withLinePattern(linePatternId?.toString())
 
         lineManager.lineCap = lineCap
 

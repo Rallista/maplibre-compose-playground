@@ -10,14 +10,10 @@
 
 package com.maplibre.compose.symbols
 
-import android.graphics.drawable.VectorDrawable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.currentComposer
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.imageResource
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
 import com.mapbox.mapboxsdk.style.layers.Property.ICON_ANCHOR_CENTER
@@ -47,16 +43,7 @@ fun Symbol(
   val context = LocalContext.current
   val mapApplier = currentComposer.applier as MapApplier
 
-  imageId?.let {
-    if (mapApplier.style.getImage("$imageId") == null) {
-      val vectorDrawable = context.getDrawable(imageId) as? VectorDrawable
-      if (vectorDrawable == null) {
-        mapApplier.style.addImage("$imageId", ImageBitmap.imageResource(imageId).asAndroidBitmap())
-      } else {
-        vectorDrawable.let { drawable -> mapApplier.style.addImage("$imageId", drawable) }
-      }
-    }
-  }
+  mapApplier.style.addImageFromResourceId(context = context, resourceId = imageId)
 
   ComposeNode<SymbolNode, MapApplier>(
       factory = {

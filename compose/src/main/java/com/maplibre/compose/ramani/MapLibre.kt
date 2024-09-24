@@ -18,6 +18,7 @@ import androidx.compose.runtime.ComposableTargetMarker
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCompositionContext
 import androidx.compose.runtime.rememberUpdatedState
@@ -32,6 +33,9 @@ import com.mapbox.mapboxsdk.style.layers.Layer
 import com.mapbox.mapboxsdk.style.sources.Source
 import com.mapbox.mapboxsdk.utils.BitmapUtils
 import com.maplibre.compose.camera.MapViewCamera
+import com.maplibre.compose.rememberSaveableMapControls
+import com.maplibre.compose.runtime.nodes.MapCameraNode
+import com.maplibre.compose.runtime.nodes.MapControlsNode
 import com.maplibre.compose.settings.MapControls
 import setupLocation
 
@@ -72,7 +76,7 @@ internal fun MapLibre(
     modifier: Modifier,
     styleUrl: String,
     camera: MutableState<MapViewCamera>,
-    mapControls: MapControls = MapControls(),
+    mapControls: State<MapControls> = rememberSaveableMapControls(),
     properties: MapProperties = MapProperties(),
     locationEngine: LocationEngine? = null,
     locationRequestProperties: LocationRequestProperties? = null,
@@ -107,67 +111,37 @@ internal fun MapLibre(
   val parentComposition = rememberCompositionContext()
 
   AndroidView(modifier = modifier, factory = { map })
-  LaunchedEffect(
-      currentMapControls,
-      currentMapProperties,
-      currentLocationRequestProperties,
-      currentLocationStyling) {
-        disposingComposition {
-          val maplibreMap = map.awaitMap()
-          val style = maplibreMap.awaitStyle(styleUrl)
+  LaunchedEffect(currentMapProperties, currentLocationRequestProperties, currentLocationStyling) {
+    disposingComposition {
+      val maplibreMap = map.awaitMap()
+      val style = maplibreMap.awaitStyle(styleUrl)
 
-          maplibreMap.applyMapControls(currentMapControls)
-          maplibreMap.applyProperties(currentMapProperties)
-          maplibreMap.setupLocation(
-              context,
-              style,
-              currentLocationEngine,
-              currentLocationRequestProperties,
-              currentLocationStyling,
-              userLocation,
-          )
-          maplibreMap.setupEventCallbacks(onTapGestureCallback, onLongPressGestureCallback)
-          maplibreMap.addImages(context, currentImages)
-          maplibreMap.addSources(currentSources)
-          maplibreMap.addLayers(currentLayers)
+      maplibreMap.applyProperties(currentMapProperties)
+      maplibreMap.setupLocation(
+          context,
+          style,
+          currentLocationEngine,
+          currentLocationRequestProperties,
+          currentLocationStyling,
+          userLocation,
+      )
+      maplibreMap.setupEventCallbacks(onTapGestureCallback, onLongPressGestureCallback)
+      maplibreMap.addImages(context, currentImages)
+      maplibreMap.addSources(currentSources)
+      maplibreMap.addLayers(currentLayers)
 
-          // Notify the parent callback that the map is ready with a style.
-          // This must include all style modifications from adding images, sources, and layers.
-          onMapReadyCallback?.invoke(style)
+      // Notify the parent callback that the map is ready with a style.
+      // This must include all style modifications from adding images, sources, and layers.
+      onMapReadyCallback?.invoke(style)
 
-          map.newComposition(parentComposition, style) {
-            CompositionLocalProvider {
-              MapCameraUpdater(camera = currentCamera)
-              currentContent?.invoke()
-            }
-          }
+      map.newComposition(parentComposition, style) {
+        CompositionLocalProvider {
+          MapCameraNode(camera = currentCamera)
+          MapControlsNode(mapControls = currentMapControls)
+          currentContent?.invoke()
         }
       }
-}
-
-private fun MapboxMap.applyMapControls(mapControls: MapControls) {
-  mapControls.attribution?.let { newAttribution ->
-    newAttribution.enabled?.let { this.uiSettings.isAttributionEnabled = it }
-    newAttribution.gravity?.let { this.uiSettings.attributionGravity = it }
-    newAttribution.margins?.let {
-      this.uiSettings.setAttributionMargins(it.start, it.top, it.end, it.bottom)
     }
-    newAttribution.tintColor?.let { this.uiSettings.setAttributionTintColor(it) }
-  }
-
-  mapControls.compass?.let { newCompass ->
-    newCompass.enabled?.let { this.uiSettings.isCompassEnabled = it }
-    newCompass.gravity?.let { this.uiSettings.compassGravity = it }
-    newCompass.fadeFacingNorth?.let { this.uiSettings.setCompassFadeFacingNorth(it) }
-    newCompass.margins?.let {
-      this.uiSettings.setCompassMargins(it.start, it.top, it.end, it.bottom)
-    }
-  }
-
-  mapControls.logo?.let { newLogo ->
-    newLogo.enabled?.let { this.uiSettings.isLogoEnabled = it }
-    newLogo.gravity?.let { this.uiSettings.logoGravity = it }
-    newLogo.margins?.let { this.uiSettings.setLogoMargins(it.start, it.top, it.end, it.bottom) }
   }
 }
 

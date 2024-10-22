@@ -33,24 +33,24 @@ fun MapViewCamera.setPitch(pitch: Double): MapViewCamera {
   when (this.state) {
     is CameraState.Centered -> {
       return this.copy(
-        state =
-        CameraState.Centered(
-          latitude = this.state.latitude,
-          longitude = this.state.longitude,
-          zoom = this.state.zoom,
-          pitch = pitch,
-          direction = this.state.direction))
+          state =
+              CameraState.Centered(
+                  latitude = this.state.latitude,
+                  longitude = this.state.longitude,
+                  zoom = this.state.zoom,
+                  pitch = pitch,
+                  direction = this.state.direction))
     }
     is CameraState.TrackingUserLocation -> {
       return this.copy(
-        state =
-        CameraState.TrackingUserLocation(
-          zoom = this.state.zoom, pitch = pitch, direction = this.state.direction))
+          state =
+              CameraState.TrackingUserLocation(
+                  zoom = this.state.zoom, pitch = pitch, direction = this.state.direction))
     }
     is CameraState.TrackingUserLocationWithBearing -> {
       return this.copy(
-        state =
-        CameraState.TrackingUserLocationWithBearing(zoom = this.state.zoom, pitch = pitch))
+          state =
+              CameraState.TrackingUserLocationWithBearing(zoom = this.state.zoom, pitch = pitch))
     }
   }
 }

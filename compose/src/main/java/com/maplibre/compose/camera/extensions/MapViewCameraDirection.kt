@@ -6,8 +6,8 @@ import com.maplibre.compose.camera.MapViewCamera
 /**
  * Get the camera's current direction.
  *
- * Direction is null while tracking user location with bearing. In this case, the MapView is
- * always oriented to the user's current direction of travel.
+ * Direction is null while tracking user location with bearing. In this case, the MapView is always
+ * oriented to the user's current direction of travel.
  *
  * @return the current direction.
  */
@@ -36,19 +36,19 @@ fun MapViewCamera.setDirection(direction: Double): MapViewCamera {
   when (this.state) {
     is CameraState.Centered -> {
       return this.copy(
-        state =
-        CameraState.Centered(
-          latitude = this.state.latitude,
-          longitude = this.state.longitude,
-          zoom = this.state.zoom,
-          pitch = this.state.pitch,
-          direction = direction))
+          state =
+              CameraState.Centered(
+                  latitude = this.state.latitude,
+                  longitude = this.state.longitude,
+                  zoom = this.state.zoom,
+                  pitch = this.state.pitch,
+                  direction = direction))
     }
     is CameraState.TrackingUserLocation -> {
       return this.copy(
-        state =
-        CameraState.TrackingUserLocation(
-          zoom = this.state.zoom, pitch = this.state.pitch, direction = direction))
+          state =
+              CameraState.TrackingUserLocation(
+                  zoom = this.state.zoom, pitch = this.state.pitch, direction = direction))
     }
     is CameraState.TrackingUserLocationWithBearing -> {
       // No change because direction is ignored.

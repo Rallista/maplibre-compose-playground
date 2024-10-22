@@ -29,19 +29,12 @@ class MapViewCameraGetterTests {
 
   @Test
   fun `test MapViewCamera getters Center custom`() {
-    val mapViewCamera = MapViewCamera.Centered(
-      latitude = 0.0,
-      longitude = 0.0,
-      zoom = 15.5,
-      pitch = 33.3,
-      direction = 155.5
-    )
+    val mapViewCamera =
+        MapViewCamera.Centered(
+            latitude = 0.0, longitude = 0.0, zoom = 15.5, pitch = 33.3, direction = 155.5)
 
     assertEquals(mapViewCamera.getZoom(), 15.5, 0.01)
     assertEquals(mapViewCamera.getPitch(), 33.3, 0.01)
     assertEquals(mapViewCamera.getDirection()!!, 155.5, 0.01)
   }
-
-
-
 }

@@ -5,7 +5,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class MapViewCameraSetDirectionTest {
-  
+
   @Test
   fun `test MapViewCamera Centered setDirection`() {
     val mapViewCamera = MapViewCamera()
@@ -56,7 +56,7 @@ class MapViewCameraSetDirectionTest {
     when (newCamera.state) {
       is CameraState.TrackingUserLocation -> {
         val value = newCamera.state as CameraState.TrackingUserLocation
-        assertEquals(99.9, value.direction,  0.01)
+        assertEquals(99.9, value.direction, 0.01)
       }
       else -> throw AssertionError("Expected MapViewCamera.TrackingUserLocation")
     }
@@ -84,7 +84,7 @@ class MapViewCameraSetDirectionTest {
     when (newCamera.state) {
       is CameraState.TrackingUserLocation -> {
         val value = newCamera.state as CameraState.TrackingUserLocation
-        assertEquals(15.0, value.direction,0.01)
+        assertEquals(15.0, value.direction, 0.01)
       }
       else -> throw AssertionError("Expected MapViewCamera.TrackingUserLocation")
     }

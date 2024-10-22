@@ -25,7 +25,7 @@ fun MapViewCamera.getDirection(): Double? {
  * This function will ensure that the direction is within the min and max direction values.
  *
  * ```kotlin
- * val camera = remember { mutableStateOf(MapViewCamera()) }
+ * val camera = rememberSaveableMapViewCamera()
  * camera.value = camera.value.setDirection(90.0)
  * ```
  *

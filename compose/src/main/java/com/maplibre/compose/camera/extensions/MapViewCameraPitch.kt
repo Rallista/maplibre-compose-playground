@@ -22,7 +22,7 @@ fun MapViewCamera.getPitch(): Double {
  * This function will ensure that the pitch is within the min and max pitch values.
  *
  * ```kotlin
- * val camera = remember { mutableStateOf(MapViewCamera()) }
+ * val camera = rememberSaveableMapViewCamera()
  * camera.value = camera.value.incrementZoom(1.0)
  * ```
  *

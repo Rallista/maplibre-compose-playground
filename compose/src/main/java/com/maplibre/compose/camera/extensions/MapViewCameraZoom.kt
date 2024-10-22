@@ -8,7 +8,7 @@ import kotlin.math.roundToInt
  * Get the camera's zoom level.
  *
  * ```kotlin
- * val camera = remember { mutableStateOf(MapViewCamera()) }
+ * val camera = rememberSaveableMapViewCamera()
  * val zoom = camera.value.getZoom()
  * ```
  *
@@ -28,7 +28,7 @@ fun MapViewCamera.getZoom(): Double {
  * This function will ensure that the zoom level is within the min and max zoom levels.
  *
  * ```kotlin
- * val camera = remember { mutableStateOf(MapViewCamera()) }
+ * val camera = rememberSaveableMapViewCamera()
  * camera.value = camera.value.setZoom(10.0)
  * ```
  *
@@ -67,7 +67,7 @@ fun MapViewCamera.setZoom(zoom: Double): MapViewCamera {
  * This function will ensure that the zoom level is within the min and max zoom levels.
  *
  * ```kotlin
- * val camera = remember { mutableStateOf(MapViewCamera()) }
+ * val camera = rememberSaveableMapViewCamera()
  * camera.value = camera.value.incrementZoom(1.0)
  * ```
  *

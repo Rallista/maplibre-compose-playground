@@ -57,9 +57,9 @@ internal fun MapCameraNode(camera: MutableState<MapViewCamera>) {
                   pitch = mapApplier.map.cameraPosition.tilt,
                   direction = mapApplier.map.cameraPosition.bearing,
                   motion = MapViewCameraDefaults.MOTION),
-              pitchRange =
-                  CameraPitchRange.fromMapLibre(mapApplier.map.minPitch, mapApplier.map.maxPitch),
-              padding = CameraPadding.fromCameraPosition(mapApplier.map.cameraPosition.padding)))
+                  pitchRange =
+                    CameraPitchRange.fromMapLibre(mapApplier.map.minPitch, mapApplier.map.maxPitch),
+                  padding = CameraPadding.fromCameraPosition(mapApplier.map.cameraPosition.padding)))
     }
   }
 

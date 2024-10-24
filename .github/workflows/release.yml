@@ -28,7 +28,7 @@ jobs:
 
       - name: Bump version
         id: version
-        run: ./scripts/bump-version.sh ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'patch' || inputs.bump_version_scheme }}
+        run: ./scripts/version_bump.sh ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'patch' || inputs.bump_version_scheme }}
 
       - name: Commit version update
         run: |

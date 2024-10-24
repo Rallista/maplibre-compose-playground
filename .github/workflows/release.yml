@@ -18,13 +18,23 @@ on:
 jobs:
   version_bump:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
       contents: write
-      packages: write
 
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT }}
+
+      - name: Configure Git
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
 
       - name: Bump version
         id: version
@@ -32,10 +42,8 @@ jobs:
 
       - name: Commit version update
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
           git add build.gradle.kts
-          git commit -m "Update version to ${GITHUB_REF_NAME}"
+          git commit -m "Update version to ${{ steps.version.outputs.version }}"
           git push
 
       - uses: softprops/action-gh-release@v1

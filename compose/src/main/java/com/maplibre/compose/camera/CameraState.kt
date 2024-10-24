@@ -1,6 +1,7 @@
 package com.maplibre.compose.camera
 
 import android.os.Parcelable
+import com.maplibre.compose.camera.extensions.validDirection
 import com.maplibre.compose.camera.extensions.validPitch
 import com.maplibre.compose.camera.extensions.validZoom
 import com.maplibre.compose.camera.models.CameraMotion
@@ -13,7 +14,7 @@ sealed class CameraState : Parcelable {
       val longitude: Double,
       var zoom: Double = MapViewCameraDefaults.ZOOM,
       var pitch: Double = MapViewCameraDefaults.PITCH,
-      val direction: Double = MapViewCameraDefaults.DIRECTION,
+      var direction: Double = MapViewCameraDefaults.DIRECTION,
       val motion: CameraMotion = MapViewCameraDefaults.MOTION
   ) : CameraState() {
 
@@ -21,6 +22,7 @@ sealed class CameraState : Parcelable {
       // Ensure that the zoom and pitch are within the min and max values.
       zoom = validZoom(zoom)
       pitch = validPitch(pitch)
+      direction = validDirection(direction)
     }
 
     override fun equals(other: Any?): Boolean {
@@ -48,13 +50,14 @@ sealed class CameraState : Parcelable {
   data class TrackingUserLocation(
       var zoom: Double = MapViewCameraDefaults.ZOOM,
       var pitch: Double = MapViewCameraDefaults.PITCH,
-      val direction: Double = MapViewCameraDefaults.DIRECTION
+      var direction: Double = MapViewCameraDefaults.DIRECTION
   ) : CameraState() {
 
     init {
       // Ensure that the zoom and pitch are within the min and max values.
       zoom = validZoom(zoom)
       pitch = validPitch(pitch)
+      direction = validDirection(direction)
     }
 
     override fun equals(other: Any?): Boolean {

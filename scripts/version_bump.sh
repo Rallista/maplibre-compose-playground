@@ -21,7 +21,7 @@ fi
 echo "Bumping version from $last_version to $next_version"
 
 # Update the version in build.gradle.kts
-sed -i '' "s/version = \"$last_version\"/version = \"$next_version\"/" build.gradle.kts
+sed -i "s/version = \"$last_version\"/version = \"$next_version\"/" build.gradle.kts
 
 # Output the tag to stdout
 echo ::set-output name=version::$next_version

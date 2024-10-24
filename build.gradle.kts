@@ -9,5 +9,5 @@ plugins {
 }
 
 allprojects {
-    version = "0.2.3"
+    version = "0.2.2"
 }

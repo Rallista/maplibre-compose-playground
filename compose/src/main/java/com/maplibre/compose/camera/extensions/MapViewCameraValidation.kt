@@ -21,3 +21,12 @@ fun validZoom(zoom: Double): Double {
     zoom
   }
 }
+
+fun validDirection(direction: Double): Double {
+  val normalizedDirection = direction % 360.0
+  return if (normalizedDirection < 0.0) {
+    normalizedDirection + 360.0
+  } else {
+    normalizedDirection
+  }
+}

@@ -33,6 +33,7 @@ import com.mapbox.mapboxsdk.style.layers.Layer
 import com.mapbox.mapboxsdk.style.sources.Source
 import com.mapbox.mapboxsdk.utils.BitmapUtils
 import com.maplibre.compose.camera.MapViewCamera
+import com.maplibre.compose.camera.extensions.toCameraPosition
 import com.maplibre.compose.rememberSaveableMapControls
 import com.maplibre.compose.runtime.nodes.MapCameraNode
 import com.maplibre.compose.runtime.nodes.MapControlsNode
@@ -129,6 +130,7 @@ internal fun MapLibre(
       maplibreMap.addImages(context, currentImages)
       maplibreMap.addSources(currentSources)
       maplibreMap.addLayers(currentLayers)
+      maplibreMap.cameraPosition = camera.value.toCameraPosition()
 
       // Notify the parent callback that the map is ready with a style.
       // This must include all style modifications from adding images, sources, and layers.

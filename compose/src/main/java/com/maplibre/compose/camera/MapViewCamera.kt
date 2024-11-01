@@ -1,6 +1,7 @@
 package com.maplibre.compose.camera
 
 import android.os.Parcelable
+import com.mapbox.mapboxsdk.geometry.LatLngBounds
 import com.maplibre.compose.camera.extensions.validPitch
 import com.maplibre.compose.camera.extensions.validZoom
 import com.maplibre.compose.camera.models.CameraMotion
@@ -57,6 +58,19 @@ data class MapViewCamera(
         MapViewCamera(
             CameraState.Centered(
                 latitude, longitude, validZoom(zoom), validPitch(pitch), direction, motion),
+            pitchRange,
+            padding)
+
+    fun BoundingBox(
+        bounds: LatLngBounds,
+        pitch: Double = MapViewCameraDefaults.PITCH,
+        direction: Double = MapViewCameraDefaults.DIRECTION,
+        pitchRange: CameraPitchRange = MapViewCameraDefaults.PITCH_RANGE,
+        padding: CameraPadding = MapViewCameraDefaults.PADDING,
+        motion: CameraMotion = MapViewCameraDefaults.MOTION
+    ) =
+        MapViewCamera(
+            CameraState.BoundingBox(bounds, validPitch(pitch), direction, motion),
             pitchRange,
             padding)
 

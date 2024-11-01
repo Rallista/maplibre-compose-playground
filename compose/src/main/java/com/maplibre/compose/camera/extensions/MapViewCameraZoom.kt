@@ -17,6 +17,7 @@ import kotlin.math.roundToInt
 fun MapViewCamera.getZoom(): Double {
   return when (this.state) {
     is CameraState.Centered -> this.state.zoom
+    is CameraState.BoundingBox -> TODO("This is gonna be a problem...")
     is CameraState.TrackingUserLocation -> this.state.zoom
     is CameraState.TrackingUserLocationWithBearing -> this.state.zoom
   }
@@ -46,6 +47,9 @@ fun MapViewCamera.setZoom(zoom: Double): MapViewCamera {
                   zoom = zoom,
                   pitch = this.state.pitch,
                   direction = this.state.direction))
+    }
+    is CameraState.BoundingBox -> {
+      TODO("This is gonna be a problem...")
     }
     is CameraState.TrackingUserLocation -> {
       return this.copy(
@@ -80,6 +84,7 @@ fun MapViewCamera.incrementZoom(increment: Double, rounded: Boolean = true): Map
   val currentRawZoom =
       when (this.state) {
         is CameraState.Centered -> this.state.zoom
+        is CameraState.BoundingBox -> TODO("This is gonna be a problem...")
         is CameraState.TrackingUserLocation -> this.state.zoom
         is CameraState.TrackingUserLocationWithBearing -> this.state.zoom
       }

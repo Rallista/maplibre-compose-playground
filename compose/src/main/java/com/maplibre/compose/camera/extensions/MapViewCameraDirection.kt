@@ -14,6 +14,7 @@ import com.maplibre.compose.camera.MapViewCamera
 fun MapViewCamera.getDirection(): Double? {
   return when (this.state) {
     is CameraState.Centered -> this.state.direction
+    is CameraState.BoundingBox -> this.state.direction
     is CameraState.TrackingUserLocation -> this.state.direction
     is CameraState.TrackingUserLocationWithBearing -> null
   }
@@ -42,7 +43,17 @@ fun MapViewCamera.setDirection(direction: Double): MapViewCamera {
                   longitude = this.state.longitude,
                   zoom = this.state.zoom,
                   pitch = this.state.pitch,
-                  direction = direction))
+                  direction = direction,
+                  motion = this.state.motion))
+    }
+    is CameraState.BoundingBox -> {
+      return this.copy(
+          state =
+              CameraState.BoundingBox(
+                  bounds = this.state.bounds,
+                  pitch = this.state.pitch,
+                  direction = direction,
+                  motion = this.state.motion))
     }
     is CameraState.TrackingUserLocation -> {
       return this.copy(

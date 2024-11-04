@@ -115,7 +115,7 @@ private fun getNextCamera(currentState: CameraState, padding: CameraPadding): Ma
     is CameraState.TrackingUserLocationWithBearing ->
         MapViewCamera.BoundingBox(
             LatLngBounds.Companion.from(47.8308275417, 10.4427014502, 45.7769477403, 6.02260949059),
-            padding = CameraPadding(20.0, 20.0, 2.0, 20.0))
+            padding = CameraPadding(100.0, 20.0, 100.0, 20.0))
     is CameraState.BoundingBox -> MapViewCamera.Default
   }
 }

@@ -26,11 +26,12 @@ internal fun MapViewCamera.toCameraPosition(map: MapboxMap): CameraPosition? {
       return map.getCameraForLatLngBounds(
           this.state.bounds,
           intArrayOf(
-              this.padding.top.toInt(),
-              // TODO: Internally the C++ lib uses left/right, not start/end
+              // Internally the C++ lib uses left/right, not start/end.
+              // TODO: Do we need to translate this?
               this.padding.start.toInt(),
-              this.padding.bottom.toInt(),
-              this.padding.end.toInt()),
+              this.padding.top.toInt(),
+              this.padding.end.toInt(),
+              this.padding.bottom.toInt()),
           this.state.direction,
           this.state.pitch)
     }

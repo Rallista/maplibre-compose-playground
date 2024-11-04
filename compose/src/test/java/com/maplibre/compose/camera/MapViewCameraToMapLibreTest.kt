@@ -5,6 +5,7 @@ import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.geometry.LatLngBounds
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.maplibre.compose.camera.extensions.toCameraPosition
+import com.maplibre.compose.camera.models.CameraPadding
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
@@ -81,6 +82,30 @@ class MapViewCameraToMapLibreTest {
     } returns mockCameraPosition
 
     val mapViewCamera = MapViewCamera.BoundingBox(LatLngBounds.world())
+    val cameraPosition = mapViewCamera.toCameraPosition(map)
+
+    assertEquals(mockCameraPosition, cameraPosition)
+  }
+
+  @Test
+  fun `test MapViewCamera BoundingBox with padding toMapLibre`() {
+    val mockCameraPosition =
+        CameraPosition.Builder()
+            .target(LatLng(0.0, 0.0))
+            .zoom(0.0)
+            .bearing(0.0)
+            .padding(1.0, 2.0, 3.0, 4.0)
+            .build()
+    every {
+      // NOTE: This line is subtly critical for the test.
+      // The order of the int array is undocumented,
+      // so part of this test's purpose is to ensure that the padding dimensions are passed
+      // in the correct order.
+      map.getCameraForLatLngBounds(LatLngBounds.world(), intArrayOf(1, 2, 3, 4), 0.0, 0.0)
+    } returns mockCameraPosition
+
+    val mapViewCamera =
+        MapViewCamera.BoundingBox(LatLngBounds.world(), padding = CameraPadding(1.0, 2.0, 3.0, 4.0))
     val cameraPosition = mapViewCamera.toCameraPosition(map)
 
     assertEquals(mockCameraPosition, cameraPosition)

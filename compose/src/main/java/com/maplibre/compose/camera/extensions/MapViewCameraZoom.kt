@@ -1,5 +1,6 @@
 package com.maplibre.compose.camera.extensions
 
+import android.util.Log
 import com.maplibre.compose.camera.CameraState
 import com.maplibre.compose.camera.MapViewCamera
 import kotlin.math.roundToInt
@@ -12,12 +13,13 @@ import kotlin.math.roundToInt
  * val zoom = camera.value.getZoom()
  * ```
  *
- * @return the current zoom level.
+ * @return the current zoom level. This may be null in modes like bounding box which do not have an
+ *   obvious zoom level.
  */
-fun MapViewCamera.getZoom(): Double {
+fun MapViewCamera.getZoom(): Double? {
   return when (this.state) {
     is CameraState.Centered -> this.state.zoom
-    is CameraState.BoundingBox -> TODO("This is gonna be a problem...")
+    is CameraState.BoundingBox -> null
     is CameraState.TrackingUserLocation -> this.state.zoom
     is CameraState.TrackingUserLocationWithBearing -> this.state.zoom
   }
@@ -49,7 +51,10 @@ fun MapViewCamera.setZoom(zoom: Double): MapViewCamera {
                   direction = this.state.direction))
     }
     is CameraState.BoundingBox -> {
-      TODO("This is gonna be a problem...")
+      Log.d(
+          "MapViewCamera",
+          "Dropping setZoom($zoom) as the camera is currently updating to a bounding box.")
+      return this
     }
     is CameraState.TrackingUserLocation -> {
       return this.copy(
@@ -84,7 +89,12 @@ fun MapViewCamera.incrementZoom(increment: Double, rounded: Boolean = true): Map
   val currentRawZoom =
       when (this.state) {
         is CameraState.Centered -> this.state.zoom
-        is CameraState.BoundingBox -> TODO("This is gonna be a problem...")
+        is CameraState.BoundingBox -> {
+          Log.d(
+              "MapViewCamera",
+              "Dropping incrementZoom($increment, $rounded) as the camera is currently updating to a bounding box.")
+          return this
+        }
         is CameraState.TrackingUserLocation -> this.state.zoom
         is CameraState.TrackingUserLocationWithBearing -> this.state.zoom
       }

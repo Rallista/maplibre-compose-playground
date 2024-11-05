@@ -130,7 +130,7 @@ internal fun MapLibre(
       maplibreMap.addImages(context, currentImages)
       maplibreMap.addSources(currentSources)
       maplibreMap.addLayers(currentLayers)
-      maplibreMap.cameraPosition = camera.value.toCameraPosition()
+      camera.value.toCameraPosition(maplibreMap)?.let { maplibreMap.cameraPosition = it }
 
       // Notify the parent callback that the map is ready with a style.
       // This must include all style modifications from adding images, sources, and layers.

@@ -3,6 +3,7 @@ package com.maplibre.compose.runtime.nodes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.currentComposer
+import com.mapbox.mapboxsdk.camera.CameraUpdate
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.location.OnLocationCameraTransitionListener
 import com.mapbox.mapboxsdk.location.modes.CameraMode
@@ -103,7 +104,13 @@ private class CameraTransitionListener(
 }
 
 private fun cameraUpdate(map: MapboxMap, camera: MapViewCamera) {
-  val cameraUpdate = CameraUpdateFactory.newCameraPosition(camera.toCameraPosition())
+  // This can technically fail (per the native API signature of `getCameraForLatLngBounds`),
+  // so we may need to bail early.
+  // The failure conditions are not documented,
+  // but we assume they relate to things like invalid bounding boxes.
+  val cameraPosition = camera.toCameraPosition(map) ?: return
+
+  val cameraUpdate: CameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition)
 
   val newPadding = camera.padding.toDoubleArray()
 
@@ -117,6 +124,24 @@ private fun cameraUpdate(map: MapboxMap, camera: MapViewCamera) {
   when (camera.state) {
     // The new-updated camera is centered on a specific location.
     is CameraState.Centered -> {
+      // Unset any tracking modes.
+      if (map.locationComponent.isLocationComponentActivated) {
+        map.locationComponent.cameraMode = CameraMode.NONE
+      }
+      // Apply the camera update to the map using the correct motion type.
+      when (camera.state.motion) {
+        is CameraMotion.Instant -> map.moveCamera(cameraUpdate)
+        is CameraMotion.Ease -> {
+          map.easeCamera(cameraUpdate, camera.state.motion.animationDurationMs)
+        }
+        is CameraMotion.Fly -> {
+          map.animateCamera(cameraUpdate, camera.state.motion.animationDurationMs)
+        }
+      }
+    }
+
+    // The new-updated camera transitions to a bounding box
+    is CameraState.BoundingBox -> {
       // Unset any tracking modes.
       if (map.locationComponent.isLocationComponentActivated) {
         map.locationComponent.cameraMode = CameraMode.NONE

@@ -11,6 +11,7 @@ import com.maplibre.compose.camera.MapViewCamera
 fun MapViewCamera.getPitch(): Double {
   return when (this.state) {
     is CameraState.Centered -> this.state.pitch
+    is CameraState.BoundingBox -> this.state.pitch
     is CameraState.TrackingUserLocation -> this.state.pitch
     is CameraState.TrackingUserLocationWithBearing -> this.state.pitch
   }
@@ -40,6 +41,15 @@ fun MapViewCamera.setPitch(pitch: Double): MapViewCamera {
                   zoom = this.state.zoom,
                   pitch = pitch,
                   direction = this.state.direction))
+    }
+    is CameraState.BoundingBox -> {
+      return this.copy(
+          state =
+              CameraState.BoundingBox(
+                  bounds = this.state.bounds,
+                  pitch = pitch,
+                  direction = this.state.direction,
+                  motion = this.state.motion))
     }
     is CameraState.TrackingUserLocation -> {
       return this.copy(

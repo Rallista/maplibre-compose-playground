@@ -10,7 +10,8 @@ import com.maplibre.compose.camera.CameraState
  */
 internal fun CameraState.toCameraMode(): Int {
   return when (this) {
-    is CameraState.Centered -> CameraMode.NONE
+    is CameraState.Centered,
+    is CameraState.BoundingBox -> CameraMode.NONE
     is CameraState.TrackingUserLocation -> CameraMode.TRACKING
     is CameraState.TrackingUserLocationWithBearing -> CameraMode.TRACKING_GPS
   }
@@ -33,8 +34,9 @@ internal fun CameraState.needsUpdate(
     mapCurrentPitch: Double
 ): Boolean {
   when (this) {
-    is CameraState.Centered -> {
-      // A new centered camera can always be updated.
+    is CameraState.Centered,
+    is CameraState.BoundingBox -> {
+      // A new concrete positional camera can always be updated.
       return true
     }
     is CameraState.TrackingUserLocation -> {

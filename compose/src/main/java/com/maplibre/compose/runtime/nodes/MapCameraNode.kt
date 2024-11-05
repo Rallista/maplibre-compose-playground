@@ -104,6 +104,10 @@ private class CameraTransitionListener(
 }
 
 private fun cameraUpdate(map: MapboxMap, camera: MapViewCamera) {
+  // This can technically fail (per the native API signature of `getCameraForLatLngBounds`),
+  // so we may need to bail early.
+  // The failure conditions are not documented,
+  // but we assume they relate to things like invalid bounding boxes.
   val cameraPosition = camera.toCameraPosition(map) ?: return
 
   val cameraUpdate: CameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition)

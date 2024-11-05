@@ -23,6 +23,11 @@ internal fun MapViewCamera.toCameraPosition(map: MapboxMap): CameraPosition? {
           .bearing(this.state.direction)
     }
     is CameraState.BoundingBox -> {
+      // NOTE: weird flow control.
+      // There is no `CameraPosition` builder for bounding boxes,
+      // because they are inherently specific to the map instance dimensions!
+      // As such, we need to call a method on the map object to get the new camera position,
+      // and we do a direct return from this branch.
       return map.getCameraForLatLngBounds(
           this.state.bounds,
           intArrayOf(

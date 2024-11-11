@@ -23,7 +23,6 @@ import com.maplibre.compose.MapView
 import com.maplibre.compose.StaticLocationEngine
 import com.maplibre.compose.camera.CameraState
 import com.maplibre.compose.camera.MapViewCamera
-import com.maplibre.compose.camera.cameraPaddingFractionOfScreen
 import com.maplibre.compose.camera.extensions.incrementZoom
 import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.rememberSaveableMapViewCamera
@@ -45,7 +44,7 @@ fun CameraExample() {
 
   val canChangeCamera = remember { mutableStateOf(false) }
 
-  val cameraPadding = cameraPaddingFractionOfScreen(top = 0.8f)
+  val cameraPadding = CameraPadding.fractionOfScreen(top = 0.8f)
 
   val mapViewCamera = rememberSaveableMapViewCamera() // Or rememberMapViewCamera()
   val nextCameraState = getNextCamera(mapViewCamera.value.state, cameraPadding)

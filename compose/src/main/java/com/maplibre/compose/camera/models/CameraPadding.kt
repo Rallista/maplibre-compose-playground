@@ -3,7 +3,6 @@ package com.maplibre.compose.camera.models
 import android.os.Parcelable
 import androidx.annotation.FloatRange
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -36,31 +35,33 @@ data class CameraPadding(
      */
     @Composable
     fun fractionOfScreen(
-      @FloatRange(from = 0.0, to = 1.0) start: Float = 0.0f,
-      @FloatRange(from = 0.0, to = 1.0) top: Float = 0.0f,
-      @FloatRange(from = 0.0, to = 1.0) end: Float = 0.0f,
-      @FloatRange(from = 0.0, to = 1.0) bottom: Float = 0.0f
+        @FloatRange(from = 0.0, to = 1.0) start: Float = 0.0f,
+        @FloatRange(from = 0.0, to = 1.0) top: Float = 0.0f,
+        @FloatRange(from = 0.0, to = 1.0) end: Float = 0.0f,
+        @FloatRange(from = 0.0, to = 1.0) bottom: Float = 0.0f
     ): CameraPadding {
       val layoutDirection = LocalLayoutDirection.current
       val screenWidth = screenWidthPx()
       val screenHeight = screenHeightPx()
 
-      val left = when (layoutDirection) {
-        LayoutDirection.Ltr -> start * screenWidth
-        LayoutDirection.Rtl -> end * screenWidth
-      }
+      val left =
+          when (layoutDirection) {
+            LayoutDirection.Ltr -> start * screenWidth
+            LayoutDirection.Rtl -> end * screenWidth
+          }
       val top = top * screenHeight
-      val right = when (layoutDirection) {
-        LayoutDirection.Ltr -> end * screenWidth
-        LayoutDirection.Rtl -> start * screenWidth
-      }
+      val right =
+          when (layoutDirection) {
+            LayoutDirection.Ltr -> end * screenWidth
+            LayoutDirection.Rtl -> start * screenWidth
+          }
       val bottom = bottom * screenHeight
 
       return CameraPadding(
-        left = left.toDouble(),
-        top = top.toDouble(),
-        right = right.toDouble(),
-        bottom = bottom.toDouble())
+          left = left.toDouble(),
+          top = top.toDouble(),
+          right = right.toDouble(),
+          bottom = bottom.toDouble())
     }
 
     @Composable
@@ -69,7 +70,12 @@ data class CameraPadding(
     }
 
     @Composable
-    fun padding(start: Dp = 0.dp, top: Dp = 0.dp, end: Dp = 0.dp, bottom: Dp = 0.dp): CameraPadding {
+    fun padding(
+        start: Dp = 0.dp,
+        top: Dp = 0.dp,
+        end: Dp = 0.dp,
+        bottom: Dp = 0.dp
+    ): CameraPadding {
       return padding(PaddingValues(start, top, end, bottom))
     }
 
@@ -92,8 +98,7 @@ data class CameraPadding(
           left = left.value.toDouble(),
           top = top.value.toDouble(),
           right = right.value.toDouble(),
-          bottom = bottom.value.toDouble()
-      )
+          bottom = bottom.value.toDouble())
     }
 
     fun doubleArray(padding: DoubleArray?): CameraPadding {

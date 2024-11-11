@@ -41,7 +41,7 @@ data class CompassSettings(
         position: MapControlPosition = MapControlPosition.TopStart()
     ): CompassSettings =
         initWithLayoutAndPosition(
-          LocalLayoutDirection.current, LocalDensity.current, enabled, isFacingNorth, position)
+            LocalLayoutDirection.current, LocalDensity.current, enabled, isFacingNorth, position)
 
     /**
      * Configure the compass.

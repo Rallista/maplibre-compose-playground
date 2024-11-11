@@ -42,7 +42,7 @@ data class AttributionSettings(
         tintColor: Int? = null
     ): AttributionSettings =
         initWithLayoutAndPosition(
-          LocalLayoutDirection.current, LocalDensity.current, enabled, position, tintColor)
+            LocalLayoutDirection.current, LocalDensity.current, enabled, position, tintColor)
 
     /**
      * Configure the attribution view.

@@ -3,9 +3,9 @@ package com.maplibre.compose.settings
 import android.os.Parcelable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
-import com.maplibre.compose.runtime.localLayoutDirection
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -41,7 +41,7 @@ data class LogoSettings(
         LogoSettings(
             enabled,
             position.asGravity(),
-            position.asMarginInsets(localLayoutDirection(), LocalDensity.current))
+            position.asMarginInsets(LocalLayoutDirection.current, LocalDensity.current))
 
     /**
      * Configure the logo.

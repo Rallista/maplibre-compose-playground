@@ -10,8 +10,8 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.10.01"
-maplibre = "10.3.1" # 11.0.0 is currently blocked by a crash - need to re-test in the near future.
-maplibre-annotation = "2.0.2"
+maplibre = "11.6.1"
+maplibre-annotation = "3.0.2"
 navigationCompose = "2.8.3"
 mockk = "1.13.13"
 

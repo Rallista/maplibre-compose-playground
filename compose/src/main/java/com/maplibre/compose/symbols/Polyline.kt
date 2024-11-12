@@ -14,12 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.currentComposer
 import androidx.compose.ui.platform.LocalContext
-import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.plugins.annotation.LineOptions
-import com.mapbox.mapboxsdk.style.layers.Property
 import com.maplibre.compose.ramani.MapApplier
 import com.maplibre.compose.ramani.MapLibreComposable
 import com.maplibre.compose.ramani.PolyLineNode
+import org.maplibre.android.geometry.LatLng
+import org.maplibre.android.plugins.annotation.LineOptions
+import org.maplibre.android.style.layers.Property
 
 @Composable
 @MapLibreComposable

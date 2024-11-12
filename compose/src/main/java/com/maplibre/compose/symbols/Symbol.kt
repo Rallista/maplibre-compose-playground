@@ -14,15 +14,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.currentComposer
 import androidx.compose.ui.platform.LocalContext
-import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
-import com.mapbox.mapboxsdk.style.layers.Property.ICON_ANCHOR_CENTER
 import com.maplibre.compose.ramani.MapApplier
 import com.maplibre.compose.ramani.MapLibreComposable
 import com.maplibre.compose.ramani.SymbolNode
 import com.maplibre.compose.symbols.builder.SymbolText
 import com.maplibre.compose.symbols.models.SymbolOffset
 import com.maplibre.compose.symbols.models.toMaplibreOffset
+import org.maplibre.android.geometry.LatLng
+import org.maplibre.android.plugins.annotation.SymbolOptions
+import org.maplibre.android.style.layers.Property.ICON_ANCHOR_CENTER
 
 @Composable
 @MapLibreComposable

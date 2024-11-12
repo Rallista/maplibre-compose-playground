@@ -5,19 +5,19 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.util.Log
 import androidx.compose.runtime.MutableState
-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
-import com.mapbox.mapboxsdk.location.LocationComponentOptions
-import com.mapbox.mapboxsdk.location.engine.LocationEngine
-import com.mapbox.mapboxsdk.location.engine.LocationEngineCallback
-import com.mapbox.mapboxsdk.location.engine.LocationEngineDefault
-import com.mapbox.mapboxsdk.location.engine.LocationEngineRequest
-import com.mapbox.mapboxsdk.location.engine.LocationEngineResult
-import com.mapbox.mapboxsdk.maps.MapboxMap
-import com.mapbox.mapboxsdk.maps.Style
 import com.maplibre.compose.ramani.LocationRequestProperties
 import com.maplibre.compose.ramani.LocationStyling
+import org.maplibre.android.location.LocationComponentActivationOptions
+import org.maplibre.android.location.LocationComponentOptions
+import org.maplibre.android.location.engine.LocationEngine
+import org.maplibre.android.location.engine.LocationEngineCallback
+import org.maplibre.android.location.engine.LocationEngineDefault
+import org.maplibre.android.location.engine.LocationEngineRequest
+import org.maplibre.android.location.engine.LocationEngineResult
+import org.maplibre.android.maps.MapLibreMap
+import org.maplibre.android.maps.Style
 
-internal fun MapboxMap.setupLocation(
+internal fun MapLibreMap.setupLocation(
     context: Context,
     style: Style,
     locationEngine: LocationEngine?,

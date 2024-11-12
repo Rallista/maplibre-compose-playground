@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.maplibre.compose.runtime.localLayoutDirection
 import kotlinx.parcelize.Parcelize
 
 sealed class MapControlPosition(open val horizontal: Dp = 0.dp, open val vertical: Dp = 0.dp) {
@@ -142,7 +142,7 @@ data class MarginInsets(
     @Composable
     fun createFromPadding(padding: PaddingValues): MarginInsets {
       return createFromLayoutAndPadding(
-          layoutDirection = localLayoutDirection(),
+          layoutDirection = LocalLayoutDirection.current,
           density = LocalDensity.current,
           padding = padding)
     }

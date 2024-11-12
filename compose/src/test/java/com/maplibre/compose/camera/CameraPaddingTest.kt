@@ -21,43 +21,43 @@ class CameraPaddingTest {
   @Test
   fun `test CameraPadding from camera position`() {
     val padding = doubleArrayOf(10.0, 20.0, 30.0, 40.0)
-    val cameraPadding = CameraPadding.fromCameraPosition(padding)
+    val cameraPadding = CameraPadding.doubleArray(padding)
 
-    assertEquals(cameraPadding.start, 10.0)
+    assertEquals(cameraPadding.left, 10.0)
     assertEquals(cameraPadding.top, 20.0)
-    assertEquals(cameraPadding.end, 30.0)
+    assertEquals(cameraPadding.right, 30.0)
     assertEquals(cameraPadding.bottom, 40.0)
   }
 
   @Test
   fun `test CameraPadding from camera position with null padding`() {
-    val cameraPadding = CameraPadding.fromCameraPosition(null)
+    val cameraPadding = CameraPadding.doubleArray(null)
 
-    assertEquals(cameraPadding.start, 0.0)
+    assertEquals(cameraPadding.left, 0.0)
     assertEquals(cameraPadding.top, 0.0)
-    assertEquals(cameraPadding.end, 0.0)
+    assertEquals(cameraPadding.right, 0.0)
     assertEquals(cameraPadding.bottom, 0.0)
   }
 
   @Test
   fun `test CameraPadding from partial camera position`() {
     val padding = doubleArrayOf(1.0)
-    val cameraPadding = CameraPadding.fromCameraPosition(padding)
+    val cameraPadding = CameraPadding.doubleArray(padding)
 
-    assertEquals(cameraPadding.start, 1.0)
+    assertEquals(cameraPadding.left, 1.0)
     assertEquals(cameraPadding.top, 0.0)
-    assertEquals(cameraPadding.end, 0.0)
+    assertEquals(cameraPadding.right, 0.0)
     assertEquals(cameraPadding.bottom, 0.0)
   }
 
   @Test
   fun `test CameraPadding from too large doubleArray`() {
     val padding = doubleArrayOf(1.0, 2.0, 3.0, 4.0, 5.0)
-    val cameraPadding = CameraPadding.fromCameraPosition(padding)
+    val cameraPadding = CameraPadding.doubleArray(padding)
 
-    assertEquals(cameraPadding.start, 1.0)
+    assertEquals(cameraPadding.left, 1.0)
     assertEquals(cameraPadding.top, 2.0)
-    assertEquals(cameraPadding.end, 3.0)
+    assertEquals(cameraPadding.right, 3.0)
     assertEquals(cameraPadding.bottom, 4.0)
   }
 }

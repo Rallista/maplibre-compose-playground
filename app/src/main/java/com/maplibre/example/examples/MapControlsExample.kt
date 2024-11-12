@@ -9,12 +9,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.maplibre.compose.MapView
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.rememberSaveableMapViewCamera
-import com.maplibre.compose.runtime.localLayoutDirection
 import com.maplibre.compose.settings.AttributionSettings
 import com.maplibre.compose.settings.CompassSettings
 import com.maplibre.compose.settings.LogoSettings
@@ -32,7 +32,7 @@ import kotlinx.coroutines.delay
 fun MapControlsExample() {
 
   val density = LocalDensity.current
-  val layoutDirection = localLayoutDirection()
+  val layoutDirection = LocalLayoutDirection.current
 
   // Create an initial set of map controls
   val initialMapControls =

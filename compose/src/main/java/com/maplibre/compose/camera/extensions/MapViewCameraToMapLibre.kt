@@ -32,10 +32,9 @@ internal fun MapViewCamera.toCameraPosition(map: MapboxMap): CameraPosition? {
           this.state.bounds,
           intArrayOf(
               // Internally the C++ lib uses left/right, not start/end.
-              // TODO: Do we need to translate this?
-              this.padding.start.toInt(),
+              this.padding.left.toInt(),
               this.padding.top.toInt(),
-              this.padding.end.toInt(),
+              this.padding.right.toInt(),
               this.padding.bottom.toInt()),
           this.state.direction,
           this.state.pitch)
@@ -48,6 +47,6 @@ internal fun MapViewCamera.toCameraPosition(map: MapboxMap): CameraPosition? {
     }
   }
 
-  padding.let { builder.padding(it.start, it.top, it.end, it.bottom) }
+  padding.let { builder.padding(it.left, it.top, it.right, it.bottom) }
   return builder.build()
 }

@@ -51,8 +51,8 @@ You will also need to manually specify any MapLibre dependencies now.
 For example:
 
 ```groovy
-api 'org.maplibre.gl:android-sdk:10.3.1'
-api 'org.maplibre.gl:android-plugin-annotation-v9:2.0.2'
+api 'org.maplibre.gl:android-sdk:11.6.1'
+api 'org.maplibre.gl:android-plugin-annotation-v9:3.0.2'
 ```
 
 ### Setting an API Key for the Light and Dark Mode Demo

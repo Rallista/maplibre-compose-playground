@@ -10,7 +10,7 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.10.01"
-maplibre = "11.6.1"
+maplibre = "11.7.1"
 maplibre-annotation = "3.0.2"
 navigationCompose = "2.8.3"
 mockk = "1.13.13"
@@ -33,6 +33,7 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 maplibre = { group = "org.maplibre.gl", name = "android-sdk", version.ref = "maplibre" }
+maplibre-vulkan = { module = "org.maplibre.gl:android-sdk-vulkan", version.ref = "maplibre" }
 maplibre-annotation = { group = "org.maplibre.gl", name = "android-plugin-annotation-v9", version.ref = "maplibre-annotation"}
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 

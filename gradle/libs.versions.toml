@@ -13,7 +13,7 @@ composeBom = "2025.02.00"
 maplibre = "10.3.1" # 11.0.0 is currently blocked by a crash - need to re-test in the near future.
 maplibre-annotation = "2.0.2"
 navigationCompose = "2.8.8"
-mockk = "1.13.16"
+mockk = "1.13.17"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

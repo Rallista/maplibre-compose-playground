@@ -1,12 +1,12 @@
 package com.maplibre.compose.camera
 
-import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.maplibre.compose.camera.extensions.needsUpdate
 import com.maplibre.compose.camera.extensions.toCameraMode
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.maplibre.android.location.modes.CameraMode
 
 class CameraStateToMapLibreTest {
 

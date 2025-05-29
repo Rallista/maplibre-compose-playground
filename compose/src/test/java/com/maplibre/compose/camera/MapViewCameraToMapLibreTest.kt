@@ -1,9 +1,5 @@
 package com.maplibre.compose.camera
 
-import com.mapbox.mapboxsdk.camera.CameraPosition
-import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.geometry.LatLngBounds
-import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.maplibre.compose.camera.extensions.toCameraPosition
 import com.maplibre.compose.camera.models.CameraPadding
 import io.mockk.every
@@ -12,9 +8,13 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.fail
 import org.junit.Test
+import org.maplibre.android.camera.CameraPosition
+import org.maplibre.android.geometry.LatLng
+import org.maplibre.android.geometry.LatLngBounds
+import org.maplibre.android.maps.MapLibreMap
 
 class MapViewCameraToMapLibreTest {
-  val map = mockk<MapboxMap>()
+  val map = mockk<MapLibreMap>()
 
   @Test
   fun `test MapViewCamera Centered toMapLibre`() {

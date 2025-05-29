@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.res.imageResource
-import com.mapbox.mapboxsdk.maps.Style
+import org.maplibre.android.maps.Style
 
 @SuppressLint("ComposableNaming")
 @Composable

@@ -11,14 +11,14 @@ package com.maplibre.compose.ramani
 
 import android.os.Parcelable
 import androidx.annotation.FloatRange
-import com.mapbox.mapboxsdk.constants.MapboxConstants
 import kotlinx.parcelize.Parcelize
+import org.maplibre.android.constants.MapLibreConstants
 
 @Parcelize
 class MapProperties(
     @FloatRange(
-        from = MapboxConstants.MINIMUM_ZOOM.toDouble(),
-        to = MapboxConstants.MAXIMUM_ZOOM.toDouble())
+        from = MapLibreConstants.MINIMUM_ZOOM.toDouble(),
+        to = MapLibreConstants.MAXIMUM_ZOOM.toDouble())
     var maxZoom: Double? = null,
 ) : Parcelable {
   constructor(mapProperties: MapProperties) : this(mapProperties.maxZoom)

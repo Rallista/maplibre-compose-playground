@@ -3,12 +3,6 @@ package com.maplibre.compose.runtime.nodes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.currentComposer
-import com.mapbox.mapboxsdk.camera.CameraUpdate
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
-import com.mapbox.mapboxsdk.location.OnLocationCameraTransitionListener
-import com.mapbox.mapboxsdk.location.modes.CameraMode
-import com.mapbox.mapboxsdk.location.modes.RenderMode
-import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.maplibre.compose.camera.CameraState
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.camera.MapViewCameraDefaults
@@ -21,6 +15,13 @@ import com.maplibre.compose.camera.models.CameraMotion
 import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.camera.models.CameraPitchRange
 import com.maplibre.compose.ramani.MapApplier
+import org.maplibre.android.MapLibre
+import org.maplibre.android.camera.CameraUpdate
+import org.maplibre.android.camera.CameraUpdateFactory
+import org.maplibre.android.location.OnLocationCameraTransitionListener
+import org.maplibre.android.location.modes.CameraMode
+import org.maplibre.android.location.modes.RenderMode
+import org.maplibre.android.maps.MapLibreMap
 
 @Composable
 internal fun MapCameraNode(camera: MutableState<MapViewCamera>) {
@@ -74,7 +75,7 @@ internal fun MapCameraNode(camera: MutableState<MapViewCamera>) {
 }
 
 private class CameraTransitionListener(
-    val map: MapboxMap,
+    val map: MapLibreMap,
     val zoom: Double?,
     val tilt: Double?,
     val padding: DoubleArray?
@@ -103,7 +104,7 @@ private class CameraTransitionListener(
   }
 }
 
-private fun cameraUpdate(map: MapboxMap, camera: MapViewCamera) {
+private fun cameraUpdate(map: MapLibreMap, camera: MapViewCamera) {
   // This can technically fail (per the native API signature of `getCameraForLatLngBounds`),
   // so we may need to bail early.
   // The failure conditions are not documented,

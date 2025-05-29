@@ -14,12 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.currentComposer
 import androidx.compose.ui.platform.LocalContext
-import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.plugins.annotation.LineOptions
-import com.mapbox.mapboxsdk.style.layers.Property
 import com.maplibre.compose.ramani.MapApplier
 import com.maplibre.compose.ramani.MapLibreComposable
 import com.maplibre.compose.ramani.PolyLineNode
+import org.maplibre.android.geometry.LatLng
+import org.maplibre.android.plugins.annotation.LineOptions
+import org.maplibre.android.style.layers.Property.LINE_CAP_ROUND
+import org.maplibre.android.style.layers.Property.LINE_JOIN_ROUND
 
 @Composable
 @MapLibreComposable
@@ -31,8 +32,8 @@ fun Polyline(
     zIndex: Int = 0,
     isDraggable: Boolean = false,
     isDashed: Boolean = false,
-    lineCap: String = Property.LINE_CAP_ROUND,
-    lineJoin: String = Property.LINE_JOIN_ROUND,
+    lineCap: String = LINE_CAP_ROUND,
+    lineJoin: String = LINE_JOIN_ROUND,
     linePatternId: Int? = null
 ) {
   val context = LocalContext.current

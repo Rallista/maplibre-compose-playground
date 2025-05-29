@@ -42,7 +42,7 @@ fun Circle(
         val circleManager = mapApplier.getOrCreateCircleManagerForZIndex(zIndex)
 
         val circleOptions =
-          CircleOptions()
+            CircleOptions()
                 .withCircleRadius(radius)
                 .withLatLng(center)
                 .withDraggable(isDraggable)

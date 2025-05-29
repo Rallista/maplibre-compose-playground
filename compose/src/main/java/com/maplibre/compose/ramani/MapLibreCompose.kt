@@ -14,7 +14,6 @@ import androidx.compose.runtime.AbstractApplier
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Composition
 import androidx.compose.runtime.CompositionContext
-
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.math.abs
@@ -166,7 +165,7 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
     }
 
     circleManager.addClickListener(
-      OnCircleClickListener { annotation ->
+        OnCircleClickListener { annotation ->
           decorations
               .findInputCallback<CircleNode, Circle, Unit>(
                   nodeMatchPredicate = {
@@ -179,7 +178,7 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
         })
 
     circleManager.addLongClickListener(
-      OnCircleLongClickListener { annotation ->
+        OnCircleLongClickListener { annotation ->
           decorations
               .findInputCallback<CircleNode, Circle, Unit>(
                   nodeMatchPredicate = {
@@ -274,7 +273,7 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
     }
 
     symbolManager.addClickListener(
-      OnSymbolClickListener { annotation ->
+        OnSymbolClickListener { annotation ->
           decorations
               .findInputCallback<SymbolNode, Symbol, Unit>(
                   nodeMatchPredicate = {

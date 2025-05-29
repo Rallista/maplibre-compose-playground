@@ -15,7 +15,6 @@ import com.maplibre.compose.camera.models.CameraMotion
 import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.camera.models.CameraPitchRange
 import com.maplibre.compose.ramani.MapApplier
-import org.maplibre.android.MapLibre
 import org.maplibre.android.camera.CameraUpdate
 import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.location.OnLocationCameraTransitionListener

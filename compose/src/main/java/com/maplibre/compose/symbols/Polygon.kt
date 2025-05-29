@@ -19,8 +19,8 @@ import androidx.core.graphics.minus
 import androidx.core.graphics.plus
 import com.maplibre.compose.ramani.MapApplier
 import com.maplibre.compose.ramani.MapLibreComposable
-import org.maplibre.android.geometry.LatLng
 import kotlin.math.atan2
+import org.maplibre.android.geometry.LatLng
 
 @Composable
 private fun AzimuthCalculator(

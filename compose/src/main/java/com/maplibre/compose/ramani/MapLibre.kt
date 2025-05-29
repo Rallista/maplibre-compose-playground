@@ -74,22 +74,22 @@ annotation class MapLibreComposable
  */
 @Composable
 internal fun MapLibre(
-  modifier: Modifier,
-  styleUrl: String,
-  camera: MutableState<MapViewCamera>,
-  mapControls: State<MapControls> = rememberSaveableMapControls(),
-  properties: MapProperties = MapProperties(),
-  locationEngine: LocationEngine? = null,
-  locationRequestProperties: LocationRequestProperties? = null,
-  locationStyling: LocationStyling = LocationStyling(),
-  userLocation: MutableState<Location>? = null,
-  sources: List<Source>? = null,
-  layers: List<Layer>? = null,
-  images: List<Pair<String, Int>>? = null,
-  onMapReadyCallback: ((Style) -> Unit)? = null,
-  onTapGestureCallback: ((MapGestureContext) -> Unit)? = null,
-  onLongPressGestureCallback: ((MapGestureContext) -> Unit)? = null,
-  content: (@Composable @MapLibreComposable () -> Unit)? = null,
+    modifier: Modifier,
+    styleUrl: String,
+    camera: MutableState<MapViewCamera>,
+    mapControls: State<MapControls> = rememberSaveableMapControls(),
+    properties: MapProperties = MapProperties(),
+    locationEngine: LocationEngine? = null,
+    locationRequestProperties: LocationRequestProperties? = null,
+    locationStyling: LocationStyling = LocationStyling(),
+    userLocation: MutableState<Location>? = null,
+    sources: List<Source>? = null,
+    layers: List<Layer>? = null,
+    images: List<Pair<String, Int>>? = null,
+    onMapReadyCallback: ((Style) -> Unit)? = null,
+    onTapGestureCallback: ((MapGestureContext) -> Unit)? = null,
+    onLongPressGestureCallback: ((MapGestureContext) -> Unit)? = null,
+    content: (@Composable @MapLibreComposable () -> Unit)? = null,
 ) {
   if (LocalInspectionMode.current) {
     Box(modifier = modifier)

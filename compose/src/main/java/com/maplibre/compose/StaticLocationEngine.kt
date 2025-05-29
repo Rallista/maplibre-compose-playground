@@ -6,13 +6,13 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Handler
 import android.os.Looper
+import java.lang.Exception
+import java.util.Timer
+import java.util.TimerTask
 import org.maplibre.android.location.engine.LocationEngine
 import org.maplibre.android.location.engine.LocationEngineCallback
 import org.maplibre.android.location.engine.LocationEngineRequest
 import org.maplibre.android.location.engine.LocationEngineResult
-import java.lang.Exception
-import java.util.Timer
-import java.util.TimerTask
 
 /**
  * A simple class that provides static location updates to a MapLibre view.

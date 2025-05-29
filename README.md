@@ -51,8 +51,8 @@ You will also need to manually specify any MapLibre dependencies now.
 For example:
 
 ```groovy
-api 'org.maplibre.gl:android-sdk:10.3.1'
-api 'org.maplibre.gl:android-plugin-annotation-v9:2.0.2'
+api 'org.maplibre.gl:android-sdk-vulkan:11.9.0'
+api 'org.maplibre.gl:android-plugin-annotation-v9:3.0.2'
 ```
 
 ### Setting an API Key for the Light and Dark Mode Demo
@@ -64,4 +64,4 @@ Copy or move `api_keys_template.xml` from the root directory to `app/src/main/re
 * [Callback Example](app/src/main/java/com/maplibre/example/examples/CameraExample.kt) - Shows several event callbacks that can be implemented from the `MapView`.
 * [Camera Example](app/src/main/java/com/maplibre/example/examples/CameraExample.kt) - Shows the basics of camera control using the `MapViewCamera`.
 * [Dark and Light Mode Example](app/src/main/java/com/maplibre/example/examples/DarkAndLightModeExample.kt) - Shows usage of rememberMapStyleUrl which dynamically changes the map style based on if the system theme is dark mode. The styles are injected using a Compose wrapper in MainActivity.kt (similar to how a MaterialTheme is injected).
-* [Symbol Example](app/src/main/java/com/maplibre/example/examples/SymbolExample.kt) - Shows the basics of Composable symbol creation. 
+* [Symbol Example](app/src/main/java/com/maplibre/example/examples/SymbolExample.kt) - Shows the basics of Composable symbol creation.

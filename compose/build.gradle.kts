@@ -1,5 +1,6 @@
 import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
 import com.vanniktech.maven.publish.SonatypeHost
+import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
   alias(libs.plugins.androidLibrary)
@@ -61,6 +62,23 @@ dependencies {
 
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+val useVulkan = project.hasProperty("useVulkan")
+if (useVulkan) {
+  val libs = the<LibrariesForLibs>()
+  val maplibreVulkan = libs.maplibre.vulkan
+
+  project.afterEvaluate {
+    this.configurations.configureEach {
+      resolutionStrategy {
+        dependencySubstitution {
+          substitute(module("org.maplibre.gl:android-sdk"))
+            .using(module(maplibreVulkan.get().toString()))
+        }
+      }
+    }
+  }
 }
 
 mavenPublishing {

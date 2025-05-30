@@ -33,7 +33,6 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 maplibre = { group = "org.maplibre.gl", name = "android-sdk", version.ref = "maplibre" }
-maplibre-vulkan = { group = "org.maplibre.gl", name = "android-sdk-vulkan", version.ref = "maplibre" }
 maplibre-annotation = { group = "org.maplibre.gl", name = "android-plugin-annotation-v9", version.ref = "maplibre-annotation"}
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 

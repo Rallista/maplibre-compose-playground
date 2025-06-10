@@ -51,7 +51,7 @@ You will also need to manually specify any MapLibre dependencies now.
 For example:
 
 ```groovy
-api 'org.maplibre.gl:android-sdk-vulkan:11.9.0'
+api 'org.maplibre.gl:android-sdk:11.9.0'
 api 'org.maplibre.gl:android-plugin-annotation-v9:3.0.2'
 ```
 

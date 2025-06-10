@@ -18,7 +18,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mapbox.mapboxsdk.geometry.LatLngBounds
 import com.maplibre.compose.MapView
 import com.maplibre.compose.StaticLocationEngine
 import com.maplibre.compose.camera.CameraState
@@ -28,6 +27,7 @@ import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.rememberSaveableMapViewCamera
 import com.maplibre.example.support.locationPermissions
 import com.maplibre.example.support.rememberLocationPermissionLauncher
+import org.maplibre.android.geometry.LatLngBounds
 
 @Composable
 fun CameraExample() {

@@ -1,18 +1,18 @@
 [versions]
-agp = "8.8.2"
-kotlin = "2.1.10"
+agp = "8.10.1"
+kotlin = "2.1.20"
 ktfmt = "0.22.0"
 mavenPublish = "0.30.0"
-coreKtx = "1.15.0"
+coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.7"
+lifecycleRuntimeKtx = "2.9.0"
 activityCompose = "1.10.1"
-composeBom = "2025.02.00"
-maplibre = "10.3.1" # 11.0.0 is currently blocked by a crash - need to re-test in the near future.
-maplibre-annotation = "2.0.2"
-navigationCompose = "2.8.8"
+composeBom = "2025.05.01"
+maplibre = "11.9.0"
+maplibre-annotation = "3.0.2"
+navigationCompose = "2.9.0"
 mockk = "1.13.17"
 
 [libraries]

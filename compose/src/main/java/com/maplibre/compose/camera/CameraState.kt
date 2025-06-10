@@ -1,12 +1,12 @@
 package com.maplibre.compose.camera
 
 import android.os.Parcelable
-import com.mapbox.mapboxsdk.geometry.LatLngBounds
 import com.maplibre.compose.camera.extensions.validDirection
 import com.maplibre.compose.camera.extensions.validPitch
 import com.maplibre.compose.camera.extensions.validZoom
 import com.maplibre.compose.camera.models.CameraMotion
 import kotlinx.parcelize.Parcelize
+import org.maplibre.android.geometry.LatLngBounds
 
 @Parcelize
 sealed class CameraState : Parcelable {

@@ -5,9 +5,9 @@ import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
-import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.maplibre.compose.ramani.MapApplier
 import com.maplibre.compose.ramani.MapNode
+import org.maplibre.android.maps.MapLibreMap
 
 /**
  * A ComposeNode that applies a map update to the MapboxMap whenever the state changes.
@@ -21,7 +21,7 @@ import com.maplibre.compose.ramani.MapNode
 internal fun <T> MapComposeNode(
     state: MutableState<T>,
     mapApplier: MapApplier,
-    applyUpdate: @DisallowComposableCalls (MapboxMap, T) -> Unit
+    applyUpdate: @DisallowComposableCalls (MapLibreMap, T) -> Unit
 ) =
     ComposeNode<MapMutableStateNode<T>, MapApplier>(
         factory = { MapMutableStateNode(mapApplier.map, state, applyUpdate) },
@@ -39,7 +39,7 @@ internal fun <T> MapComposeNode(
 internal fun <T> MapComposeNode(
     state: State<T>,
     mapApplier: MapApplier,
-    applyUpdate: @DisallowComposableCalls (MapboxMap, T) -> Unit
+    applyUpdate: @DisallowComposableCalls (MapLibreMap, T) -> Unit
 ) =
     ComposeNode<MapStateNode<T>, MapApplier>(
         factory = { MapStateNode(mapApplier.map, state, applyUpdate) },
@@ -48,9 +48,9 @@ internal fun <T> MapComposeNode(
 // MARK: - Nodes
 
 private class MapMutableStateNode<T>(
-    val map: MapboxMap,
+    val map: MapLibreMap,
     var state: MutableState<T>,
-    var applyUpdate: (MapboxMap, T) -> Unit
+    var applyUpdate: (MapLibreMap, T) -> Unit
 ) : MapNode {
   override fun onAttached() {
     applyUpdate(map, state.value)
@@ -58,9 +58,9 @@ private class MapMutableStateNode<T>(
 }
 
 private class MapStateNode<T>(
-    val map: MapboxMap,
+    val map: MapLibreMap,
     var state: State<T>,
-    var applyUpdate: (MapboxMap, T) -> Unit
+    var applyUpdate: (MapLibreMap, T) -> Unit
 ) : MapNode {
   override fun onAttached() {
     applyUpdate(map, state.value)

@@ -1,17 +1,17 @@
 package com.maplibre.compose.camera.extensions
 
-import com.mapbox.mapboxsdk.camera.CameraPosition
-import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.maplibre.compose.camera.CameraState
 import com.maplibre.compose.camera.MapViewCamera
+import org.maplibre.android.camera.CameraPosition
+import org.maplibre.android.geometry.LatLng
+import org.maplibre.android.maps.MapLibreMap
 
 /**
  * Converts a [MapViewCamera] to a MapLibre [CameraPosition].
  *
  * @return The MapLibre [CameraPosition] equivalent of the [MapViewCamera].
  */
-internal fun MapViewCamera.toCameraPosition(map: MapboxMap): CameraPosition? {
+internal fun MapViewCamera.toCameraPosition(map: MapLibreMap): CameraPosition? {
   val builder = CameraPosition.Builder()
 
   when (this.state) {

@@ -13,7 +13,7 @@ composeBom = "2025.06.00"
 maplibre = "11.9.0"
 maplibre-annotation = "3.0.2"
 navigationCompose = "2.9.0"
-mockk = "1.14.2"
+mockk = "1.14.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

@@ -80,7 +80,8 @@ fun SymbolExample() {
                         LatLng(1.205, 103.931),
                         LatLng(1.295, 103.993)),
                 lineWidth = 12f,
-                linePatternId = R.drawable.arrow)
+                linePatternId = R.drawable.arrow,
+                opacity = 0.1f)
           }
     }
   }

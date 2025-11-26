@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -85,7 +83,7 @@ fun NavigationLink(title: String, destination: String, navController: NavControl
         Spacer(modifier = Modifier.weight(1f))
 
         Icon(
-            Icons.AutoMirrored.Filled.ArrowForward,
+            painterResource(R.drawable.chevron_right_24px),
             contentDescription = "Navigate to $destination",
             tint = MaterialTheme.colorScheme.onSurface,
         )
@@ -104,7 +102,7 @@ fun AppTopBar(navController: NavController) {
       navigationIcon = {
         if (navBackStackEntry?.destination?.route != "main") {
           IconButton(onClick = { navController.navigateUp() }) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+            Icon(painterResource(R.drawable.chevron_left_24px), contentDescription = "Back")
           }
         }
       },

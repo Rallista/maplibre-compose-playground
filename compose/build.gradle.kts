@@ -1,5 +1,4 @@
 import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
-import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
   alias(libs.plugins.androidLibrary)
@@ -13,7 +12,7 @@ plugins {
 
 android {
   namespace = "com.maplibre.compose"
-  compileSdk = 35
+  compileSdk = 36
 
   defaultConfig {
     minSdk = 25
@@ -64,7 +63,7 @@ dependencies {
 }
 
 mavenPublishing {
-  publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+  publishToMavenCentral()
   signAllPublications()
 
   coordinates("io.github.rallista", "maplibre-compose", project.version.toString())

@@ -28,6 +28,7 @@ fun Polyline(
     points: List<LatLng>,
     // Either `color` or `linePatternId` should be non-null
     color: String? = null,
+    opacity: Float = 1.0f,
     lineWidth: Float,
     zIndex: Int = 0,
     isDraggable: Boolean = false,
@@ -52,6 +53,7 @@ fun Polyline(
                 .withDraggable(isDraggable)
                 .withLineJoin(lineJoin)
                 .withLinePattern(linePatternId?.toString())
+                .withLineOpacity(opacity)
 
         lineManager.lineCap = lineCap
 

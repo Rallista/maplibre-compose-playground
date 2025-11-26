@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-//import androidx.compose.material.icons.Icons
-//import androidx.compose.material.icons.automirrored.filled.ArrowBack
-//import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -86,9 +83,9 @@ fun NavigationLink(title: String, destination: String, navController: NavControl
         Spacer(modifier = Modifier.weight(1f))
 
         Icon(
-          painterResource(R.drawable.chevron_right_24px),
-          contentDescription = "Navigate to $destination",
-          tint = MaterialTheme.colorScheme.onSurface,
+            painterResource(R.drawable.chevron_right_24px),
+            contentDescription = "Navigate to $destination",
+            tint = MaterialTheme.colorScheme.onSurface,
         )
       }
 

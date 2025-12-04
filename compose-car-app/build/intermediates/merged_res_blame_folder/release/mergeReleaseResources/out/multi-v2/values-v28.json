@@ -1,0 +1,36 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.maplibre.compose.car.compose-car-app-release-39:/values-v28/values-v28.xml",
+            "map": [
+                {
+                    "source": "/Users/jacob/.gradle/caches/8.13/transforms/35e04e622a1cbadbc9d7bdbcfb45f0f3/transformed/appcompat-1.7.0/res/values-v28/values-v28.xml",
+                    "from": {
+                        "startLines": "2,3,4,8",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,130,217,397",
+                        "endLines": "2,3,7,11",
+                        "endColumns": "74,86,12,12",
+                        "endOffsets": "125,212,392,584"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "com.maplibre.compose.car.compose-car-app-mergeReleaseResources-37:/values-v28/values-v28.xml",
+            "map": [
+                {
+                    "source": "/Users/jacob/.gradle/caches/8.13/transforms/35e04e622a1cbadbc9d7bdbcfb45f0f3/transformed/appcompat-1.7.0/res/values-v28/values-v28.xml",
+                    "from": {
+                        "startLines": "2,3,4,8",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,130,217,397",
+                        "endLines": "2,3,7,11",
+                        "endColumns": "74,86,12,12",
+                        "endOffsets": "125,212,392,584"
+                    }
+                }
+            ]
+        }
+    ]
+}

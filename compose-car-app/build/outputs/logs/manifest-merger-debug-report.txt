@@ -1,0 +1,52 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:2:1-36:12
+INJECTED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:2:1-36:12
+	package
+		INJECTED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:2:11-69
+uses-permission#androidx.car.app.MAP_TEMPLATES
+ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:9:5-70
+	android:name
+		ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:9:22-67
+uses-permission#androidx.car.app.NAVIGATION_TEMPLATES
+ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:12:5-77
+	android:name
+		ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:12:22-74
+uses-permission#androidx.car.app.ACCESS_SURFACE
+ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:15:5-71
+	android:name
+		ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:15:22-68
+application
+ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:17:5-35:19
+meta-data#androidx.car.app.minCarApiLevel
+ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:22:9-24:33
+	android:value
+		ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:24:13-30
+	android:name
+		ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:23:13-59
+service#com.maplibre.example.car.MapLibreCarAppService
+ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:27:9-34:19
+	android:exported
+		ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:29:13-36
+	android:name
+		ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:28:13-74
+intent-filter#action:name:androidx.car.app.CarAppService+category:name:androidx.car.app.category.POI
+ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:30:13-33:29
+action#androidx.car.app.CarAppService
+ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:31:17-73
+	android:name
+		ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:31:25-70
+category#androidx.car.app.category.POI
+ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:32:17-74
+	android:name
+		ADDED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml:32:27-71
+uses-sdk
+INJECTED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml
+INJECTED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/jacob/Git/maplibre-compose-playground/compose-car-app/src/main/AndroidManifest.xml

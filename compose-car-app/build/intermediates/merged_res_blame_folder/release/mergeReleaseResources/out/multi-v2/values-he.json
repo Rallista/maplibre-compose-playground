@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.maplibre.compose.car.compose-car-app-release-39:/values-he/values-he.xml",
+            "map": [
+                {
+                    "source": "/Users/jacob/.gradle/caches/8.13/transforms/5e3fbbefee003e8439af7dc6c1cacf54/transformed/android-sdk-12.1.3/res/values-he/values-he.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,179,257,375,480,634,750",
+                        "endColumns": "123,77,117,104,153,115,138",
+                        "endOffsets": "174,252,370,475,629,745,884"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "com.maplibre.compose.car.compose-car-app-mergeReleaseResources-37:/values-he/values-he.xml",
+            "map": [
+                {
+                    "source": "/Users/jacob/.gradle/caches/8.13/transforms/5e3fbbefee003e8439af7dc6c1cacf54/transformed/android-sdk-12.1.3/res/values-he/values-he.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,179,257,375,480,634,750",
+                        "endColumns": "123,77,117,104,153,115,138",
+                        "endOffsets": "174,252,370,475,629,745,884"
+                    }
+                }
+            ]
+        }
+    ]
+}

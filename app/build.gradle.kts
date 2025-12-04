@@ -47,6 +47,7 @@ dependencies {
   implementation(libs.androidx.material3)
 
   implementation(project(":compose"))
+  implementation(project(":compose-car-app"))
   implementation(libs.androidx.navigation.compose)
 
   testImplementation(libs.junit)

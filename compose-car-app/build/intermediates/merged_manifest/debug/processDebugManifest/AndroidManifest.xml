@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.maplibre.compose.car" >
+
+    <uses-sdk android:minSdkVersion="28" />
+    <!--
+        This AndroidManifest.xml contains elements that should be shared across
+        Android Auto and Automotive OS versions of the app, such as the CarAppService 
+    -->
+
+
+    <!-- Permission required to use PlaceListMapTemplate with POI category -->
+    <uses-permission android:name="androidx.car.app.MAP_TEMPLATES" />
+
+    <!-- Permission required to use Navigation Template for turn by turn category -->
+    <uses-permission android:name="androidx.car.app.NAVIGATION_TEMPLATES" />
+
+    <!-- Permission required to access the Surface for custom rendering (e.g. MapLibre) -->
+    <uses-permission android:name="androidx.car.app.ACCESS_SURFACE" />
+
+    <application>
+
+        <!--
+            Declare the minimum Car API level supported. API level 1 provides the most
+            compatibility. Use RequiresCarApi annotation for features requiring higher levels.
+        -->
+        <meta-data
+            android:name="androidx.car.app.minCarApiLevel"
+            android:value="1" />
+
+        <!-- CarAppService for Android Auto and Automotive OS -->
+        <service
+            android:name="com.maplibre.example.car.MapLibreCarAppService"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="androidx.car.app.CarAppService" />
+
+                <category android:name="androidx.car.app.category.POI" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>

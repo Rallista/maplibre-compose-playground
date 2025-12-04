@@ -27,6 +27,19 @@ MapView(
 
 <img src="maplibre-compose-demo.gif" width="400" alt="Demo Animation"/>
 
+## Android Auto Support
+
+This library includes a separate `compose-car-app` module that provides high-performance Android Auto support using the VirtualDisplay and Presentation rendering approach.
+
+```kotlin
+dependencies {
+    implementation 'io.github.rallista:maplibre-compose:0.0.16'
+    implementation 'io.github.rallista:maplibre-compose-car-app:0.0.16'  // For Android Auto
+}
+```
+
+See the [compose-car-app README](compose-car-app/README.md) for detailed usage instructions and the `app/src/main/java/com/maplibre/example/car` directory for a complete example implementation.
+
 ### Local development in an app
 
 Local development in your Android app projects is a bit tricky,

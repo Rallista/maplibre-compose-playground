@@ -48,7 +48,11 @@ internal suspend inline fun disposingComposition(factory: () -> Composition) {
   }
 }
 
-internal suspend fun MapView.newComposition(
+/**
+ * Creates a new composition for the MapView with the given parent context and content. This is used
+ * by Android Auto integration and can be used by other external integrations.
+ */
+suspend fun MapView.newComposition(
     parent: CompositionContext,
     style: Style,
     content: @Composable () -> Unit,

@@ -21,4 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Maplibre Compose"
 include(":app")
+include(":auto")
 include(":compose")
+include(":compose-car-app")

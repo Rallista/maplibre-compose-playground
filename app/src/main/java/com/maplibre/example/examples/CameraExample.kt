@@ -106,7 +106,7 @@ fun CameraExample() {
   }
 }
 
-private fun getNextCamera(currentState: CameraState, padding: CameraPadding): MapViewCamera {
+internal fun getNextCamera(currentState: CameraState, padding: CameraPadding): MapViewCamera {
   return when (currentState) {
     is CameraState.Centered -> MapViewCamera.TrackingUserLocation(zoom = 18.0, pitch = 45.0)
     is CameraState.TrackingUserLocation ->

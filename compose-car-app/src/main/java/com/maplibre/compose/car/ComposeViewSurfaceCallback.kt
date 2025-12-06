@@ -19,25 +19,18 @@ import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 
 class ComposeViewSurfaceCallback(
-  context: Context,
+  private val androidContext: Context,
   private val content: @Composable () -> Unit,
 ) : SurfaceCallback {
 
-  val displayMetrics: DisplayMetrics = context.resources.displayMetrics
-  val displayManager: DisplayManager = context.getSystemService(DisplayManager::class.java)
+  private val displayMetrics: DisplayMetrics = androidContext.resources.displayMetrics
+  private val displayManager: DisplayManager = androidContext.getSystemService(DisplayManager::class.java)
 
-  val virtualDisplay: VirtualDisplay = displayManager.createVirtualDisplay(
-    "ComposeViewVirtualDisplay",
-    displayMetrics.widthPixels,
-    displayMetrics.heightPixels,
-    displayMetrics.densityDpi,
-    null,
-    0
-  )
+  private var virtualDisplay: VirtualDisplay? = null
+  private var presentation: Presentation? = null
 
-  val lifecycleOwner = ComposeViewLifecycleOwner()
-  val presentation = Presentation(context, virtualDisplay.display)
-  val composeView = ComposeView(context).apply {
+  private val lifecycleOwner = ComposeViewLifecycleOwner()
+  private val composeView = ComposeView(androidContext).apply {
     setViewTreeLifecycleOwner(lifecycleOwner)
     setViewTreeSavedStateRegistryOwner(lifecycleOwner)
     setContent {
@@ -46,21 +39,38 @@ class ComposeViewSurfaceCallback(
   }
 
   override fun onSurfaceAvailable(surfaceContainer: SurfaceContainer) {
-    presentation.setContentView(composeView)
+    // Create virtual display with the surface from Android Auto
+    virtualDisplay = displayManager.createVirtualDisplay(
+      "ComposeViewVirtualDisplay",
+      surfaceContainer.width,
+      surfaceContainer.height,
+      surfaceContainer.dpi,
+      surfaceContainer.surface,
+      0
+    )
+
+    // Create presentation on the virtual display
+    presentation = Presentation(androidContext, virtualDisplay!!.display).apply {
+      setContentView(composeView)
+    }
 
     lifecycleOwner.performRestore(null)
     lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
     lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_START)
     lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
-    presentation.show()
+    presentation?.show()
   }
 
   override fun onSurfaceDestroyed(surfaceContainer: SurfaceContainer) {
-    presentation.dismiss()
+    presentation?.dismiss()
     lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
     lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    
+    virtualDisplay?.release()
+    virtualDisplay = null
+    presentation = null
   }
 
   override fun onVisibleAreaChanged(visibleArea: Rect) {

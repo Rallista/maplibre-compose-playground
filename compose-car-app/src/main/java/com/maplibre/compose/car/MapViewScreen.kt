@@ -32,7 +32,7 @@ abstract class MapViewScreen(
 ) : Screen(carContext) {
 
   private val surfaceCallback: ComposeViewSurfaceCallback = ComposeViewSurfaceCallback(
-    context = carContext,
+    androidContext = carContext,
     content = {
       MapView(
         modifier = Modifier,

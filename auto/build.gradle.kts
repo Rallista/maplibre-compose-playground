@@ -48,6 +48,7 @@ dependencies {
 
   // Android Auto
   implementation(libs.androidx.car.app)
+  implementation(libs.androidx.car.app.automotive)
 
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)

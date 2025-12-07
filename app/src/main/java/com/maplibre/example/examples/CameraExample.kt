@@ -20,14 +20,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.maplibre.compose.MapView
 import com.maplibre.compose.StaticLocationEngine
-import com.maplibre.compose.camera.CameraState
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.camera.extensions.incrementZoom
 import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.rememberSaveableMapViewCamera
+import com.maplibre.example.support.getNextCamera
 import com.maplibre.example.support.locationPermissions
 import com.maplibre.example.support.rememberLocationPermissionLauncher
-import org.maplibre.android.geometry.LatLngBounds
 
 @Composable
 fun CameraExample() {
@@ -103,19 +102,6 @@ fun CameraExample() {
             }
           }
     }
-  }
-}
-
-internal fun getNextCamera(currentState: CameraState, padding: CameraPadding): MapViewCamera {
-  return when (currentState) {
-    is CameraState.Centered -> MapViewCamera.TrackingUserLocation(zoom = 18.0, pitch = 45.0)
-    is CameraState.TrackingUserLocation ->
-        MapViewCamera.TrackingUserLocationWithBearing(zoom = 18.0, pitch = 45.0, padding = padding)
-    is CameraState.TrackingUserLocationWithBearing ->
-        MapViewCamera.BoundingBox(
-            LatLngBounds.Companion.from(47.8308275417, 10.4427014502, 45.7769477403, 6.02260949059),
-            padding = CameraPadding(100.0, 20.0, 100.0, 20.0))
-    is CameraState.BoundingBox -> MapViewCamera.Default
   }
 }
 

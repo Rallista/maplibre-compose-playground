@@ -23,7 +23,7 @@ class ComposeViewSurfaceCallback(
   private val content: @Composable () -> Unit,
 ) : SurfaceCallback {
 
-  private val displayMetrics: DisplayMetrics = androidContext.resources.displayMetrics
+//  private val displayMetrics: DisplayMetrics = androidContext.resources.displayMetrics
   private val displayManager: DisplayManager = androidContext.getSystemService(DisplayManager::class.java)
 
   private var virtualDisplay: VirtualDisplay? = null
@@ -99,18 +99,3 @@ class ComposeViewSurfaceCallback(
   }
 }
 
-class ComposeViewLifecycleOwner : SavedStateRegistryOwner {
-  private var lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
-  private var savedStateRegistryController: SavedStateRegistryController = SavedStateRegistryController.Companion.create(this)
-
-  override val lifecycle: Lifecycle = lifecycleRegistry
-  override val savedStateRegistry = savedStateRegistryController.savedStateRegistry
-
-  fun handleLifecycleEvent(event: Lifecycle.Event) {
-    lifecycleRegistry.handleLifecycleEvent(event)
-  }
-
-  fun performRestore(savedState: Bundle?) {
-    savedStateRegistryController.performRestore(savedState)
-  }
-}

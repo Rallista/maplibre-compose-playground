@@ -20,6 +20,6 @@ class ExampleCarAppService : CarAppService() {
 
 class ExampleSession : Session() {
   override fun onCreateScreen(intent: Intent): Screen {
-    return ExampleMapScreen(carContext)
+    return CameraExampleScreen(carContext)
   }
 }

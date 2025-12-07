@@ -8,6 +8,7 @@ import androidx.car.app.model.Template
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.maplibre.compose.MapView
 import com.maplibre.compose.camera.MapViewCamera
@@ -19,6 +20,7 @@ import com.maplibre.compose.settings.MapControls
 import org.maplibre.android.location.engine.LocationEngine
 import org.maplibre.android.maps.Style
 
+// TODO: Review this, but probably delete
 abstract class MapViewScreen(
   carContext: CarContext,
   protected val styleUrl: String,

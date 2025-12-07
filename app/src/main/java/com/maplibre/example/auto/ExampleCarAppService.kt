@@ -2,11 +2,11 @@ package com.maplibre.example.auto
 
 import android.content.Intent
 import androidx.car.app.CarAppService
-import androidx.car.app.CarAppMetadataHolderService
 import androidx.car.app.Screen
 import androidx.car.app.Session
 import androidx.car.app.SessionInfo
 import androidx.car.app.validation.HostValidator
+import com.maplibre.auto.CameraExampleScreen
 
 class ExampleCarAppService : CarAppService() {
   override fun createHostValidator(): HostValidator {
@@ -21,6 +21,6 @@ class ExampleCarAppService : CarAppService() {
 
 class ExampleSession : Session() {
   override fun onCreateScreen(intent: Intent): Screen {
-    return ExampleMapScreen(carContext)
+    return CameraExampleScreen(carContext)
   }
 }

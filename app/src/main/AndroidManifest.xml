@@ -7,7 +7,6 @@
     
     <!-- Car App permissions -->
     <uses-permission android:name="androidx.car.app.MAP_TEMPLATES" />
-    <uses-permission android:name="androidx.car.app.NAVIGATION_TEMPLATES" />
     <uses-permission android:name="androidx.car.app.ACCESS_SURFACE" />
 
     <application
@@ -33,15 +32,19 @@
 
         <!-- Car App Service for Android Auto and Automotive OS -->
         <service
-            android:name="com.maplibre.example.auto.ExampleCarAppService"
+            android:name=".auto.ExampleCarAppService"
             android:exported="true">
             <intent-filter>
                 <action android:name="androidx.car.app.CarAppService" />
-                <category android:name="androidx.car.app.category.NAVIGATION" />
+                <category android:name="androidx.car.app.category.POI" />
             </intent-filter>
         </service>
 
         <!-- Automotive metadata -->
+        <meta-data
+            android:name="androidx.car.app.minCarApiLevel"
+            android:value="1" />
+
         <meta-data
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc" />

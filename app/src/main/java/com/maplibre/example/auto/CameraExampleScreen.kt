@@ -5,19 +5,24 @@ import android.util.Log
 import androidx.car.app.CarContext
 import androidx.car.app.model.Action
 import androidx.car.app.model.ActionStrip
+import androidx.car.app.model.CarIcon
+import androidx.car.app.model.MessageTemplate
 import androidx.car.app.model.Template
-import androidx.car.app.navigation.model.NavigationTemplate
+import androidx.car.app.navigation.model.MapController
+import androidx.car.app.navigation.model.MapWithContentTemplate
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.core.graphics.drawable.IconCompat
 import com.maplibre.compose.MapView
 import com.maplibre.compose.StaticLocationEngine
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.camera.extensions.incrementZoom
 import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.car.ComposableScreen
+import com.maplibre.example.R
 import com.maplibre.example.support.getNextCamera
 
 class CameraExampleScreen(carContext: CarContext) : ComposableScreen(carContext) {
@@ -49,31 +54,61 @@ class CameraExampleScreen(carContext: CarContext) : ComposableScreen(carContext)
   }
 
   override fun onGetTemplate(): Template {
-    return NavigationTemplate.Builder()
-        .setActionStrip(
-            ActionStrip.Builder()
+    return MapWithContentTemplate.Builder()
+        .setContentTemplate(
+            MessageTemplate.Builder("Camera is currently ${mapViewCamera.value.state}")
                 .addAction(
                     Action.Builder()
-                        .setTitle("Camera")
+                        .setTitle("Toggle Camera")
                         .setOnClickListener {
                           mapViewCamera.value =
                               getNextCamera(mapViewCamera.value.state, cameraPadding.value)
                           Log.d("ExampleMapScreen", "Camera value ${mapViewCamera.value}")
+                          invalidate()
                         }
                         .build())
-                .addAction(
-                    Action.Builder()
-                        .setTitle("Zoom In")
-                        .setOnClickListener {
-                          mapViewCamera.value = mapViewCamera.value.incrementZoom(1.0)
-                        }
-                        .build())
-                .addAction(
-                    Action.Builder()
-                        .setTitle("Zoom Out")
-                        .setOnClickListener {
-                          mapViewCamera.value = mapViewCamera.value.incrementZoom(-1.0)
-                        }
+                .build())
+        .setMapController(
+            MapController.Builder()
+                .setMapActionStrip(
+                    ActionStrip.Builder()
+                        .addAction(
+                            Action.Builder()
+                                .setIcon(
+                                    CarIcon.Builder(
+                                            IconCompat.createWithResource(
+                                                carContext, R.drawable.navigation_24px))
+                                        .build())
+                                .setOnClickListener {
+                                  mapViewCamera.value =
+                                      getNextCamera(mapViewCamera.value.state, cameraPadding.value)
+                                  invalidate()
+                                }
+                                .build())
+                        .addAction(
+                            Action.Builder()
+                                .setIcon(
+                                    CarIcon.Builder(
+                                            IconCompat.createWithResource(
+                                                carContext, R.drawable.add_24px))
+                                        .build())
+                                .setOnClickListener {
+                                  mapViewCamera.value = mapViewCamera.value.incrementZoom(1.0)
+                                  invalidate()
+                                }
+                                .build())
+                        .addAction(
+                            Action.Builder()
+                                .setIcon(
+                                    CarIcon.Builder(
+                                            IconCompat.createWithResource(
+                                                carContext, R.drawable.remove_24px))
+                                        .build())
+                                .setOnClickListener {
+                                  mapViewCamera.value = mapViewCamera.value.incrementZoom(-1.0)
+                                  invalidate()
+                                }
+                                .build())
                         .build())
                 .build())
         .build()

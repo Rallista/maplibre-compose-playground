@@ -6,7 +6,6 @@ import androidx.car.app.Screen
 import androidx.car.app.Session
 import androidx.car.app.SessionInfo
 import androidx.car.app.validation.HostValidator
-import com.maplibre.auto.CameraExampleScreen
 
 class ExampleCarAppService : CarAppService() {
   override fun createHostValidator(): HostValidator {

@@ -21,7 +21,7 @@ import com.maplibre.compose.car.ComposableScreen
 
 class CameraExampleScreen(carContext: CarContext) : ComposableScreen(carContext) {
 
-  val mapViewCamera = mutableStateOf(MapViewCamera.Centered(53.4106,  -2.9779))
+  val mapViewCamera = mutableStateOf(MapViewCamera.Centered(53.4106, -2.9779))
   val cameraPadding = mutableStateOf(CameraPadding())
 
   @Composable
@@ -29,58 +29,52 @@ class CameraExampleScreen(carContext: CarContext) : ComposableScreen(carContext)
     val locationEngine by lazy {
       val engine = StaticLocationEngine()
       engine.lastLocation =
-        Location("static").apply {
-          latitude = 66.137331
-          longitude = -18.529602
-        }
+          Location("static").apply {
+            latitude = 66.137331
+            longitude = -18.529602
+          }
       engine
     }
 
-    // TODO: Evaluate if this is acceptable. Since the cameraPadding has to be held outside the @Composable
+    // TODO: Evaluate if this is acceptable. Since the cameraPadding has to be held outside the
+    // @Composable
     cameraPadding.value = CameraPadding.fractionOfScreen(top = 0.6f, start = 0.55f)
 
     MapView(
-      modifier = Modifier.fillMaxSize(),
-      styleUrl = "https://demotiles.maplibre.org/style.json",
-      camera = mapViewCamera,
-      locationEngine = remember { locationEngine }
-    )
+        modifier = Modifier.fillMaxSize(),
+        styleUrl = "https://demotiles.maplibre.org/style.json",
+        camera = mapViewCamera,
+        locationEngine = remember { locationEngine })
   }
 
   override fun onGetTemplate(): Template {
     return NavigationTemplate.Builder()
-      .setActionStrip(
-        ActionStrip.Builder()
-          .addAction(
-            Action.Builder()
-              .setTitle("Camera")
-              .setOnClickListener {
-                mapViewCamera.value = getNextCamera(
-                  mapViewCamera.value.state,
-                  cameraPadding.value
-                )
-                Log.d("ExampleMapScreen", "Camera value ${mapViewCamera.value}")
-              }
-              .build()
-          )
-          .addAction(
-            Action.Builder()
-              .setTitle("Zoom In")
-              .setOnClickListener {
-                mapViewCamera.value = mapViewCamera.value.incrementZoom(1.0)
-              }
-              .build()
-          )
-          .addAction(
-            Action.Builder()
-              .setTitle("Zoom Out")
-              .setOnClickListener {
-                mapViewCamera.value = mapViewCamera.value.incrementZoom(-1.0)
-              }
-              .build()
-          )
-          .build()
-      )
-      .build()
+        .setActionStrip(
+            ActionStrip.Builder()
+                .addAction(
+                    Action.Builder()
+                        .setTitle("Camera")
+                        .setOnClickListener {
+                          mapViewCamera.value =
+                              getNextCamera(mapViewCamera.value.state, cameraPadding.value)
+                          Log.d("ExampleMapScreen", "Camera value ${mapViewCamera.value}")
+                        }
+                        .build())
+                .addAction(
+                    Action.Builder()
+                        .setTitle("Zoom In")
+                        .setOnClickListener {
+                          mapViewCamera.value = mapViewCamera.value.incrementZoom(1.0)
+                        }
+                        .build())
+                .addAction(
+                    Action.Builder()
+                        .setTitle("Zoom Out")
+                        .setOnClickListener {
+                          mapViewCamera.value = mapViewCamera.value.incrementZoom(-1.0)
+                        }
+                        .build())
+                .build())
+        .build()
   }
 }

@@ -2,6 +2,7 @@ plugins {
   alias(libs.plugins.androidApplication)
   alias(libs.plugins.jetbrainsKotlinAndroid)
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.ktfmt)
 }
 
 android {
@@ -48,6 +49,7 @@ dependencies {
 
   // Android Auto
   implementation(libs.androidx.car.app)
+  // Used for the CarAppActivity in `AndroidManifest.xml` only.
   implementation(libs.androidx.car.app.automotive)
 
   testImplementation(libs.junit)

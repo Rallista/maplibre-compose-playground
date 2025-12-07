@@ -18,7 +18,7 @@ import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.camera.extensions.incrementZoom
 import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.car.ComposableScreen
-import com.maplibre.example.examples.getNextCamera
+import com.maplibre.example.support.getNextCamera
 
 class CameraExampleScreen(carContext: CarContext) : ComposableScreen(carContext) {
 

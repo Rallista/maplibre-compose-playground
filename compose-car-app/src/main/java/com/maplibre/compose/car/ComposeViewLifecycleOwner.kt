@@ -8,7 +8,8 @@ import androidx.savedstate.SavedStateRegistryOwner
 
 class ComposeViewLifecycleOwner : SavedStateRegistryOwner {
   private var lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
-  private var savedStateRegistryController: SavedStateRegistryController = SavedStateRegistryController.Companion.create(this)
+  private var savedStateRegistryController: SavedStateRegistryController =
+      SavedStateRegistryController.Companion.create(this)
 
   override val lifecycle: Lifecycle = lifecycleRegistry
   override val savedStateRegistry = savedStateRegistryController.savedStateRegistry

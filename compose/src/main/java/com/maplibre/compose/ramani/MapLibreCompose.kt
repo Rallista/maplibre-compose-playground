@@ -48,7 +48,7 @@ internal suspend inline fun disposingComposition(factory: () -> Composition) {
   }
 }
 
-suspend fun MapView.newComposition(
+internal suspend fun MapView.newComposition(
     parent: CompositionContext,
     style: Style,
     content: @Composable () -> Unit,

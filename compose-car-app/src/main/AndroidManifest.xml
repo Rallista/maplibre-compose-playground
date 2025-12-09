@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Permission required to use PlaceListMapTemplate with POI category -->
+    <uses-permission android:name="androidx.car.app.MAP_TEMPLATES" />
+
+    <!-- Permission required to use Navigation Template for turn by turn category -->
+    <uses-permission android:name="androidx.car.app.NAVIGATION_TEMPLATES" />
+
+    <!-- Permission required to access the Surface for custom rendering (e.g. MapLibre) -->
+    <uses-permission android:name="androidx.car.app.ACCESS_SURFACE" />
 
 </manifest>

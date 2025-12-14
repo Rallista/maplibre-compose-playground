@@ -5,9 +5,10 @@ plugins {
   alias(libs.plugins.jetbrainsKotlinAndroid)
   alias(libs.plugins.kotlinParcelize)
   alias(libs.plugins.ktfmt)
-  alias(libs.plugins.mavenPublish)
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.mavenPublish)
   id("maven-publish")
+  id("CommonPomConventionPlugin")
 }
 
 android {
@@ -69,49 +70,11 @@ mavenPublishing {
   coordinates("io.github.rallista", "maplibre-compose", project.version.toString())
 
   configure(AndroidSingleVariantLibrary(sourcesJar = true, publishJavadocJar = true))
+}
 
+mavenPublishing {
   pom {
     name.set("Maplibre Compose")
-    url.set("https://github.com/Rallista/maplibre-compose-playground")
     description.set("Composable UI wrapper for Maplibre-Native Android")
-    inceptionYear.set("2023")
-    licenses {
-      license {
-        name.set("MPL-2.0")
-        url.set("https://www.mozilla.org/en-US/MPL/2.0/")
-      }
-    }
-    developers {
-      developer {
-        name.set("Jacob Fielding")
-        organization.set("Rallista")
-        organizationUrl.set("https://rallista.app")
-      }
-      developer {
-        name.set("Ian Wagner")
-        organization.set("Stadia Maps")
-        organizationUrl.set("https://stadiamaps.com/")
-      }
-    }
-    contributors {
-      contributor {
-        name.set("Ramani Maps")
-        organizationUrl.set("https://github.com/ramani-maps/ramani-maps")
-      }
-    }
-    scm {
-      connection.set("scm:git:https://github.com/Rallista/maplibre-compose-playground.git")
-      developerConnection.set("scm:git:ssh://github.com/Rallista/maplibre-compose-playground.git")
-      url.set("https://github.com/Rallista/maplibre-compose-playground")
-    }
-
-    withXml {
-      val rootNode = asNode()
-      val repositoriesNode = rootNode.appendNode("repositories")
-      val repositoryNode = repositoriesNode.appendNode("repository")
-      repositoryNode.appendNode("name", "Google")
-      repositoryNode.appendNode("id", "google")
-      repositoryNode.appendNode("url", "https://maven.google.com/")
-    }
   }
 }

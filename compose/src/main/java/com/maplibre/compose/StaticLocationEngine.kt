@@ -13,6 +13,7 @@ import org.maplibre.android.location.engine.LocationEngine
 import org.maplibre.android.location.engine.LocationEngineCallback
 import org.maplibre.android.location.engine.LocationEngineRequest
 import org.maplibre.android.location.engine.LocationEngineResult
+import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * A simple class that provides static location updates to a MapLibre view.
@@ -34,11 +35,11 @@ class StaticLocationEngine : LocationEngine {
     @Synchronized set
 
   private var callbackTimer: Timer? = null
-  private val callbacks: MutableList<Pair<Handler, LocationEngineCallback<LocationEngineResult>>> =
-      mutableListOf()
+  private val callbacks: CopyOnWriteArrayList<Pair<Handler, LocationEngineCallback<LocationEngineResult>>> =
+      CopyOnWriteArrayList()
 
   private var pendingIntentTimer: Timer? = null
-  private val pendingIntents: MutableList<PendingIntent> = mutableListOf()
+  private val pendingIntents: CopyOnWriteArrayList<PendingIntent> = CopyOnWriteArrayList()
 
   override fun getLastLocation(callback: LocationEngineCallback<LocationEngineResult>) {
     val loc = lastLocation

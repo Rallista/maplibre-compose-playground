@@ -17,7 +17,10 @@ import androidx.compose.runtime.CompositionContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.math.abs
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import org.maplibre.android.gestures.MoveGestureDetector
 import org.maplibre.android.gestures.RotateGestureDetector
 import org.maplibre.android.gestures.StandardScaleGestureDetector
@@ -61,6 +64,14 @@ internal suspend fun MapLibreMap.awaitStyle(styleUrl: String) = suspendCoroutine
   setStyle(styleUrl) { style -> continuation.resume(style) }
 }
 
+internal suspend fun Style.awaitFullyLoaded(): Style =
+    withContext(Dispatchers.Default) {
+      while (!isFullyLoaded) {
+        delay(50)
+      }
+      this@awaitFullyLoaded
+    }
+
 internal interface MapNode {
   fun onAttached() {}
 
@@ -99,7 +110,8 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
           }
 
           override fun onScaleEnd(detector: StandardScaleGestureDetector) {}
-        })
+        }
+    )
 
     map.addOnMoveListener(
         object : MapLibreMap.OnMoveListener {
@@ -112,7 +124,8 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
           }
 
           override fun onMoveEnd(detector: MoveGestureDetector) {}
-        })
+        }
+    )
 
     map.addOnRotateListener(
         object : MapLibreMap.OnRotateListener {
@@ -133,7 +146,8 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
               it.onMapRotated(map.cameraPosition.bearing)
             }
           }
-        })
+        }
+    )
   }
 
   fun getOrCreateCircleManagerForZIndex(zIndex: Int): CircleManager {
@@ -152,7 +166,8 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
               if (it.insertPosition == LayerInsertMethod.INSERT_BELOW) it.referenceLayerId
               else null,
               if (it.insertPosition == LayerInsertMethod.INSERT_ABOVE) it.referenceLayerId
-              else null)
+              else null,
+          )
         }
             ?: run {
               CircleManager(mapView, map, style, "mapbox-location-pulsing-circle-layer", null)
@@ -172,10 +187,12 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
                     it.circle.id == annotation?.id &&
                         it.circleManager.layerId == circleManager.layerId
                   },
-                  nodeInputCallback = { onTap })
+                  nodeInputCallback = { onTap },
+              )
               ?.invoke(annotation!!)
           true
-        })
+        }
+    )
 
     circleManager.addLongClickListener(
         OnCircleLongClickListener { annotation ->
@@ -185,10 +202,12 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
                     it.circle.id == annotation?.id &&
                         it.circleManager.layerId == circleManager.layerId
                   },
-                  nodeInputCallback = { onLongPress })
+                  nodeInputCallback = { onLongPress },
+              )
               ?.invoke(annotation!!)
           true
-        })
+        }
+    )
 
     circleManager.addDragListener(
         object : OnCircleDragListener {
@@ -199,7 +218,8 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
                       it.circle.id == annotation?.id &&
                           it.circleManager.layerId == circleManager.layerId
                     },
-                    nodeInputCallback = { onCircleDragged })
+                    nodeInputCallback = { onCircleDragged },
+                )
                 ?.invoke(annotation!!)
           }
 
@@ -210,7 +230,8 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
                       it.circle.id == annotation?.id &&
                           it.circleManager.layerId == circleManager.layerId
                     },
-                    nodeInputCallback = { onCircleDragged })
+                    nodeInputCallback = { onCircleDragged },
+                )
                 ?.invoke(annotation!!)
           }
 
@@ -221,10 +242,12 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
                       it.circle.id == annotation?.id &&
                           it.circleManager.layerId == circleManager.layerId
                     },
-                    nodeInputCallback = { onCircleDragStopped })
+                    nodeInputCallback = { onCircleDragStopped },
+                )
                 ?.invoke(annotation!!)
           }
-        })
+        }
+    )
 
     return circleManagerMap[zIndex]!!
   }
@@ -241,7 +264,8 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
     return LayerInsertInfo(
         zIndexReferenceAnnotationManagerMap[keys[closestLayerIndex]]?.layerId!!,
         if (zIndex > keys[closestLayerIndex]) LayerInsertMethod.INSERT_ABOVE
-        else LayerInsertMethod.INSERT_BELOW)
+        else LayerInsertMethod.INSERT_BELOW,
+    )
   }
 
   fun getOrCreateSymbolManagerForZIndex(zIndex: Int): SymbolManager {
@@ -260,7 +284,8 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
               else null,
               if (it.insertPosition == LayerInsertMethod.INSERT_ABOVE) it.referenceLayerId
               else null,
-              null)
+              null,
+          )
         }
             ?: run {
               SymbolManager(mapView, map, style, "mapbox-location-pulsing-circle-layer", null)
@@ -280,10 +305,12 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
                     it.symbol.id == annotation?.id &&
                         it.symbolManager.layerId == symbolManager.layerId
                   },
-                  nodeInputCallback = { onTap })
+                  nodeInputCallback = { onTap },
+              )
               ?.invoke(annotation!!)
           true
-        })
+        }
+    )
 
     symbolManager.addLongClickListener(
         OnSymbolLongClickListener { annotation ->
@@ -293,10 +320,12 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
                     it.symbol.id == annotation?.id &&
                         it.symbolManager.layerId == symbolManager.layerId
                   },
-                  nodeInputCallback = { onLongPress })
+                  nodeInputCallback = { onLongPress },
+              )
               ?.invoke(annotation!!)
           true
-        })
+        }
+    )
 
     symbolManagerMap[zIndex] = symbolManager
     return symbolManager
@@ -317,7 +346,8 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
               else null,
               if (it.insertPosition == LayerInsertMethod.INSERT_ABOVE) it.referenceLayerId
               else null,
-              null)
+              null,
+          )
         } ?: run { FillManager(mapView, map, style, "mapbox-location-pulsing-circle-layer", null) }
 
     if (!zIndexReferenceAnnotationManagerMap.containsKey(zIndex)) {
@@ -343,7 +373,8 @@ internal class MapApplier(val map: MapLibreMap, val mapView: MapView, val style:
               else null,
               if (it.insertPosition == LayerInsertMethod.INSERT_ABOVE) it.referenceLayerId
               else null,
-              null)
+              null,
+          )
         } ?: run { LineManager(mapView, map, style, "mapbox-location-pulsing-circle-layer", null) }
 
     if (!zIndexReferenceAnnotationManagerMap.containsKey(zIndex)) {
@@ -381,7 +412,7 @@ data class LayerInsertInfo(val referenceLayerId: String, val insertPosition: Lay
 
 enum class LayerInsertMethod {
   INSERT_BELOW,
-  INSERT_ABOVE
+  INSERT_ABOVE,
 }
 
 internal class CircleNode(

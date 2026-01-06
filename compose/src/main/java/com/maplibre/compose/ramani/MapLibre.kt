@@ -115,7 +115,7 @@ internal fun MapLibre(
   LaunchedEffect(currentMapProperties, currentLocationRequestProperties, currentLocationStyling) {
     disposingComposition {
       val maplibreMap = map.awaitMap()
-      val style = maplibreMap.awaitStyle(styleUrl)
+      val style = maplibreMap.awaitStyle(styleUrl).awaitFullyLoaded()
 
       maplibreMap.applyProperties(currentMapProperties)
       maplibreMap.setupLocation(

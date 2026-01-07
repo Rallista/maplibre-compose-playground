@@ -1,8 +1,12 @@
+import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
+
 plugins {
   alias(libs.plugins.androidLibrary)
   alias(libs.plugins.jetbrainsKotlinAndroid)
-  alias(libs.plugins.compose.compiler)
   alias(libs.plugins.ktfmt)
+  alias(libs.plugins.mavenPublish)
+  id("maven-publish")
+  id("CommonPomConventionPlugin")
 }
 
 android {
@@ -39,10 +43,27 @@ dependencies {
   implementation(libs.androidx.car.app)
 
   implementation(project(":compose"))
+  implementation(platform(libs.androidx.compose.bom))
   implementation(libs.androidx.ui)
   implementation(libs.androidx.compose.runtime)
 
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
+}
+
+mavenPublishing {
+  publishToMavenCentral()
+  signAllPublications()
+
+  coordinates("io.github.rallista", "maplibre-compose-car-app", project.version.toString())
+
+  configure(AndroidSingleVariantLibrary(sourcesJar = true, publishJavadocJar = true))
+}
+
+mavenPublishing {
+  pom {
+    name.set("Maplibre Compose Car App")
+    description.set("Android Automotive and Auto extensions for Maplibre Compose")
+  }
 }

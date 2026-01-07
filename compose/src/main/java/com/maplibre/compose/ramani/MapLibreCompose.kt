@@ -17,7 +17,10 @@ import androidx.compose.runtime.CompositionContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.math.abs
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import org.maplibre.android.gestures.MoveGestureDetector
 import org.maplibre.android.gestures.RotateGestureDetector
 import org.maplibre.android.gestures.StandardScaleGestureDetector
@@ -60,6 +63,14 @@ internal suspend fun MapView.newComposition(
 internal suspend fun MapLibreMap.awaitStyle(styleUrl: String) = suspendCoroutine { continuation ->
   setStyle(styleUrl) { style -> continuation.resume(style) }
 }
+
+internal suspend fun Style.awaitFullyLoaded(): Style =
+    withContext(Dispatchers.Default) {
+      while (!isFullyLoaded) {
+        delay(50)
+      }
+      this@awaitFullyLoaded
+    }
 
 internal interface MapNode {
   fun onAttached() {}

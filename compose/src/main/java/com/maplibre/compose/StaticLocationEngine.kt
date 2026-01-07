@@ -9,11 +9,11 @@ import android.os.Looper
 import java.lang.Exception
 import java.util.Timer
 import java.util.TimerTask
+import java.util.concurrent.CopyOnWriteArrayList
 import org.maplibre.android.location.engine.LocationEngine
 import org.maplibre.android.location.engine.LocationEngineCallback
 import org.maplibre.android.location.engine.LocationEngineRequest
 import org.maplibre.android.location.engine.LocationEngineResult
-import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * A simple class that provides static location updates to a MapLibre view.
@@ -35,7 +35,8 @@ class StaticLocationEngine : LocationEngine {
     @Synchronized set
 
   private var callbackTimer: Timer? = null
-  private val callbacks: CopyOnWriteArrayList<Pair<Handler, LocationEngineCallback<LocationEngineResult>>> =
+  private val callbacks:
+      CopyOnWriteArrayList<Pair<Handler, LocationEngineCallback<LocationEngineResult>>> =
       CopyOnWriteArrayList()
 
   private var pendingIntentTimer: Timer? = null

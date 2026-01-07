@@ -27,9 +27,10 @@ android {
     }
   }
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
   }
+  kotlin { jvmToolchain(21) }
   buildFeatures { compose = true }
   composeOptions { kotlinCompilerExtensionVersion = "1.5.14" }
   packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }

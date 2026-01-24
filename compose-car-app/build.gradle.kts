@@ -42,8 +42,8 @@ dependencies {
   // if we want it to remain compatible with Android Auto.
   implementation(libs.androidx.car.app)
 
-  implementation(project(":compose"))
   implementation(platform(libs.androidx.compose.bom))
+  implementation(project(":compose"))
   implementation(libs.androidx.ui)
   implementation(libs.androidx.compose.runtime)
 

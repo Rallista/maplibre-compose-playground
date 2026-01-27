@@ -34,7 +34,6 @@ android {
   }
   kotlin { jvmToolchain(21) }
   buildFeatures { compose = true }
-  composeOptions { kotlinCompilerExtensionVersion = "1.5.14" }
 }
 
 dependencies {

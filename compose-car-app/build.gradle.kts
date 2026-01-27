@@ -4,6 +4,7 @@ plugins {
   alias(libs.plugins.androidLibrary)
   alias(libs.plugins.jetbrainsKotlinAndroid)
   alias(libs.plugins.ktfmt)
+  alias(libs.plugins.compose.compiler)
   alias(libs.plugins.mavenPublish)
   id("maven-publish")
   id("CommonPomConventionPlugin")
@@ -31,6 +32,7 @@ android {
     targetCompatibility = JavaVersion.VERSION_21
   }
   kotlin { jvmToolchain(21) }
+  buildFeatures { compose = true }
 }
 
 dependencies {

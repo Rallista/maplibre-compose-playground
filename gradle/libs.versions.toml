@@ -15,7 +15,7 @@ composeBom = "2026.01.00"
 carApp = "1.7.0"
 maplibre = "12.3.1"
 maplibre-annotation = "3.0.2"
-navigationCompose = "2.9.6"
+navigationCompose = "2.9.7"
 mockk = "1.14.9"
 runtime = "1.10.1"
 

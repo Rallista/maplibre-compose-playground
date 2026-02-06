@@ -16,6 +16,7 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 
 class ComposeViewSurfaceCallback(
     private val androidContext: Context,
+    private val surfaceTag: String = "ComposeViewSurfaceCallback",
     private val content: @Composable () -> Unit,
 ) : SurfaceCallback {
 
@@ -26,6 +27,7 @@ class ComposeViewSurfaceCallback(
   private var virtualDisplay: VirtualDisplay? = null
   private var presentation: Presentation? = null
   private var isLifecycleInitialized = false
+  private var isDisposed = false
 
   private val lifecycleOwner = ComposeViewLifecycleOwner()
   private val composeView =
@@ -36,10 +38,14 @@ class ComposeViewSurfaceCallback(
       }
 
   override fun onSurfaceAvailable(surfaceContainer: SurfaceContainer) {
+    if (isDisposed) {
+      return
+    }
+
     // Create virtual display with the surface from Android Auto
     virtualDisplay =
         displayManager.createVirtualDisplay(
-            "ComposeViewVirtualDisplay",
+            "ComposeViewVirtualDisplay-$surfaceTag",
             surfaceContainer.width,
             surfaceContainer.height,
             displayMetrics.densityDpi,
@@ -69,14 +75,48 @@ class ComposeViewSurfaceCallback(
   }
 
   override fun onSurfaceDestroyed(surfaceContainer: SurfaceContainer) {
+    cleanupSurface()
+  }
+
+  private fun cleanupSurface() {
     presentation?.dismiss()
-    lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
+    presentation = null
+
+    if (isLifecycleInitialized && !isDisposed) {
+      lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+      lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
+    }
     // Don't destroy lifecycle to allow reuse on next onSurfaceAvailable
 
     virtualDisplay?.release()
     virtualDisplay = null
-    presentation = null
+  }
+
+  fun dispose() {
+    if (isDisposed) {
+      return
+    }
+    isDisposed = true
+
+    cleanupSurface()
+
+    if (isLifecycleInitialized) {
+      lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    }
+  }
+
+  fun resume() {
+    if (isDisposed || !isLifecycleInitialized) {
+      return
+    }
+    lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+  }
+
+  fun stop() {
+    if (isDisposed) {
+      return
+    }
+    cleanupSurface()
   }
 
   override fun onVisibleAreaChanged(visibleArea: Rect) {

@@ -22,13 +22,14 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import org.maplibre.android.MapLibre
 import org.maplibre.android.maps.MapLibreMap
+import org.maplibre.android.maps.MapLibreMapOptions
 import org.maplibre.android.maps.MapView
 
 @Composable
-fun rememberMapViewWithLifecycle(): MapView {
+fun rememberMapViewWithLifecycle(mapOptions: MapLibreMapOptions? = null): MapView {
   val context = LocalContext.current
   MapLibre.getInstance(context)
-  val mapView = remember { MapView(context) }
+  val mapView = remember { MapView(context, mapOptions) }
   val lifecycle = LocalLifecycleOwner.current.lifecycle
 
   DisposableEffect(lifecycle, mapView) {

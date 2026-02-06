@@ -26,8 +26,14 @@ import com.maplibre.compose.car.ComposableScreen
 import com.maplibre.compose.rememberSynchronizedMapViewCamera
 import com.maplibre.example.R
 import com.maplibre.example.support.getNextCamera
+import org.maplibre.android.maps.MapLibreMapOptions
 
-class CameraExampleScreen(carContext: CarContext) : ComposableScreen(carContext) {
+class CameraExampleScreen(carContext: CarContext) :
+    ComposableScreen(carContext, surfaceTag = "CameraExampleScreen") {
+
+  companion object {
+    private const val TAG = "CameraExampleScreen"
+  }
 
   val mapViewCamera = mutableStateOf(MapViewCamera.Centered(53.4106, -2.9779))
 
@@ -50,6 +56,7 @@ class CameraExampleScreen(carContext: CarContext) : ComposableScreen(carContext)
     MapView(
         modifier = Modifier.fillMaxSize(),
         styleUrl = "https://demotiles.maplibre.org/style.json",
+        mapOptions = MapLibreMapOptions.createFromAttributes(carContext).pixelRatio(3f),
         camera =
             rememberSynchronizedMapViewCamera(
                 mapViewCamera,
@@ -75,6 +82,21 @@ class CameraExampleScreen(carContext: CarContext) : ComposableScreen(carContext)
                           mapViewCamera.value = getNextCamera(mapViewCamera.value.state)
                           Log.d("ExampleMapScreen", "Camera value ${mapViewCamera.value}")
                           invalidate()
+                        }
+                        .build())
+                .build())
+        .setActionStrip(
+            ActionStrip.Builder()
+                .addAction(
+                    Action.Builder()
+                        .setTitle("View Symbols")
+                        .setOnClickListener {
+                          Log.d(TAG, "Navigating to SymbolExampleScreen")
+                          screenManager.push(
+                              SymbolExampleScreen(carContext) {
+                                // Callback for navigating back
+                                screenManager.pop()
+                              })
                         }
                         .build())
                 .build())

@@ -15,14 +15,33 @@ import com.maplibre.compose.ramani.MapLibre
 import com.maplibre.compose.ramani.MapLibreComposable
 import com.maplibre.compose.settings.MapControls
 import org.maplibre.android.location.engine.LocationEngine
+import org.maplibre.android.maps.MapLibreMapOptions
 import org.maplibre.android.maps.Style
 
+/**
+ * A composable that displays a MapLibre map.
+ *
+ * @param modifier The modifier to apply to the map.
+ * @param styleUrl The URL of the map style to display.
+ * @param camera The camera state for controlling the map's viewport.
+ * @param mapControls Controls for map UI elements like compass, logo, and attribution.
+ * @param mapOptions [MapLibreMapOptions] to pass when initializing the map.
+ * @param locationEngine The location engine to use for location tracking.
+ * @param locationRequestProperties Properties for location updates.
+ * @param locationStyling Styling options for the location indicator.
+ * @param userLocation A mutable state that will be updated with the user's location.
+ * @param onMapReadyCallback Callback invoked when the map style is fully loaded.
+ * @param onTapGestureCallback Callback invoked when the map is tapped.
+ * @param onLongPressGestureCallback Callback invoked when the map is long-pressed.
+ * @param content Composable content to render on the map (symbols, polylines, etc.).
+ */
 @Composable
 fun MapView(
     modifier: Modifier,
     styleUrl: String,
     camera: MutableState<MapViewCamera> = rememberSaveableMapViewCamera(),
     mapControls: State<MapControls> = rememberSaveableMapControls(),
+    mapOptions: MapLibreMapOptions? = null,
     locationEngine: LocationEngine? = null,
     locationRequestProperties: LocationRequestProperties = LocationRequestProperties.Default,
     locationStyling: LocationStyling = LocationStyling.Default,
@@ -38,6 +57,7 @@ fun MapView(
       styleUrl,
       camera,
       mapControls,
+      mapOptions = mapOptions,
       locationEngine = locationEngine,
       locationRequestProperties = locationRequestProperties,
       locationStyling = locationStyling,

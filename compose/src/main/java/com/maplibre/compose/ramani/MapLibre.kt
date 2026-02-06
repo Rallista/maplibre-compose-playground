@@ -34,6 +34,7 @@ import com.maplibre.compose.runtime.nodes.MapControlsNode
 import com.maplibre.compose.settings.MapControls
 import org.maplibre.android.location.engine.LocationEngine
 import org.maplibre.android.maps.MapLibreMap
+import org.maplibre.android.maps.MapLibreMapOptions
 import org.maplibre.android.maps.Style
 import org.maplibre.android.style.layers.Layer
 import org.maplibre.android.style.sources.Source
@@ -58,6 +59,7 @@ annotation class MapLibreComposable
  * @param styleUrl The style url to access the tile provider.
  * @param camera The position of the map camera.
  * @param mapControls The control configuration to be displayed on the map.
+ * @param mapOptions
  * @param properties Properties being applied to the map.
  * @param locationRequestProperties Properties related to the location marker. If null (which is the
  *   default), then the location will not be enabled on the map. Enabling the location requires
@@ -78,6 +80,7 @@ internal fun MapLibre(
     styleUrl: String,
     camera: MutableState<MapViewCamera>,
     mapControls: State<MapControls> = rememberSaveableMapControls(),
+    mapOptions: MapLibreMapOptions? = null,
     properties: MapProperties = MapProperties(),
     locationEngine: LocationEngine? = null,
     locationRequestProperties: LocationRequestProperties? = null,
@@ -97,7 +100,7 @@ internal fun MapLibre(
   }
 
   val context = LocalContext.current
-  val map = rememberMapViewWithLifecycle()
+  val map = rememberMapViewWithLifecycle(mapOptions)
 
   val currentMapControls by rememberUpdatedState(mapControls)
   val currentMapProperties by rememberUpdatedState(properties)

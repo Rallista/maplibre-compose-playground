@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import com.maplibre.compose.camera.MapViewCamera
+import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.settings.MapControls
 
 @Deprecated(

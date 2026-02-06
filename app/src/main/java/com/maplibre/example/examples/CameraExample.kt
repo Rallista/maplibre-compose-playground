@@ -19,10 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.maplibre.compose.MapView
 import com.maplibre.compose.StaticLocationEngine
+import com.maplibre.compose.camera.CameraState
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.camera.extensions.incrementZoom
 import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.rememberSaveableMapViewCamera
+import com.maplibre.compose.rememberSynchronizedMapViewCamera
 import com.maplibre.example.support.getNextCamera
 import com.maplibre.example.support.locationPermissions
 import com.maplibre.example.support.rememberLocationPermissionLauncher
@@ -42,10 +44,14 @@ fun CameraExample() {
 
   val canChangeCamera = remember { mutableStateOf(false) }
 
-  val cameraPadding = CameraPadding.fractionOfScreen(top = 0.8f)
+  val cameraPadding = CameraPadding.fractionOfScreen(top = 0.5f)
 
-  val mapViewCamera = rememberSaveableMapViewCamera() // Or rememberMapViewCamera()
-  val nextCameraState = getNextCamera(mapViewCamera.value.state, cameraPadding)
+  val mapViewCamera =
+      rememberSaveableMapViewCamera(
+          initialCamera =
+              MapViewCamera.Centered(
+                  latitude = 53.4106, longitude = -2.9779)) // Or rememberMapViewCamera()
+  val nextCameraState = getNextCamera(mapViewCamera.value.state)
 
   // TODO: This could use improvement to handle failure cases.
   //      Not really in the scope of this project, but just to reduce
@@ -63,7 +69,16 @@ fun CameraExample() {
     MapView(
         modifier = Modifier.fillMaxSize(),
         styleUrl = "https://demotiles.maplibre.org/style.json",
-        camera = mapViewCamera,
+        camera =
+            rememberSynchronizedMapViewCamera(
+                mapViewCamera,
+                {
+                  when (it.state) {
+                    is CameraState.TrackingUserLocationWithBearing ->
+                        it.copy(padding = cameraPadding)
+                    else -> it.copy(padding = CameraPadding())
+                  }
+                }),
         locationEngine = remember { locationEngine })
 
     Text(
@@ -80,7 +95,7 @@ fun CameraExample() {
             return@Button
           }
 
-          mapViewCamera.value = getNextCamera(mapViewCamera.value.state, cameraPadding)
+          mapViewCamera.value = getNextCamera(mapViewCamera.value.state)
         },
         modifier =
             Modifier.align(Alignment.BottomStart)

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -60,48 +59,46 @@ fun CameraExample() {
           },
           onFailed = { Log.w("CameraExample", "Location permission denied") })
 
-  Scaffold {
-    Box(modifier = Modifier.padding(it)) {
-      MapView(
-          modifier = Modifier.fillMaxSize(),
-          styleUrl = "https://demotiles.maplibre.org/style.json",
-          camera = mapViewCamera,
-          locationEngine = remember { locationEngine })
+  Box {
+    MapView(
+        modifier = Modifier.fillMaxSize(),
+        styleUrl = "https://demotiles.maplibre.org/style.json",
+        camera = mapViewCamera,
+        locationEngine = remember { locationEngine })
 
-      Text(
-          "Camera: ${mapViewCamera.value}",
-          modifier =
-              Modifier.align(Alignment.TopCenter).padding(top = 16.dp, start = 16.dp, end = 16.dp),
-          fontSize = 11.sp,
-          textAlign = TextAlign.Center)
+    Text(
+        "Camera: ${mapViewCamera.value}",
+        modifier =
+            Modifier.align(Alignment.TopCenter).padding(top = 16.dp, start = 16.dp, end = 16.dp),
+        fontSize = 11.sp,
+        textAlign = TextAlign.Center)
 
-      Button(
-          onClick = {
-            if (!canChangeCamera.value) {
-              permissionLauncher.launch(locationPermissions)
-              return@Button
-            }
-
-            mapViewCamera.value = getNextCamera(mapViewCamera.value.state, cameraPadding)
-          },
-          modifier =
-              Modifier.align(Alignment.BottomStart)
-                  .padding(bottom = 32.dp, start = 16.dp, end = 16.dp)) {
-            Text("To ${nextCameraState.state}")
+    Button(
+        onClick = {
+          if (!canChangeCamera.value) {
+            permissionLauncher.launch(locationPermissions)
+            return@Button
           }
 
-      Column(
-          modifier = Modifier.align(Alignment.BottomEnd).padding(bottom = 150.dp, end = 16.dp),
-          horizontalAlignment = Alignment.End) {
-            Button(onClick = { mapViewCamera.value = mapViewCamera.value.incrementZoom(1.0) }) {
-              Text("+")
-            }
+          mapViewCamera.value = getNextCamera(mapViewCamera.value.state, cameraPadding)
+        },
+        modifier =
+            Modifier.align(Alignment.BottomStart)
+                .padding(bottom = 32.dp, start = 16.dp, end = 16.dp)) {
+          Text("To ${nextCameraState.state}")
+        }
 
-            Button(onClick = { mapViewCamera.value = mapViewCamera.value.incrementZoom(-1.0) }) {
-              Text("-")
-            }
+    Column(
+        modifier = Modifier.align(Alignment.BottomEnd).padding(bottom = 150.dp, end = 16.dp),
+        horizontalAlignment = Alignment.End) {
+          Button(onClick = { mapViewCamera.value = mapViewCamera.value.incrementZoom(1.0) }) {
+            Text("+")
           }
-    }
+
+          Button(onClick = { mapViewCamera.value = mapViewCamera.value.incrementZoom(-1.0) }) {
+            Text("-")
+          }
+        }
   }
 }
 

@@ -27,24 +27,21 @@ fun CallbackExample() {
       rememberSaveableMapViewCamera(
           initialCamera =
               MapViewCamera.Centered(latitude = 57.636576, longitude = -155.031807, zoom = 6.0))
-    Box {
-        MapView(
-            modifier = Modifier.fillMaxSize(),
-            styleUrl = "https://demotiles.maplibre.org/style.json",
-            camera = mapViewCamera,
-            onMapReadyCallback = { scope.launch { snackbarHostState.showSnackbar("Map ready!") } },
-            onTapGestureCallback = {
-                scope.launch { snackbarHostState.showSnackbar("Tapped at ${it.coordinate}") }
-            },
-            onLongPressGestureCallback = {
-                scope.launch { snackbarHostState.showSnackbar("Long pressed at ${it.coordinate}") }
-            })
+  Box {
+    MapView(
+        modifier = Modifier.fillMaxSize(),
+        styleUrl = "https://demotiles.maplibre.org/style.json",
+        camera = mapViewCamera,
+        onMapReadyCallback = { scope.launch { snackbarHostState.showSnackbar("Map ready!") } },
+        onTapGestureCallback = {
+          scope.launch { snackbarHostState.showSnackbar("Tapped at ${it.coordinate}") }
+        },
+        onLongPressGestureCallback = {
+          scope.launch { snackbarHostState.showSnackbar("Long pressed at ${it.coordinate}") }
+        })
 
-        SnackbarHost(
-            hostState = snackbarHostState,
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
-    }
+    SnackbarHost(hostState = snackbarHostState, modifier = Modifier.align(Alignment.BottomCenter))
+  }
 }
 
 // TODO: Can this work with the async map style?

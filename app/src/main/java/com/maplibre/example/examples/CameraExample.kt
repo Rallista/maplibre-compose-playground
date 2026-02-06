@@ -60,8 +60,7 @@ fun CameraExample() {
           },
           onFailed = { Log.w("CameraExample", "Location permission denied") })
 
-  Scaffold {
-    Box(modifier = Modifier.padding(it)) {
+    Box {
       MapView(
           modifier = Modifier.fillMaxSize(),
           styleUrl = "https://demotiles.maplibre.org/style.json",
@@ -102,7 +101,7 @@ fun CameraExample() {
             }
           }
     }
-  }
+
 }
 
 // TODO: Can this work with the async map style?

@@ -28,8 +28,7 @@ fun SymbolExample() {
           initialCamera =
               MapViewCamera.Centered(latitude = 1.227, longitude = 103.962, zoom = 10.0))
 
-  Scaffold {
-    Box(modifier = Modifier.padding(it)) {
+    Box {
       MapView(
           modifier = Modifier.fillMaxSize(),
           styleUrl = "https://demotiles.maplibre.org/style.json",
@@ -84,5 +83,4 @@ fun SymbolExample() {
                 opacity = 0.1f)
           }
     }
-  }
 }

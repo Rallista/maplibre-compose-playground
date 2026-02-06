@@ -23,11 +23,9 @@ fun DarkAndLightModeExample() {
   // See MainActivity.kt L23 & L29
   val mapStyleUrl = mapLibreStyleUrl()
 
-  Scaffold {
-    Box(modifier = Modifier.padding(it)) {
+    Box {
       MapView(modifier = Modifier.fillMaxSize(), styleUrl = mapStyleUrl, camera = mapViewCamera)
     }
-  }
 }
 
 @Composable

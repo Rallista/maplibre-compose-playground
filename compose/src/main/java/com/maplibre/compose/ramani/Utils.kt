@@ -26,9 +26,7 @@ import org.maplibre.android.maps.MapLibreMapOptions
 import org.maplibre.android.maps.MapView
 
 @Composable
-fun rememberMapViewWithLifecycle(
-    mapOptions: MapLibreMapOptions? = null
-): MapView {
+fun rememberMapViewWithLifecycle(mapOptions: MapLibreMapOptions? = null): MapView {
   val context = LocalContext.current
   MapLibre.getInstance(context)
   val mapView = remember { MapView(context, mapOptions) }

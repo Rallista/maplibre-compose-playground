@@ -41,8 +41,7 @@ class SymbolExampleScreen(carContext: CarContext, private val onNavigateBack: ()
     MapView(
         modifier = Modifier.fillMaxSize(),
         styleUrl = "https://demotiles.maplibre.org/style.json",
-        mapOptions = MapLibreMapOptions.createFromAttributes(carContext)
-            .pixelRatio(3f),
+        mapOptions = MapLibreMapOptions.createFromAttributes(carContext).pixelRatio(3f),
         camera = mapViewCamera,
         onTapGestureCallback = { Log.d(TAG, "Tapped at $it") }) {
           // Red star symbol with rotation

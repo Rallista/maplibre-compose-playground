@@ -56,8 +56,7 @@ class CameraExampleScreen(carContext: CarContext) :
     MapView(
         modifier = Modifier.fillMaxSize(),
         styleUrl = "https://demotiles.maplibre.org/style.json",
-        mapOptions = MapLibreMapOptions.createFromAttributes(carContext)
-            .pixelRatio(3f),
+        mapOptions = MapLibreMapOptions.createFromAttributes(carContext).pixelRatio(3f),
         camera =
             rememberSynchronizedMapViewCamera(
                 mapViewCamera,

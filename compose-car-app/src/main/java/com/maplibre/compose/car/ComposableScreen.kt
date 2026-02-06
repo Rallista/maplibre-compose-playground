@@ -14,9 +14,7 @@ abstract class ComposableScreen(
 ) : Screen(carContext) {
   private val surfaceCallback: ComposeViewSurfaceCallback =
       ComposeViewSurfaceCallback(
-          androidContext = carContext,
-          surfaceTag = surfaceTag,
-          content = { content() })
+          androidContext = carContext, surfaceTag = surfaceTag, content = { content() })
 
   private val appManager: AppManager = carContext.getCarService(AppManager::class.java)
 

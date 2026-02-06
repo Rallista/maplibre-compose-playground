@@ -55,8 +55,7 @@ class CameraExampleScreen(carContext: CarContext) :
     MapView(
         modifier = Modifier.fillMaxSize(),
         styleUrl = "https://demotiles.maplibre.org/style.json",
-        mapOptions = MapLibreMapOptions.createFromAttributes(carContext)
-            .pixelRatio(3f),
+        mapOptions = MapLibreMapOptions.createFromAttributes(carContext).pixelRatio(3f),
         camera =
             rememberSynchronizedMapViewCamera(
                 mapViewCamera,
@@ -91,12 +90,12 @@ class CameraExampleScreen(carContext: CarContext) :
                     Action.Builder()
                         .setTitle("View Symbols")
                         .setOnClickListener {
-                            Log.d(TAG, "Navigating to SymbolExampleScreen")
-                            screenManager.push(
-                                SymbolExampleScreen(carContext) {
-                                    // Callback for navigating back
-                                    screenManager.pop()
-                                })
+                          Log.d(TAG, "Navigating to SymbolExampleScreen")
+                          screenManager.push(
+                              SymbolExampleScreen(carContext) {
+                                // Callback for navigating back
+                                screenManager.pop()
+                              })
                         }
                         .build())
                 .build())

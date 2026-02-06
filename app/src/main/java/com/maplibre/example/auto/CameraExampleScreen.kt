@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.graphics.drawable.IconCompat
 import com.maplibre.compose.MapView
 import com.maplibre.compose.StaticLocationEngine
+import com.maplibre.compose.camera.CameraState
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.camera.extensions.incrementZoom
 import com.maplibre.compose.camera.models.CameraPadding
@@ -42,13 +43,24 @@ class CameraExampleScreen(carContext: CarContext) : ComposableScreen(carContext)
       engine
     }
 
-    val cameraPadding = CameraPadding.fractionOfScreen(top = 0.6f, start = 0.55f)
+    val trackingCameraPadding =
+        CameraPadding.fractionOfScreen(top = 0.6f, start = 0.55f, end = 0.05f)
+    val cameraPadding = CameraPadding.fractionOfScreen(start = 0.5f, end = 0.05f)
 
     MapView(
         modifier = Modifier.fillMaxSize(),
         styleUrl = "https://demotiles.maplibre.org/style.json",
         camera =
-            rememberSynchronizedMapViewCamera(mapViewCamera, { it.copy(padding = cameraPadding) }),
+            rememberSynchronizedMapViewCamera(
+                mapViewCamera,
+                {
+                  when (it.state) {
+                    is CameraState.TrackingUserLocation,
+                    is CameraState.TrackingUserLocationWithBearing ->
+                        it.copy(padding = trackingCameraPadding)
+                    else -> it.copy(padding = cameraPadding)
+                  }
+                }),
         locationEngine = remember { locationEngine })
   }
 

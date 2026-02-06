@@ -117,9 +117,3 @@ fun CameraExample() {
   }
 }
 
-// TODO: Can this work with the async map style?
-@Composable
-@Preview
-fun CameraExamplePreview() {
-  CameraExample()
-}

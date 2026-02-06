@@ -19,18 +19,28 @@ import androidx.core.graphics.drawable.IconCompat
 import com.maplibre.compose.MapView
 import com.maplibre.compose.StaticLocationEngine
 import com.maplibre.compose.camera.CameraState
+import com.maplibre.compose.camera.MapGestureHandler
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.camera.extensions.incrementZoom
 import com.maplibre.compose.camera.models.CameraPadding
+import com.maplibre.compose.camera.rememberMapGestureHandler
 import com.maplibre.compose.car.ComposableScreen
 import com.maplibre.compose.rememberSynchronizedMapViewCamera
 import org.maplibre.android.maps.MapLibreMapOptions
 
 class CameraExampleScreen(carContext: CarContext) :
-    ComposableScreen(carContext = carContext, surfaceTag = "CameraExampleScreen") {
+    ComposableScreen(
+        carContext = carContext,
+        onScroll = { distanceX, distanceY -> gestureHandler?.onScroll(distanceX, distanceY) },
+        onFling = { velocityX, velocityY -> gestureHandler?.onFling(velocityX, velocityY) },
+        onScale = { focusX, focusY, scaleFactor ->
+          gestureHandler?.onScale(focusX, focusY, scaleFactor)
+        },
+        surfaceTag = "CameraExampleScreen") {
 
   companion object {
     private const val TAG = "CameraExampleScreen"
+    private var gestureHandler: MapGestureHandler? = null
   }
 
   val mapViewCamera = mutableStateOf(MapViewCamera.Centered(53.4106, -2.9779))
@@ -52,22 +62,27 @@ class CameraExampleScreen(carContext: CarContext) :
     val cameraPadding =
         CameraPadding.fractionOfScreen(start = 0.1f, top = 0.1f, bottom = 0.1f, end = 0.1f)
 
+    val synchronizedCamera =
+        rememberSynchronizedMapViewCamera(
+            mapViewCamera,
+            {
+              when (it.state) {
+                is CameraState.TrackingUserLocation,
+                is CameraState.TrackingUserLocationWithBearing ->
+                    it.copy(padding = trackingCameraPadding)
+                else -> it.copy(padding = cameraPadding)
+              }
+            })
+
     MapView(
         modifier = Modifier.fillMaxSize(),
         styleUrl = "https://demotiles.maplibre.org/style.json",
         mapOptions = MapLibreMapOptions.createFromAttributes(carContext).pixelRatio(3f),
-        camera =
-            rememberSynchronizedMapViewCamera(
-                mapViewCamera,
-                {
-                  when (it.state) {
-                    is CameraState.TrackingUserLocation,
-                    is CameraState.TrackingUserLocationWithBearing ->
-                        it.copy(padding = trackingCameraPadding)
-                    else -> it.copy(padding = cameraPadding)
-                  }
-                }),
-        locationEngine = remember { locationEngine })
+        camera = synchronizedCamera,
+        locationEngine = remember { locationEngine }) {
+          // Set up the gesture handler inside the MapView composition context
+          gestureHandler = rememberMapGestureHandler()
+        }
   }
 
   override fun onGetTemplate(): Template {
@@ -139,6 +154,7 @@ class CameraExampleScreen(carContext: CarContext) :
                                   invalidate()
                                 }
                                 .build())
+                        .addAction(Action.PAN)
                         .build())
                 .build())
         .build()

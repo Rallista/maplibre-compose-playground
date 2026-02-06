@@ -1,5 +1,6 @@
 package com.maplibre.compose.car
 
+import android.graphics.Rect
 import androidx.car.app.AppManager
 import androidx.car.app.CarContext
 import androidx.car.app.Screen
@@ -10,11 +11,23 @@ import androidx.lifecycle.LifecycleOwner
 
 abstract class ComposableScreen(
     carContext: CarContext,
+    private val onVisibleAreaChanged: ((Rect) -> Unit)? = null,
+    private val onStableAreaChanged: ((Rect) -> Unit)? = null,
+    private val onScroll: ((distanceX: Float, distanceY: Float) -> Unit)? = null,
+    private val onFling: ((velocityX: Float, velocityY: Float) -> Unit)? = null,
+    private val onScale: ((focusX: Float, focusY: Float, scaleFactor: Float) -> Unit)? = null,
     private val surfaceTag: String = "ComposableScreen",
 ) : Screen(carContext) {
   private val surfaceCallback: ComposeViewSurfaceCallback =
       ComposeViewSurfaceCallback(
-          androidContext = carContext, surfaceTag = surfaceTag, content = { content() })
+          androidContext = carContext,
+          surfaceTag = surfaceTag,
+          onVisibleAreaChanged = onVisibleAreaChanged,
+          onStableAreaChanged = onStableAreaChanged,
+          onScroll = onScroll,
+          onFling = onFling,
+          onScale = onScale,
+          content = { content() })
 
   private val appManager: AppManager = carContext.getCarService(AppManager::class.java)
 

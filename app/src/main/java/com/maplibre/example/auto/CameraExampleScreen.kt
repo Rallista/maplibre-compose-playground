@@ -19,9 +19,11 @@ import androidx.core.graphics.drawable.IconCompat
 import com.maplibre.compose.MapView
 import com.maplibre.compose.StaticLocationEngine
 import com.maplibre.compose.camera.CameraState
+import com.maplibre.compose.camera.MapGestureHandler
 import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.camera.extensions.incrementZoom
 import com.maplibre.compose.camera.models.CameraPadding
+import com.maplibre.compose.camera.rememberMapGestureHandler
 import com.maplibre.compose.car.ComposableScreen
 import com.maplibre.compose.rememberSynchronizedMapViewCamera
 import com.maplibre.example.R
@@ -29,10 +31,18 @@ import com.maplibre.example.support.getNextCamera
 import org.maplibre.android.maps.MapLibreMapOptions
 
 class CameraExampleScreen(carContext: CarContext) :
-    ComposableScreen(carContext, surfaceTag = "CameraExampleScreen") {
+    ComposableScreen(
+        carContext,
+        onScroll = { distanceX, distanceY -> gestureHandler?.onScroll(distanceX, distanceY) },
+        onFling = { velocityX, velocityY -> gestureHandler?.onFling(velocityX, velocityY) },
+        onScale = { focusX, focusY, scaleFactor ->
+          gestureHandler?.onScale(focusX, focusY, scaleFactor)
+        },
+        surfaceTag = "CameraExampleScreen") {
 
   companion object {
     private const val TAG = "CameraExampleScreen"
+    private var gestureHandler: MapGestureHandler? = null
   }
 
   val mapViewCamera = mutableStateOf(MapViewCamera.Centered(53.4106, -2.9779))
@@ -53,43 +63,38 @@ class CameraExampleScreen(carContext: CarContext) :
         CameraPadding.fractionOfScreen(top = 0.6f, start = 0.55f, end = 0.05f)
     val cameraPadding = CameraPadding.fractionOfScreen(start = 0.5f, end = 0.05f)
 
+    val synchronizedCamera =
+        rememberSynchronizedMapViewCamera(
+            mapViewCamera,
+            {
+              when (it.state) {
+                is CameraState.TrackingUserLocation,
+                is CameraState.TrackingUserLocationWithBearing ->
+                    it.copy(padding = trackingCameraPadding)
+                else -> it.copy(padding = cameraPadding)
+              }
+            })
+
     MapView(
         modifier = Modifier.fillMaxSize(),
         styleUrl = "https://demotiles.maplibre.org/style.json",
         mapOptions = MapLibreMapOptions.createFromAttributes(carContext).pixelRatio(3f),
-        camera =
-            rememberSynchronizedMapViewCamera(
-                mapViewCamera,
-                {
-                  when (it.state) {
-                    is CameraState.TrackingUserLocation,
-                    is CameraState.TrackingUserLocationWithBearing ->
-                        it.copy(padding = trackingCameraPadding)
-                    else -> it.copy(padding = cameraPadding)
-                  }
-                }),
-        locationEngine = remember { locationEngine })
+        camera = synchronizedCamera,
+        locationEngine = remember { locationEngine }) {
+          // Set up the gesture handler inside the MapView composition context
+          gestureHandler = rememberMapGestureHandler()
+        }
   }
 
   override fun onGetTemplate(): Template {
     return MapWithContentTemplate.Builder()
         .setContentTemplate(
-            MessageTemplate.Builder("Camera is currently ${mapViewCamera.value.state}")
-                .addAction(
-                    Action.Builder()
-                        .setTitle("Toggle Camera")
-                        .setOnClickListener {
-                          mapViewCamera.value = getNextCamera(mapViewCamera.value.state)
-                          Log.d("ExampleMapScreen", "Camera value ${mapViewCamera.value}")
-                          invalidate()
-                        }
-                        .build())
-                .build())
+            MessageTemplate.Builder("Camera is currently ${mapViewCamera.value.state}").build())
         .setActionStrip(
             ActionStrip.Builder()
                 .addAction(
                     Action.Builder()
-                        .setTitle("View Symbols")
+                        .setTitle("Symbols")
                         .setOnClickListener {
                           Log.d(TAG, "Navigating to SymbolExampleScreen")
                           screenManager.push(
@@ -140,6 +145,7 @@ class CameraExampleScreen(carContext: CarContext) :
                                   invalidate()
                                 }
                                 .build())
+                        .addAction(Action.PAN)
                         .build())
                 .build())
         .build()

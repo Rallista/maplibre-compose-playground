@@ -17,6 +17,11 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 class ComposeViewSurfaceCallback(
     private val androidContext: Context,
     private val surfaceTag: String = "ComposeViewSurfaceCallback",
+    private val onVisibleAreaChanged: ((Rect) -> Unit)? = null,
+    private val onStableAreaChanged: ((Rect) -> Unit)? = null,
+    private val onScroll: ((distanceX: Float, distanceY: Float) -> Unit)? = null,
+    private val onFling: ((velocityX: Float, velocityY: Float) -> Unit)? = null,
+    private val onScale: ((focusX: Float, focusY: Float, scaleFactor: Float) -> Unit)? = null,
     private val content: @Composable () -> Unit,
 ) : SurfaceCallback {
 
@@ -121,26 +126,26 @@ class ComposeViewSurfaceCallback(
 
   override fun onVisibleAreaChanged(visibleArea: Rect) {
     super.onVisibleAreaChanged(visibleArea)
-    // TODO: Evaluate visible area change behavior on screen
+    onVisibleAreaChanged?.invoke(visibleArea)
   }
 
   override fun onStableAreaChanged(stableArea: Rect) {
     super.onStableAreaChanged(stableArea)
-    // TODO: Evaluate stable area change behavior on screen
+    onStableAreaChanged?.invoke(stableArea)
   }
 
   override fun onScroll(distanceX: Float, distanceY: Float) {
     super.onScroll(distanceX, distanceY)
-    // TODO: Evaluate scroll behavior on screen
+    onScroll?.invoke(distanceX, distanceY)
   }
 
   override fun onFling(velocityX: Float, velocityY: Float) {
     super.onFling(velocityX, velocityY)
-    // TODO: Evaluate fling behavior on screen
+    onFling?.invoke(velocityX, velocityY)
   }
 
   override fun onScale(focusX: Float, focusY: Float, scaleFactor: Float) {
     super.onScale(focusX, focusY, scaleFactor)
-    // TODO: Evaluate scale behavior on screen
+    onScale?.invoke(focusX, focusY, scaleFactor)
   }
 }

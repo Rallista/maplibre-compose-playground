@@ -14,7 +14,7 @@ abstract class ComposableScreen(
     private val surfaceTag: String = "ComposableScreen",
 ) : Screen(carContext) {
 
-  protected var surfaceGestureCallback: SurfaceGestureCallback? = null
+  var surfaceGestureCallback: SurfaceGestureCallback? = null
 
   private val surfaceCallback: ComposeViewSurfaceCallback =
       ComposeViewSurfaceCallback(

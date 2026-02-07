@@ -24,10 +24,11 @@ import com.maplibre.compose.camera.extensions.incrementZoom
 import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.car.ComposableScreen
 import com.maplibre.compose.rememberSynchronizedMapViewCamera
+import com.maplibre.compose.surface.rememberMapSurfaceGestureCallback
 import org.maplibre.android.maps.MapLibreMapOptions
 
 class CameraExampleScreen(carContext: CarContext) :
-    ComposableScreen(carContext = carContext, surfaceTag = "CameraExampleScreen") {
+    ComposableScreen(carContext = carContext, surfaceTag = TAG) {
 
   companion object {
     private const val TAG = "CameraExampleScreen"
@@ -67,7 +68,9 @@ class CameraExampleScreen(carContext: CarContext) :
                     else -> it.copy(padding = cameraPadding)
                   }
                 }),
-        locationEngine = remember { locationEngine })
+        locationEngine = remember { locationEngine }) {
+          rememberMapSurfaceGestureCallback { this.surfaceGestureCallback = it }
+        }
   }
 
   override fun onGetTemplate(): Template {
@@ -139,6 +142,7 @@ class CameraExampleScreen(carContext: CarContext) :
                                   invalidate()
                                 }
                                 .build())
+                        .addAction(Action.PAN)
                         .build())
                 .build())
         .build()

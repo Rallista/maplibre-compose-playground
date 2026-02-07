@@ -7,14 +7,35 @@ import androidx.car.app.model.Template
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import com.maplibre.compose.surface.SurfaceGestureCallback
 
 abstract class ComposableScreen(
     carContext: CarContext,
     private val surfaceTag: String = "ComposableScreen",
 ) : Screen(carContext) {
+
+  protected var surfaceGestureCallback: SurfaceGestureCallback? = null
+
   private val surfaceCallback: ComposeViewSurfaceCallback =
       ComposeViewSurfaceCallback(
-          androidContext = carContext, surfaceTag = surfaceTag, content = { content() })
+          androidContext = carContext,
+          surfaceTag = surfaceTag,
+          onVisibleAreaChanged = { visibleArea ->
+            surfaceGestureCallback?.onVisibleAreaChanged(visibleArea)
+          },
+          onStableAreaChanged = { stableArea ->
+            surfaceGestureCallback?.onStableAreaChanged(stableArea)
+          },
+          onScroll = { distanceX, distanceY ->
+            surfaceGestureCallback?.onScroll(distanceX, distanceY)
+          },
+          onFling = { velocityX, velocityY ->
+            surfaceGestureCallback?.onFling(velocityX, velocityY)
+          },
+          onScale = { focusX, focusY, scaleFactor ->
+            surfaceGestureCallback?.onScale(focusX, focusY, scaleFactor)
+          },
+          content = { content() })
 
   private val appManager: AppManager = carContext.getCarService(AppManager::class.java)
 

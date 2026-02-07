@@ -26,7 +26,7 @@ import org.maplibre.android.maps.MapLibreMapOptions
 import org.maplibre.android.style.layers.Property.TEXT_ANCHOR_BOTTOM_RIGHT
 
 class SymbolExampleScreen(carContext: CarContext, private val onNavigateBack: () -> Unit) :
-    ComposableScreen(carContext, surfaceTag = "SymbolExampleScreen") {
+    ComposableScreen(carContext, surfaceTag = TAG) {
 
   companion object {
     private const val TAG = "SymbolExampleScreen"

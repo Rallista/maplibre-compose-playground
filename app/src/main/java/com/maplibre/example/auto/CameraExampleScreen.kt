@@ -24,12 +24,12 @@ import com.maplibre.compose.camera.extensions.incrementZoom
 import com.maplibre.compose.camera.models.CameraPadding
 import com.maplibre.compose.car.ComposableScreen
 import com.maplibre.compose.rememberSynchronizedMapViewCamera
+import com.maplibre.compose.surface.rememberMapSurfaceGestureCallback
 import com.maplibre.example.R
 import com.maplibre.example.support.getNextCamera
 import org.maplibre.android.maps.MapLibreMapOptions
 
-class CameraExampleScreen(carContext: CarContext) :
-    ComposableScreen(carContext, surfaceTag = "CameraExampleScreen") {
+class CameraExampleScreen(carContext: CarContext) : ComposableScreen(carContext, surfaceTag = TAG) {
 
   companion object {
     private const val TAG = "CameraExampleScreen"
@@ -68,28 +68,20 @@ class CameraExampleScreen(carContext: CarContext) :
                     else -> it.copy(padding = cameraPadding)
                   }
                 }),
-        locationEngine = remember { locationEngine })
+        locationEngine = remember { locationEngine }) {
+          rememberMapSurfaceGestureCallback { this.surfaceGestureCallback = it }
+        }
   }
 
   override fun onGetTemplate(): Template {
     return MapWithContentTemplate.Builder()
         .setContentTemplate(
-            MessageTemplate.Builder("Camera is currently ${mapViewCamera.value.state}")
-                .addAction(
-                    Action.Builder()
-                        .setTitle("Toggle Camera")
-                        .setOnClickListener {
-                          mapViewCamera.value = getNextCamera(mapViewCamera.value.state)
-                          Log.d("ExampleMapScreen", "Camera value ${mapViewCamera.value}")
-                          invalidate()
-                        }
-                        .build())
-                .build())
+            MessageTemplate.Builder("Camera is currently ${mapViewCamera.value.state}").build())
         .setActionStrip(
             ActionStrip.Builder()
                 .addAction(
                     Action.Builder()
-                        .setTitle("View Symbols")
+                        .setTitle("Symbols")
                         .setOnClickListener {
                           Log.d(TAG, "Navigating to SymbolExampleScreen")
                           screenManager.push(
@@ -140,6 +132,7 @@ class CameraExampleScreen(carContext: CarContext) :
                                   invalidate()
                                 }
                                 .build())
+                        .addAction(Action.PAN)
                         .build())
                 .build())
         .build()

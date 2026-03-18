@@ -115,39 +115,40 @@ internal fun MapLibre(
   val parentComposition = rememberCompositionContext()
 
   AndroidView(modifier = modifier, factory = { map })
-  LaunchedEffect(styleUrl, currentMapProperties, currentLocationRequestProperties, currentLocationStyling) {
-    disposingComposition {
-      val maplibreMap = map.awaitMap()
-      val style = maplibreMap.awaitStyle(styleUrl).awaitFullyLoaded()
+  LaunchedEffect(
+      styleUrl, currentMapProperties, currentLocationRequestProperties, currentLocationStyling) {
+        disposingComposition {
+          val maplibreMap = map.awaitMap()
+          val style = maplibreMap.awaitStyle(styleUrl).awaitFullyLoaded()
 
-      maplibreMap.applyProperties(currentMapProperties)
-      maplibreMap.setupLocation(
-          context,
-          style,
-          currentLocationEngine,
-          currentLocationRequestProperties,
-          currentLocationStyling,
-          userLocation,
-      )
-      maplibreMap.setupEventCallbacks(onTapGestureCallback, onLongPressGestureCallback)
-      maplibreMap.addImages(context, currentImages)
-      maplibreMap.addSources(currentSources)
-      maplibreMap.addLayers(currentLayers)
-      camera.value.toCameraPosition(maplibreMap)?.let { maplibreMap.cameraPosition = it }
+          maplibreMap.applyProperties(currentMapProperties)
+          maplibreMap.setupLocation(
+              context,
+              style,
+              currentLocationEngine,
+              currentLocationRequestProperties,
+              currentLocationStyling,
+              userLocation,
+          )
+          maplibreMap.setupEventCallbacks(onTapGestureCallback, onLongPressGestureCallback)
+          maplibreMap.addImages(context, currentImages)
+          maplibreMap.addSources(currentSources)
+          maplibreMap.addLayers(currentLayers)
+          camera.value.toCameraPosition(maplibreMap)?.let { maplibreMap.cameraPosition = it }
 
-      // Notify the parent callback that the map is ready with a style.
-      // This must include all style modifications from adding images, sources, and layers.
-      onMapReadyCallback?.invoke(style)
+          // Notify the parent callback that the map is ready with a style.
+          // This must include all style modifications from adding images, sources, and layers.
+          onMapReadyCallback?.invoke(style)
 
-      map.newComposition(parentComposition, style) {
-        CompositionLocalProvider {
-          MapCameraNode(camera = currentCamera)
-          MapControlsNode(mapControls = currentMapControls)
-          currentContent?.invoke()
+          map.newComposition(parentComposition, style) {
+            CompositionLocalProvider {
+              MapCameraNode(camera = currentCamera)
+              MapControlsNode(mapControls = currentMapControls)
+              currentContent?.invoke()
+            }
+          }
         }
       }
-    }
-  }
 }
 
 private fun MapLibreMap.applyProperties(properties: MapProperties) {

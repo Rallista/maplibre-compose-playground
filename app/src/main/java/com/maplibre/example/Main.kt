@@ -68,7 +68,8 @@ fun MainMenu(modifier: Modifier, navController: NavController) {
         NavigationLink("Map Camera Control Example", "camera", navController)
         NavigationLink("Symbols Example", "symbol", navController)
         NavigationLink(title = "Map Controls Example", destination = "map-controls", navController)
-        NavigationLink(title = "Style Switching Example", destination = "style-switching", navController)
+        NavigationLink(
+            title = "Style Switching Example", destination = "style-switching", navController)
       }
 }
 

@@ -22,55 +22,40 @@ import com.maplibre.compose.camera.MapViewCamera
 import com.maplibre.compose.rememberSaveableMapViewCamera
 
 private enum class MapStyleOption(val label: String, val styleUrl: String) {
-    Demo(
-        label = "MapLibre",
-        styleUrl = "https://demotiles.maplibre.org/style.json"
-    ),
-    Liberty(
-        label = "Liberty",
-        styleUrl = "https://tiles.openfreemap.org/styles/liberty"
-    )
+  Demo(label = "MapLibre", styleUrl = "https://demotiles.maplibre.org/style.json"),
+  Liberty(label = "Liberty", styleUrl = "https://tiles.openfreemap.org/styles/liberty")
 }
 
 @Composable
 fun StyleSwitchingExample() {
-    var selectedStyle by remember { mutableStateOf(MapStyleOption.Demo) }
+  var selectedStyle by remember { mutableStateOf(MapStyleOption.Demo) }
 
-    val camera = rememberSaveableMapViewCamera(
-        initialCamera = MapViewCamera.Centered(latitude = 48.1, longitude = 11.6, zoom = 7.0)
-    )
+  val camera =
+      rememberSaveableMapViewCamera(
+          initialCamera = MapViewCamera.Centered(latitude = 48.1, longitude = 11.6, zoom = 7.0))
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        MapView(
-            modifier = Modifier.fillMaxSize(),
-            styleUrl = selectedStyle.styleUrl,
-            camera = camera
-        )
+  Box(modifier = Modifier.fillMaxSize()) {
+    MapView(modifier = Modifier.fillMaxSize(), styleUrl = selectedStyle.styleUrl, camera = camera)
 
-        SingleChoiceSegmentedButtonRow(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .systemBarsPadding()
-                .padding(bottom = 16.dp)
-        ) {
-            MapStyleOption.entries.forEachIndexed { index, option ->
-                SegmentedButton(
-                    selected = selectedStyle == option,
-                    onClick = { selectedStyle = option },
-                    shape = SegmentedButtonDefaults.itemShape(
-                        index = index,
-                        count = MapStyleOption.entries.size
-                    )
-                ) {
-                    Text(option.label)
+    SingleChoiceSegmentedButtonRow(
+        modifier =
+            Modifier.align(Alignment.BottomCenter).systemBarsPadding().padding(bottom = 16.dp)) {
+          MapStyleOption.entries.forEachIndexed { index, option ->
+            SegmentedButton(
+                selected = selectedStyle == option,
+                onClick = { selectedStyle = option },
+                shape =
+                    SegmentedButtonDefaults.itemShape(
+                        index = index, count = MapStyleOption.entries.size)) {
+                  Text(option.label)
                 }
-            }
+          }
         }
-    }
+  }
 }
 
 @Preview
 @Composable
 fun StyleSwitchingExamplePreview() {
-    StyleSwitchingExample()
+  StyleSwitchingExample()
 }

@@ -115,7 +115,7 @@ internal fun MapLibre(
   val parentComposition = rememberCompositionContext()
 
   AndroidView(modifier = modifier, factory = { map })
-  LaunchedEffect(currentMapProperties, currentLocationRequestProperties, currentLocationStyling) {
+  LaunchedEffect(styleUrl, currentMapProperties, currentLocationRequestProperties, currentLocationStyling) {
     disposingComposition {
       val maplibreMap = map.awaitMap()
       val style = maplibreMap.awaitStyle(styleUrl).awaitFullyLoaded()

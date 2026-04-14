@@ -46,9 +46,12 @@ dependencies {
   implementation(libs.androidx.ui.tooling.preview)
   implementation(libs.androidx.material3)
 
-  implementation(project(":compose"))
+  implementation(libs.maplibre.compose)
+  implementation(libs.maplibre.compose.material3)
   implementation(libs.androidx.navigation.compose)
 
+  // Car app screens still use the old library (no equivalent in new maplibre-compose)
+  implementation(project(":compose"))
   implementation(project(":compose-car-app"))
   implementation(libs.androidx.car.app)
 

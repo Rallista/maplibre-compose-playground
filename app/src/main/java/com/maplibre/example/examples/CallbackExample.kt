@@ -10,41 +10,53 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.maplibre.compose.MapView
-import com.maplibre.compose.camera.MapViewCamera
-import com.maplibre.compose.rememberSaveableMapViewCamera
 import kotlinx.coroutines.launch
+import org.maplibre.compose.camera.CameraPosition
+import org.maplibre.compose.camera.rememberCameraState
+import org.maplibre.compose.map.MaplibreMap
+import org.maplibre.compose.style.BaseStyle
+import org.maplibre.compose.util.ClickResult
+import org.maplibre.spatialk.geojson.Position
 
 @Composable
 fun CallbackExample() {
 
-  //    https://developer.android.com/develop/ui/compose/components/snackbar#basic_example
-
   val scope = rememberCoroutineScope()
   val snackbarHostState = remember { SnackbarHostState() }
 
-  val mapViewCamera =
-      rememberSaveableMapViewCamera(
-          initialCamera =
-              MapViewCamera.Centered(latitude = 57.636576, longitude = -155.031807, zoom = 6.0))
+  val cameraState =
+      rememberCameraState(
+          firstPosition =
+              CameraPosition(
+                  target = Position(longitude = -155.031807, latitude = 57.636576), zoom = 6.0))
+
   Box {
-    MapView(
+    MaplibreMap(
         modifier = Modifier.fillMaxSize(),
-        styleUrl = "https://demotiles.maplibre.org/style.json",
-        camera = mapViewCamera,
-        onMapReadyCallback = { scope.launch { snackbarHostState.showSnackbar("Map ready!") } },
-        onTapGestureCallback = {
-          scope.launch { snackbarHostState.showSnackbar("Tapped at ${it.coordinate}") }
+        baseStyle = BaseStyle.Uri("https://demotiles.maplibre.org/style.json"),
+        cameraState = cameraState,
+        onMapLoadFinished = {
+          scope.launch { snackbarHostState.showSnackbar("Map ready!") }
         },
-        onLongPressGestureCallback = {
-          scope.launch { snackbarHostState.showSnackbar("Long pressed at ${it.coordinate}") }
+        onMapClick = { position, _ ->
+          scope.launch {
+            snackbarHostState.showSnackbar(
+                "Tapped at ${position.latitude}, ${position.longitude}")
+          }
+          ClickResult.Pass
+        },
+        onMapLongClick = { position, _ ->
+          scope.launch {
+            snackbarHostState.showSnackbar(
+                "Long pressed at ${position.latitude}, ${position.longitude}")
+          }
+          ClickResult.Pass
         })
 
     SnackbarHost(hostState = snackbarHostState, modifier = Modifier.align(Alignment.BottomCenter))
   }
 }
 
-// TODO: Can this work with the async map style?
 @Composable
 @Preview
 fun CallbackExamplePreview() {

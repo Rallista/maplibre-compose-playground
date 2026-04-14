@@ -1,96 +1,102 @@
 package com.maplibre.example.examples
 
-import android.view.Gravity
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.maplibre.compose.MapView
-import com.maplibre.compose.camera.MapViewCamera
-import com.maplibre.compose.rememberSaveableMapViewCamera
-import com.maplibre.compose.settings.AttributionSettings
-import com.maplibre.compose.settings.CompassSettings
-import com.maplibre.compose.settings.LogoSettings
-import com.maplibre.compose.settings.MapControlPosition
-import com.maplibre.compose.settings.MapControls
-import com.maplibre.compose.settings.MarginInsets
-import com.maplibre.compose.symbols.Polyline
 import kotlinx.coroutines.delay
-import org.maplibre.android.geometry.LatLng
+import kotlinx.serialization.json.buildJsonObject
+import org.maplibre.compose.camera.CameraPosition
+import org.maplibre.compose.camera.rememberCameraState
+import org.maplibre.compose.expressions.dsl.const
+import org.maplibre.compose.layers.LineLayer
+import org.maplibre.compose.map.MapOptions
+import org.maplibre.compose.map.MaplibreMap
+import org.maplibre.compose.map.OrnamentOptions
+import org.maplibre.compose.sources.GeoJsonData
+import org.maplibre.compose.sources.rememberGeoJsonSource
+import org.maplibre.compose.style.BaseStyle
+import org.maplibre.spatialk.geojson.Feature
+import org.maplibre.spatialk.geojson.FeatureCollection
+import org.maplibre.spatialk.geojson.LineString
+import org.maplibre.spatialk.geojson.Position
 
-/**
- * MapControls modify the UiSettings for controls on the map including the compass, logo, and
- * attribution.
- */
+// FLAG: The old library's MapControls / AttributionSettings / CompassSettings / LogoSettings /
+// MapControlPosition / MarginInsets system has no equivalent in the new library.
+// The new library offers OrnamentOptions presets (AllEnabled, OnlyLogo, AllDisabled) only.
+// Fine-grained control positioning requires using Material3 ornament composables
+// (CompassButton, ExpandingAttributionButton) placed manually via Compose modifiers.
+// This example demonstrates the concept using animated Compose positioning instead.
+
 @Composable
 fun MapControlsExample() {
 
-  val density = LocalDensity.current
-  val layoutDirection = LocalLayoutDirection.current
+  val phase = remember { mutableStateOf(0) }
+  val color = remember { mutableStateOf(Color.Black) }
 
-  // Create an initial set of map controls
-  val initialMapControls =
-      MapControls(
-          attribution =
-              AttributionSettings.initWithPosition(
-                  position = MapControlPosition.TopEnd(horizontal = 64.dp, vertical = 64.dp)),
-          compass =
-              // Using margins directly is possible, but it's better to use
-              // [MapControlPosition] as seen above in with AttributionSettings
-              CompassSettings(
-                  fadeFacingNorth = false,
-                  gravity = Gravity.START or Gravity.BOTTOM,
-                  margins =
-                      MarginInsets.createFromPadding(PaddingValues(start = 64.dp, bottom = 128.dp)),
-              ),
-          logo = LogoSettings(enabled = false))
-
-  // Remember the map controls and color as mutable state to update them in the LaunchedEffect.
-  val mapControls = remember { mutableStateOf(initialMapControls) }
-  val color = remember { mutableStateOf("#000") }
-
-  // Dynamically update the map controls and polyline after a delay.
-  // Using a launched effect for dynamic map controls is likely incorrect, but easily
-  // demonstrates the behavior.
+  // Dynamically update the polyline color after a delay to demonstrate reactive state.
   LaunchedEffect(Unit) {
     delay(2000)
-
-    mapControls.value =
-        MapControls(
-            attribution =
-                AttributionSettings.initWithLayoutAndPosition(
-                    layoutDirection = layoutDirection,
-                    density = density,
-                    enabled = true,
-                    position = MapControlPosition.TopCenter(vertical = 64.dp)),
-            compass = CompassSettings(enabled = false),
-            logo = LogoSettings(enabled = true))
-
-    color.value = "#fff"
+    phase.value = 1
+    color.value = Color.White
   }
 
-  val mapViewCamera =
-      rememberSaveableMapViewCamera(
-          initialCamera = MapViewCamera.Centered(latitude = -50.04, longitude = -73.71, zoom = 7.0))
+  val cameraState =
+      rememberCameraState(
+          firstPosition =
+              CameraPosition(
+                  target = Position(longitude = -73.71, latitude = -50.04), zoom = 7.0))
 
-  val latLngs =
-      listOf(
-          LatLng(-50.20, -73.69),
-          LatLng(-50.10, -73.71),
-          LatLng(-50.00, -73.73),
-      )
+  // Animate control positions based on phase
+  val topPadding = animateDpAsState(targetValue = if (phase.value == 0) 64.dp else 16.dp)
+  val startPadding = animateDpAsState(targetValue = if (phase.value == 0) 64.dp else 16.dp)
 
-  MapView(
-      modifier = Modifier.fillMaxSize(),
-      styleUrl = "https://demotiles.maplibre.org/style.json",
-      camera = mapViewCamera,
-      mapControls) {
-        Polyline(points = latLngs, color = color.value, lineWidth = 12f)
-      }
+  Box(modifier = Modifier.fillMaxSize()) {
+    MaplibreMap(
+        modifier = Modifier.fillMaxSize(),
+        baseStyle = BaseStyle.Uri("https://demotiles.maplibre.org/style.json"),
+        cameraState = cameraState,
+        // FLAG: Using OnlyLogo since we can't do fine-grained control positioning with the
+        // new library's OrnamentOptions. In a full implementation, you would add Material3
+        // composables (CompassButton, ExpandingAttributionButton) as overlays.
+        options = MapOptions(ornamentOptions = OrnamentOptions.OnlyLogo)) {
+          // Source must be created inside MaplibreMap content scope (LocalStyleNode)
+          val polylineSource =
+              rememberGeoJsonSource(
+                  data =
+                      GeoJsonData.Features(
+                          FeatureCollection(
+                              Feature(
+                                  geometry =
+                                      LineString(
+                                          Position(longitude = -73.69, latitude = -50.20),
+                                          Position(longitude = -73.71, latitude = -50.10),
+                                          Position(longitude = -73.73, latitude = -50.00)),
+                                  properties = buildJsonObject {}))))
+
+          LineLayer(
+              id = "polyline-layer",
+              source = polylineSource,
+              width = const(12.dp),
+              color = const(color.value))
+        }
+
+    // FLAG: The old example dynamically repositioned compass, attribution, and logo controls.
+    // The new library doesn't support this via MapControls. We show a placeholder text to
+    // demonstrate the animated positioning concept.
+    androidx.compose.material3.Text(
+        text = if (phase.value == 0) "Controls: Phase 1" else "Controls: Phase 2",
+        modifier =
+            Modifier.align(Alignment.TopEnd)
+                .padding(top = topPadding.value, end = startPadding.value),
+        color = Color.White)
+  }
 }

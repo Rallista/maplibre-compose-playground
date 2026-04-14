@@ -5,23 +5,31 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.maplibre.compose.MapView
-import com.maplibre.compose.camera.MapViewCamera
-import com.maplibre.compose.mapLibreStyleUrl
-import com.maplibre.compose.rememberSaveableMapViewCamera
+import com.maplibre.example.LocalMapStyleUrl
+import org.maplibre.compose.camera.CameraPosition
+import org.maplibre.compose.camera.rememberCameraState
+import org.maplibre.compose.map.MaplibreMap
+import org.maplibre.compose.style.BaseStyle
+import org.maplibre.spatialk.geojson.Position
 
 @Composable
 fun DarkAndLightModeExample() {
 
-  val mapViewCamera =
-      rememberSaveableMapViewCamera(
-          initialCamera = MapViewCamera.Centered(latitude = 15.3, longitude = 74.1, zoom = 9.0))
+  val cameraState =
+      rememberCameraState(
+          firstPosition =
+              CameraPosition(
+                  target = Position(longitude = 74.1, latitude = 15.3), zoom = 9.0))
 
-  // Get the MapLibre style URL from the provider wrapping the MainActivity
-  // See MainActivity.kt L23 & L29
-  val mapStyleUrl = mapLibreStyleUrl()
+  // Get the map style URL from the CompositionLocal provider wrapping the MainActivity
+  val mapStyleUrl = LocalMapStyleUrl.current
 
-  Box { MapView(modifier = Modifier.fillMaxSize(), styleUrl = mapStyleUrl, camera = mapViewCamera) }
+  Box {
+    MaplibreMap(
+        modifier = Modifier.fillMaxSize(),
+        baseStyle = BaseStyle.Uri(mapStyleUrl),
+        cameraState = cameraState)
+  }
 }
 
 @Composable

@@ -2,6 +2,13 @@
 
 This project is based off of <https://github.com/ramani-maps/ramani-maps> [MPL-2.0 License] and takes a different approach to top level API, emphasizing parity with <https://github.com/maplibre/swiftui-dsl> for <https://github.com/stadiamaps/ferrostar>.
 
+## Update July 2026
+
+> [!IMPORTANT]
+> We've upgraded to the official [Maplibre Compose](https://github.com/maplibre/maplibre-compose) (including Ferrostar). This repo is no longer actively maintained. 
+
+This offers several advantages, including more permissive licensing, improved location puck configuration, etc. See Ferrostar's [Demo App](https://github.com/stadiamaps/ferrostar/tree/main/android/demo-app/src/main/java/com/stadiamaps/ferrostar) for some introductions on how to. 
+
 ## Getting Started
 
 This library is published through Maven Central. In your app `build.gradle` add:
